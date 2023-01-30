@@ -95,8 +95,8 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     public override func viewDidAppear(_ animated: Bool) {
         let btSend = UIButton()
         btSend.frame = CGRect(x: 100, y: 600, width: 200, height: 200)
-        btSend.setTitleColor(UIColor.systemRed, for: UIControlState.normal)
-        btSend.setTitle("Send", for: UIControlState.normal)
+        btSend.setTitleColor(UIColor.systemRed, for: UIControl.State.normal)
+        btSend.setTitle("Send", for: UIControl.State.normal)
         self.view.addSubview(btSend)
         btSend.addTarget(self, action:#selector(btSendAction), for:.touchUpInside)
     }
