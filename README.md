@@ -27,3 +27,4 @@ pod 'TeneasyChatSDKUI_iOS'
 ## License
 
 TeneasyChatSDKUI_iOS is available under the MIT license. See the LICENSE file for more info.
+# TeneasyChatSdkUI_iOS-
