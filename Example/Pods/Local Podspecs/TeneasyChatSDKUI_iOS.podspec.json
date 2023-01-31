@@ -21,11 +21,8 @@
   "source_files": "TeneasyChatSDKUI_iOS/Classes/**/*",
   "frameworks": "UIKit",
   "dependencies": {
-    "AFNetworking": [
-      "~> 2.3"
-    ],
     "TeneasyChatSDK_iOS": [
-
+      "~> 0.1.0"
     ],
     "SnapKit": [
       "~> 5.0.1"

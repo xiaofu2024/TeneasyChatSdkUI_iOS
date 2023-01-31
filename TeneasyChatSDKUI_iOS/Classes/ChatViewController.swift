@@ -87,7 +87,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     
     func initSDK(){
         //从网页端把chatId和token传进sdk,
-        lib = ChatLib(chatId: 2692944494601, token: "CCcQARgJICIon6WAieAw.4hI0uHGRO_-CSlDFnI4036IVnXr7No1wF9f32TCvDXFj27Ph4migozWYC6348C3bvvM-kbdZDAqSNIG2BiAYDw")
+        lib = ChatLib(chatId: 2692944494599, token: "CCcQAxgDIBko5sGPuuAw.FDLFvFeIPl2wySC-lOpxgMbSieyZPVXPVxd-Iw5-MXQ_jlzsQ8peHbbVm9_NFLx43UizU1tv0hDtnVfRI7k2AQ")
         lib.callWebsocket()
         lib.delegate = self
     }

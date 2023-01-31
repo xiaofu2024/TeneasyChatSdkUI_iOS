@@ -1,5 +1,4 @@
 import XCTest
-import TeneasyChatSDKUI_iOS
 
 class Tests: XCTestCase {
     
