@@ -53,7 +53,7 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var menuBtn: WButton = {
         let btn = WButton()
-        btn.setImage(UIImage(named: "lt_photo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "lt_photo"), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return btn
     }()

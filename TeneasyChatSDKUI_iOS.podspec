@@ -33,7 +33,7 @@ TODO: Add long description of the pod here.
   s.source_files = 'TeneasyChatSDKUI_iOS/Classes/**/*'
   
    s.resource_bundles = {
-     'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Classes/Imgs/*.png', 'TeneasyChatSDKUI_iOS/Classes/Imgs/emoji/*.png', 'TeneasyChatSDKUI_iOS/Classes/Imgs/emoji/*.gif']
+     'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Assets/Imgs/*.png', 'TeneasyChatSDKUI_iOS/Assets/Imgs/emoji/*.png', 'TeneasyChatSDKUI_iOS/Assets/Imgs/emoji/*.gif']
    }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
