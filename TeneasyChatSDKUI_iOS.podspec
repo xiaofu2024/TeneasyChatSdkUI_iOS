@@ -32,13 +32,13 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'TeneasyChatSDKUI_iOS/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Assets/*.png']
-  # }
+   s.resource_bundles = {
+     'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Classes/Imgs/*.png', 'TeneasyChatSDKUI_iOS/Classes/Imgs/emoji/*.png', 'TeneasyChatSDKUI_iOS/Classes/Imgs/emoji/*.gif']
+   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit'#, 'MapKit'
-   #  s.dependency 'AFNetworking', '~> 2.3'
    s.dependency 'TeneasyChatSDK_iOS', '~> 0.1.0'
    s.dependency 'SnapKit', '~> 5.0.1'
+   s.dependency 'IQKeyboardManagerSwift', '~> 6.5.9'
 end

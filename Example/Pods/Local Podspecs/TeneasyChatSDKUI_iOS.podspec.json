@@ -19,6 +19,13 @@
     "ios": "10.0"
   },
   "source_files": "TeneasyChatSDKUI_iOS/Classes/**/*",
+  "resource_bundles": {
+    "TeneasyChatSDKUI_iOS": [
+      "TeneasyChatSDKUI_iOS/Classes/Imgs/*.png",
+      "TeneasyChatSDKUI_iOS/Classes/Imgs/emoji/*.png",
+      "TeneasyChatSDKUI_iOS/Classes/Imgs/emoji/*.gif"
+    ]
+  },
   "frameworks": "UIKit",
   "dependencies": {
     "TeneasyChatSDK_iOS": [
@@ -26,6 +33,9 @@
     ],
     "SnapKit": [
       "~> 5.0.1"
+    ],
+    "IQKeyboardManagerSwift": [
+      "~> 6.5.9"
     ]
   }
 }
