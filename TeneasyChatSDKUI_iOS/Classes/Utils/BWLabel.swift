@@ -2,7 +2,7 @@
 //  BWLabel.swift
 //  TeneasyChatSDKUI_iOS_Example
 //
-//  Created by darren chen on 2023/2/1.
+//  Created by XiaoFu on 2023/2/1.
 //  Copyright © 2023 CocoaPods. All rights reserved.
 //
 
