@@ -139,6 +139,10 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     func sendMsg(context: String) {
         lib.sendMessage(msg: context)
     }
+    
+    func sendImage(context: String) {
+        lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
+    }
 
     func toolBar(toolBar: BWKeFuChatToolBar, menuView: BWKeFuChatMenuView, collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, model: BEmotion) {}
 

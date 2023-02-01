@@ -38,7 +38,7 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit'#, 'MapKit'
-   s.dependency 'TeneasyChatSDK_iOS', '~> 0.1.0'
+   s.dependency 'TeneasyChatSDK_iOS', '~> 1.0.0'
    s.dependency 'SnapKit', '~> 5.0.1'
    s.dependency 'IQKeyboardManagerSwift', '~> 6.5.9'
 end
