@@ -1506,7 +1506,7 @@
 		DA3C5859250B187F5F4C21DAE05B89E5 /* emoticon_103_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_103_gif.gif; sourceTree = "<group>"; };
 		DBFB3504D0DB3DE2DD2A27735955FC82 /* emoticon_37.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_37.png; sourceTree = "<group>"; };
 		DC2D11EA283F00DF4F4B0F136613059A /* Pods-TeneasyChatSDKUI_iOS_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-TeneasyChatSDKUI_iOS_Tests"; path = Pods_TeneasyChatSDKUI_iOS_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TeneasyChatSDKUI_iOS; path = TeneasyChatSDKUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TeneasyChatSDKUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC6C3836A424944163D78B88FFA0AFBA /* emoticon_118.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_118.png; sourceTree = "<group>"; };
 		DC79D0BBE5394B49FA02F54A27A97F13 /* emoticon_34_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_34_gif.gif; sourceTree = "<group>"; };
 		DD2BA9F502F6F5CFE9504E0E49BFB3AB /* emoticon_77_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_77_gif.gif; sourceTree = "<group>"; };
@@ -1680,7 +1680,7 @@
 				58AE0544E0C381DDBD09356C357EC82B /* SwiftDate */,
 				943D347E61A2E181A4FA2CA894307B6E /* SwiftProtobuf */,
 				FAC11C3BDCA2996FAADB849DA4F8CFE4 /* TeneasyChatSDK_iOS */,
-				DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS */,
+				DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS.framework */,
 				5EDA5356F4A8913B5CC705B1C4A8B909 /* TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS */,
 			);
 			name = Products;
@@ -2672,7 +2672,7 @@
 			);
 			name = TeneasyChatSDKUI_iOS;
 			productName = TeneasyChatSDKUI_iOS;
-			productReference = DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS */;
+			productReference = DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		5B7A983A776CF52B94FF571C32C0326A /* Pods-TeneasyChatSDKUI_iOS_Example */ = {
@@ -4061,7 +4061,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4314,7 +4314,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

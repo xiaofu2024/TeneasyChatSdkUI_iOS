@@ -51,12 +51,12 @@ class BWChatCell: UITableViewCell {
         didSet {
             
             //现在SDK并没有把时间传回来，所以暂时不用这样转换
-            /*if let mTime = model?.message.msgTime{
-                let timeIn = mTime.seconds * 1000 +  Int64(mTime.nanos) / 1000000
+            if let mTime = model?.message.msgTime{
+                let timeIn = mTime.seconds// +  Int64(mTime.nanos) / 1000000
                 self.timeLab.text =  WTimeConvertUtil.convertTimeStampToDate(from: Double(timeIn))
-            }*/
+            }
             //let timestamp = Date().timeIntervalSince1970
-            self.timeLab.text =  WTimeConvertUtil.displayChatTime()
+            //self.timeLab.text =  WTimeConvertUtil.displayChatTime()
             self.titleLab.text = model?.message.content.data
         }
     }

@@ -17,14 +17,14 @@ class WWNoAuthorizeVC: UIViewController {
         btn.setTitle("前往系统设置", for: UIControl.State.normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         btn.layer.cornerRadius = 6
-        btn.addTarget(self, action: #selector(doSystem), for: UIControlEvents.touchUpInside)
+        btn.addTarget(self, action: #selector(doSystem), for: UIControl.Event.touchUpInside)
         return btn
     }()
 
     lazy var closeBtn: UIButton = {
         let btn = UIButton(frame: CGRect.zero)
         btn.setImage(UIImage(named: "zl_close", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: UIControl.State.normal)
-        btn.addTarget(self, action: #selector(doCloseBtn), for: UIControlEvents.touchUpInside)
+        btn.addTarget(self, action: #selector(doCloseBtn), for: UIControl.Event.touchUpInside)
         return btn
     }()
     
@@ -92,7 +92,7 @@ class WWNoAuthorizeVC: UIViewController {
     }
     
     @objc func doSystem() {
-        let url = URL(string: UIApplicationOpenSettingsURLString)
+        let url = URL(string: UIApplication.openSettingsURLString)
         if let url = url, UIApplication.shared.canOpenURL(url) {
             if #available(iOS 10, *) {
                 UIApplication.shared.open(url, options: [:],
@@ -106,6 +106,6 @@ class WWNoAuthorizeVC: UIViewController {
     }
 
     func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
-        return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(string: key), value) })
+        return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value) })
     }
 }

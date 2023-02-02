@@ -37,7 +37,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 10))
         view.tableHeaderView = footerView
         view.estimatedRowHeight = 50
-        view.rowHeight = UITableViewAutomaticDimension
+        view.rowHeight = UITableView.automaticDimension
         return view
     }()
 
@@ -51,8 +51,8 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
     func initView() {
@@ -227,7 +227,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
    
-        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+        guard let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage else {
             return imagePickerControllerDidCancel(picker)
         }
         chooseImg = image
@@ -246,7 +246,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
     }
 
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true) {}
     }
 
@@ -302,7 +302,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     func getStrFromImage() -> String {
         let imageOrigin = chooseImg
         if let image = imageOrigin {
-            let dataTmp = UIImageJPEGRepresentation(image, 0.1)
+            let dataTmp = image.jpegData(compressionQuality: 0.1)
             if let data = dataTmp {
                 let imageStrTT = data.base64EncodedString()
                 return imageStrTT
@@ -317,10 +317,10 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 extension ChatViewController {
     @objc func keyboardWillChangeFrame(node: Notification) {
         // 1.获取动画执行的时间
-        let duration = node.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
+        let duration = node.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
 
         // 2.获取键盘最终 Y值
-        let endFrame = (node.userInfo?[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let endFrame = (node.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let y = endFrame.origin.y
 
         // 3计算工具栏距离底部的间距
