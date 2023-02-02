@@ -662,6 +662,7 @@
 		C6D8A81172A892A6353FEA24937E2718 /* emoticon_85_gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = BCA1788CD84DA73FCCD8EDA47A714317 /* emoticon_85_gif.gif */; };
 		C78081817C9D2D9C2CCDEF7D092A491D /* emoticon_85.png in Resources */ = {isa = PBXBuildFile; fileRef = FD2A744C05A36F10651BDC99CA037AD1 /* emoticon_85.png */; };
 		C785AF364210930ED4BF27EDF4BE93CE /* emoticon_26_gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4533AC183DD1C7BA3316905860E111CF /* emoticon_26_gif.gif */; };
+		C78D031A298BC10C008254A8 /* WTimeConvertUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78D0319298BC10C008254A8 /* WTimeConvertUtil.swift */; };
 		C7E7A15FEC05B01A7E7A45B3A2C63FA2 /* emoticon_122_gif.gif in Sources */ = {isa = PBXBuildFile; fileRef = 738434701F938DA396078AB1AD37E719 /* emoticon_122_gif.gif */; };
 		C81CB3B5D25BDBCB6D3A3632BE408229 /* IQKeyboardReturnKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF87120D8C9D9A1D6A3088EBD844467F /* IQKeyboardReturnKeyHandler.swift */; };
 		C84BE6D33BBD1A11C0CDAF1452AA28FE /* c_qr_code.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D58F1D26AB5539D0AB493FE3D54638 /* c_qr_code.pb.swift */; };
@@ -1454,6 +1455,7 @@
 		C5D576A934110885F3CE971C0C45197D /* emoticon_49_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_49_gif.gif; sourceTree = "<group>"; };
 		C71856478BD64A13314B26A23F33BE0C /* ConstraintPriorityTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriorityTarget.swift; path = Source/ConstraintPriorityTarget.swift; sourceTree = "<group>"; };
 		C727813540BC3D4CEB9E36D1E0E00D0C /* emoticon_115.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_115.png; sourceTree = "<group>"; };
+		C78D0319298BC10C008254A8 /* WTimeConvertUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WTimeConvertUtil.swift; path = "../../../../../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/3597e6fa143bf33b08bc262960d9439d/Message/MessageTemp/69e3dc35d73c26d63a76ec66a62111e0/OpenData/WTimeConvertUtil.swift"; sourceTree = "<group>"; };
 		C7DE4867DB9477B239AB10B78E4711F6 /* emoticon_97.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_97.png; sourceTree = "<group>"; };
 		C84EAA91D3675497227CEDD4D23FB2C9 /* TeneasyChatSDKUI_iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = TeneasyChatSDKUI_iOS.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C88B5508938121B940D5050C9B757BD4 /* emoticon_5_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_5_gif.gif; sourceTree = "<group>"; };
@@ -2327,6 +2329,7 @@
 		B07AA149696D73E5E8FFBEF3083B95EF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				C78D0319298BC10C008254A8 /* WTimeConvertUtil.swift */,
 				10287F2284F9B55A8BBBF5C7F65FC90A /* BundleUtil.swift */,
 				4A4A41256CA262058E5B1E790BE206DD /* BWLabel.swift */,
 				CB4323FD26BE012037EA328672F50346 /* Utils.swift */,
@@ -3486,6 +3489,7 @@
 				D58AD69B370FE61879EBC47C4460E0E9 /* emoticon_21_gif.gif in Sources */,
 				3130561A40BEE8AF0CC470395BDD5CD0 /* emoticon_22.png in Sources */,
 				5BB21599A3237A31542FB45DBEF7BE6A /* emoticon_22_gif.gif in Sources */,
+				C78D031A298BC10C008254A8 /* WTimeConvertUtil.swift in Sources */,
 				868C7F7AFF06D13E43FF15FEB05C2A7A /* emoticon_23.png in Sources */,
 				727D53AB7B049CC2A050623268E08085 /* emoticon_23_gif.gif in Sources */,
 				5CCE3D58A09280893AF55EC1154A728C /* emoticon_24.png in Sources */,
