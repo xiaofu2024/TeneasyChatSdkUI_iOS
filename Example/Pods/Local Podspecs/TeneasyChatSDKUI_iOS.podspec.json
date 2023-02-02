@@ -21,14 +21,21 @@
   "source_files": "TeneasyChatSDKUI_iOS/Classes/**/*",
   "resource_bundles": {
     "TeneasyChatSDKUI_iOS": [
+<<<<<<< HEAD
       "TeneasyChatSDKUI_iOS/Assets/**/*.png",
       "TeneasyChatSDKUI_iOS/Assets/**/*.gif"
+=======
+      "TeneasyChatSDKUI_iOS/Assets/**/*",
+      "TeneasyChatSDKUI_iOS/Assets/*.png",
+      "TeneasyChatSDKUI_iOS/Assets/emoji/*.png",
+      "TeneasyChatSDKUI_iOS/Assets/emoji/*.gif"
+>>>>>>> 01704085ff08e4955d569e886d687868783d762f
     ]
   },
   "frameworks": "UIKit",
   "dependencies": {
     "TeneasyChatSDK_iOS": [
-      "~> 0.1.0"
+      "~> 1.0.0"
     ],
     "SnapKit": [
       "~> 5.0.1"

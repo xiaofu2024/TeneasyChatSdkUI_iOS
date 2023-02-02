@@ -2,7 +2,7 @@
 //  ConstConfig.swift
 //  TeneasyChatSDKUI_iOS_Example
 //
-//  Created by darren chen on 2023/1/31.
+//  Created by XiaoFu on 2023/1/31.
 //  Copyright © 2023 CocoaPods. All rights reserved.
 //
 

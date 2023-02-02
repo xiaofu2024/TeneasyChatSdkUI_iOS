@@ -2,7 +2,7 @@
 //  BundleUtil.swift
 //  TeneasyChatSDKUI_iOS
 //
-//  Created by darren chen on 2023/2/1.
+//  Created by XiaoFu on 2023/2/1.
 //
 
 import UIKit
@@ -17,7 +17,7 @@ class BundleUtil {
         let bundleURL = podBundle.url(forResource: "TeneasyChatSdkUI_iOS", withExtension: "bundle")
         
         if bundleURL == nil {
-            if podBundle.bundlePath.contains("TeneasyChatSdkUI_iOS.framework") {   // carthage
+            if podBundle.bundlePath.contains("TeneasyChatSDKUI_iOS") {   // carthage
                 return podBundle
             }
         }

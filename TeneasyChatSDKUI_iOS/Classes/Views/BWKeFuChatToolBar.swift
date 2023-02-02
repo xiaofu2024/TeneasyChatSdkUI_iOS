@@ -44,7 +44,7 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var emojiBtn: WButton = {
         let btn = WButton()
-        let image = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
+        let image = UIImage(named: "emoticon_103", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
         let selImage = UIImage(named: "lt_jianpan", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
         btn.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         btn.setImage(selImage, for: .selected)

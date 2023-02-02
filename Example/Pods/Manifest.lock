@@ -3,13 +3,13 @@ PODS:
   - SnapKit (5.0.1)
   - Starscream (4.0.4)
   - SwiftProtobuf (1.20.3)
-  - TeneasyChatSDK_iOS (0.1.0):
+  - TeneasyChatSDK_iOS (1.0.0):
     - Starscream (= 4.0.4)
     - SwiftProtobuf (~> 1.20.3)
   - TeneasyChatSDKUI_iOS (0.1.0):
     - IQKeyboardManagerSwift (~> 6.5.9)
     - SnapKit (~> 5.0.1)
-    - TeneasyChatSDK_iOS (~> 0.1.0)
+    - TeneasyChatSDK_iOS (~> 1.0.0)
 
 DEPENDENCIES:
   - IQKeyboardManagerSwift (~> 6.5.9)
@@ -32,7 +32,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TeneasyChatSDK_iOS:
-    :commit: 68ea3d28f7f6aeb0befe9b01b145477994221fc1
+    :commit: 62ea0810da94ef705672d79891188447ddd62ceb
     :git: https://github.com/tianxuefeng/TeneasyChatSDK_iOS.git
 
 SPEC CHECKSUMS:
@@ -40,8 +40,13 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
+<<<<<<< HEAD
   TeneasyChatSDK_iOS: 12e3b8a72a6acc87ef666a26c5a17de175a5f7fe
   TeneasyChatSDKUI_iOS: 39591281395a2cc75f01f146a90cf9beb9b6dae0
+=======
+  TeneasyChatSDK_iOS: e6d0cf2816099c95354ea320face0c1c1d39df30
+  TeneasyChatSDKUI_iOS: 0fffc95b1df7d9cfa76d4abf70b71d2453f4edf1
+>>>>>>> 01704085ff08e4955d569e886d687868783d762f
 
 PODFILE CHECKSUM: e6a4983f5d2b0935c60348faa3845a421204c2a2
 
