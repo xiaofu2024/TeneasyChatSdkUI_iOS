@@ -35,6 +35,8 @@ TODO: Add long description of the pod here.
    s.resource_bundles = {
      'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Assets/png/*.png', 'TeneasyChatSDKUI_iOS/Assets/emoticon/*.gif']
    }
+   
+   #s.resources = "Resources/**/*.{png,storyboard}" //for storyboard and png files
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit'#, 'MapKit'

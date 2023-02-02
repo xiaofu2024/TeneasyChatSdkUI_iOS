@@ -21,8 +21,8 @@
   "source_files": "TeneasyChatSDKUI_iOS/Classes/**/*",
   "resource_bundles": {
     "TeneasyChatSDKUI_iOS": [
-      "TeneasyChatSDKUI_iOS/Classes/Assets/*.png",
-      "TeneasyChatSDKUI_iOS/Assets/images/*.gif"
+      "TeneasyChatSDKUI_iOS/Assets/png/*.png",
+      "TeneasyChatSDKUI_iOS/Assets/emoticon/*.gif"
     ]
   },
   "frameworks": "UIKit",

@@ -44,8 +44,8 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var emojiBtn: WButton = {
         let btn = WButton()
-        let image = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
-        let selImage = UIImage(named: "lt_jianpan", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
+        let image = UIImage(named: "lt_biaoqing", in: BundleUtil.resourceBundle(for: BWKeFuChatToolBar.self), compatibleWith: nil)
+        let selImage = UIImage(named: "lt_jianpan", in: BundleUtil.resourceBundle(for: BWKeFuChatToolBar.self), compatibleWith: nil)
         btn.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         btn.setImage(selImage, for: .selected)
         return btn
@@ -53,7 +53,7 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var menuBtn: WButton = {
         let btn = WButton()
-        btn.setImage(UIImage(named: "lt_photo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "lt_photo", in: BundleUtil.resourceBundle(for: BWKeFuChatToolBar.self), compatibleWith: nil), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return btn
     }()
