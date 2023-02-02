@@ -6,11 +6,18 @@
 //  Copyright (c) 2023 XiaoFu. All rights reserved.
 //
 
+import PhotosUI
 import TeneasyChatSDK_iOS
 // import TeneasyChatSDKUI_iOS
 import UIKit
 
 open class ChatViewController: UIViewController, teneasySDKDelegate {
+    lazy var imagePickerController: UIImagePickerController = {
+        let pick = UIImagePickerController()
+        pick.delegate = self
+        return pick
+    }()
+
     /// 输入框工具栏
     lazy var toolBar: BWKeFuChatToolBar = {
         let toolBar = BWKeFuChatToolBar()
@@ -42,6 +49,8 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
     }
 
     func initView() {
@@ -121,7 +130,9 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedMenu btn: UIButton) {}
 
     /// 表情
-    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedEmoji btn: UIButton) {}
+    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedEmoji btn: UIButton) {
+    }
+  
 
     /// 录音
     func toolBar(toolBar: BWKeFuChatToolBar, sendVoice gesture: UILongPressGestureRecognizer) {}
@@ -132,19 +143,51 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
             sendMsg(context: toolBar.textView.text)
         } else {
             // 选图片
+            chooseImg()
         }
         self.toolBar.resetStatus()
+    }
+
+    func chooseImg() {
+        let alertVC = UIAlertController(title: "选择图片", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+        let alertAction1 = UIAlertAction(title: "从相册选择", style: .default, handler: { [weak self] _ in
+            self?.authorize { state in
+                if state == .restricted || state == .denied {
+                    self?.presentNoauth(isPhoto: true)
+                } else {
+                    self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .photoLibrary)
+                }
+            }
+        })
+        alertVC.addAction(alertAction1)
+        let alertAction2 = UIAlertAction(title: "拍照", style: .default, handler: { [weak self] _ in
+            self?.authorizeCamaro { state in
+                if state == .restricted || state == .denied {
+                    self?.presentNoauth(isPhoto: false)
+                } else {
+                    self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .camera)
+                }
+            }
+        })
+        alertVC.addAction(alertAction2)
+        let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { _ in
+
+        })
+        alertVC.addAction(cancelAction)
+        self.present(alertVC, animated: true, completion: nil)
     }
 
     func sendMsg(context: String) {
         lib.sendMessage(msg: context)
     }
-    
+
     func sendImage(context: String) {
         lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
     }
 
-    func toolBar(toolBar: BWKeFuChatToolBar, menuView: BWKeFuChatMenuView, collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, model: BEmotion) {}
+    func toolBar(toolBar: BWKeFuChatToolBar, menuView: BWKeFuChatMenuView, collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, model: BEmotion) {
+        print(model.displayName)
+    }
 
     func toolBar(toolBar: BWKeFuChatToolBar, didBeginEditing textView: UITextView) {}
 
@@ -163,5 +206,110 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
 
     @objc func toolBar(toolBar: BWKeFuChatToolBar, changed text: String, range: NSRange) -> Bool {
         return true
+    }
+}
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func presentNoauth(isPhoto: Bool) {
+        let vc = WWNoAuthorizeVC()
+        vc.modalPresentationStyle = .fullScreen
+        vc.isPhoto = isPhoto
+        present(vc, animated: false)
+    }
+
+    func presentImagePicker(controller: UIImagePickerController, source: UIImagePickerController.SourceType) {
+        controller.delegate = self
+        controller.sourceType = source
+        controller.allowsEditing = false
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
+    }
+
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+        if info[UIImagePickerControllerMediaType] is String {
+            return imagePickerControllerDidCancel(picker)
+        }
+
+        // 显示编辑后的图片
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return imagePickerControllerDidCancel(picker)
+        }
+
+        picker.dismiss(animated: false) {
+//            let vc = WWResizerController()
+//            vc.img = image
+//            vc.modalPresentationStyle = .fullScreen
+//            vc.doneClock = { [weak self] img in
+//                self?.chooseImg = img
+//                self?.headView.imageView.image = img
+//                self?.upload()
+//            }
+//            self.present(vc, animated: true)
+        }
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true) {}
+    }
+
+    // 用户是否开启权限
+    func authorize(authorizeClouse: @escaping (PHAuthorizationStatus) -> ()) {
+        let status = PHPhotoLibrary.authorizationStatus()
+        if status == .authorized {
+            authorizeClouse(status)
+        } else if status == .notDetermined { // 未授权，请求授权
+            PHPhotoLibrary.requestAuthorization { state in
+                DispatchQueue.main.async {
+                    authorizeClouse(state)
+                }
+            }
+        } else {
+            authorizeClouse(status)
+        }
+    }
+
+    // 用户是否开启相机权限
+    func authorizeCamaro(authorizeClouse: @escaping (AVAuthorizationStatus) -> ()) {
+        let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+
+        if status == .authorized {
+            authorizeClouse(status)
+        } else if status == .notDetermined {
+            AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { granted in
+                if granted { // 允许
+                    authorizeClouse(.authorized)
+                }
+            })
+        } else {
+            authorizeClouse(status)
+        }
+    }
+}
+
+//MARK:-----------------监听键盘高度变化
+extension ChatViewController {
+    @objc func keyboardWillChangeFrame(node : Notification){
+        
+        // 1.获取动画执行的时间
+        let duration = node.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
+        
+        // 2.获取键盘最终 Y值
+        let endFrame = (node.userInfo?[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let y = endFrame.origin.y
+        
+        //3计算工具栏距离底部的间距
+        let margin = UIScreen.main.bounds.height - y
+        
+        //4.执行动画
+        UIView.animate(withDuration: duration) {[weak self] in
+            self?.toolBar.snp.updateConstraints { make in
+                if margin == 0 {
+                    make.bottom.equalToSuperview().offset(-kDeviceBottom)
+                } else {
+                    make.bottom.equalToSuperview().offset(-margin)
+                }
+            }
+            self?.view.layoutIfNeeded()
+        }
     }
 }

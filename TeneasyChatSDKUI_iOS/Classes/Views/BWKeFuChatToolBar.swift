@@ -276,9 +276,6 @@ extension BWKeFuChatToolBar: UITextViewDelegate, UITextFieldDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        // 发送系统通知“正在输入中”
-        delegate?.toolBar(toolBar: self, didChanged: textView)
-        
         if textView.attributedText.length > 0 {
             emojiView.setDeleteButtonState(enable: true)
         } else {
@@ -286,10 +283,13 @@ extension BWKeFuChatToolBar: UITextViewDelegate, UITextFieldDelegate {
         }
         savedText = textView.attributedText
         updateMenuBtn()
+        
+        // 发送系统通知“正在输入中”
+        delegate?.toolBar(toolBar: self, didChanged: textView)
     }
     
     func updateMenuBtn() {
-        if textView.text.count > 0 {
+        if textView.text.count > 0 || textView.attributedText.length > 0 {
             menuBtn.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 89/255, alpha: 1)
             menuBtn.setTitle("发送", for: UIControlState.normal)
             menuBtn.setImage(nil, for: UIControlState.normal)
@@ -301,10 +301,11 @@ extension BWKeFuChatToolBar: UITextViewDelegate, UITextFieldDelegate {
             }
         } else {
             menuBtn.backgroundColor = UIColor.clear
-            menuBtn.setTitle("", for: UIControlState.normal)
+            menuBtn.setTitle(nil, for: UIControlState.normal)
             menuBtn.setImage(UIImage(named: "lt_photo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
             menuBtn.layer.cornerRadius = 0
             menuBtn.layer.masksToBounds = true
+            menuBtn.titleLabel?.text = ""
             menuBtn.snp.updateConstraints { make in
                 make.width.equalTo(25)
             }
@@ -338,6 +339,7 @@ extension BWKeFuChatToolBar: BWKeFuChatEmojiViewDelegate {
         let emotionAttr = faceManager.obtainAttributedStringByImageKey(imageKey: model.displayName, font: textView.font ?? UIFont.systemFont(ofSize: 14), useCache: false)
         textView.insertEmotionAttributedString(emotionAttributedString: emotionAttr)
         textView.scrollRangeToVisible(NSRange(location: textView.text.count, length: 0))
+        updateMenuBtn()
     }
     
     func emojiView(emojiView: BWKeFuChatEmojiView, didSelectDelete btn: WButton) {
@@ -352,6 +354,7 @@ extension BWKeFuChatToolBar: BWKeFuChatEmojiViewDelegate {
         } else {
             self.emojiView.setDeleteButtonState(enable: true)
         }
+        updateMenuBtn()
     }
 }
 

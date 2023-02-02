@@ -22,8 +22,10 @@ public let kMainScreen:UIScreen = {
 public let kScreenWidth = kMainScreen.bounds.size.width
 public let kScreenHeight = kMainScreen.bounds.size.height
 public let kDeviceBottom:CGFloat = kMainScreen.bounds.size.height >= 812 ? 34.0 : 0.0
+public let kDeviceTop:CGFloat = kMainScreen.bounds.size.height >= 812 ? 88.0 : 64.0
 
 public let kBgColor = UIColor.init(red: 246, green: 246, blue: 246, alpha: 1)
+public let kMainColor = UIColor.init(red: 30, green: 144, blue: 255, alpha: 1)
 
 ///HexColor 支持0xFF55c9c4格式
 public func kHexColor(_ argb: UInt32) -> UIColor {
