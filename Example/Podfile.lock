@@ -4,7 +4,7 @@ PODS:
   - Starscream (4.0.4)
   - SwiftDate (6.3.1)
   - SwiftProtobuf (1.20.3)
-  - TeneasyChatSDK_iOS (1.0.0):
+  - TeneasyChatSDK_iOS (1.0.1):
     - Starscream (= 4.0.4)
     - SwiftProtobuf (~> 1.20.3)
   - TeneasyChatSDKUI_iOS (0.1.0):
@@ -35,7 +35,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TeneasyChatSDK_iOS:
-    :commit: 62ea0810da94ef705672d79891188447ddd62ceb
+    :commit: b0cb1ef089f478bed8a68bf91f5150bb163ec8f1
     :git: https://github.com/tianxuefeng/TeneasyChatSDK_iOS.git
 
 SPEC CHECKSUMS:
@@ -44,7 +44,7 @@ SPEC CHECKSUMS:
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftDate: 72d28954e8e1c6c1c0f917ccc8005e4f83c7d4b2
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
-  TeneasyChatSDK_iOS: e6d0cf2816099c95354ea320face0c1c1d39df30
+  TeneasyChatSDK_iOS: b355074b1ff949f174f1f10702897fb0d32b5b5e
   TeneasyChatSDKUI_iOS: 3ae06ef655a13f10e98cdd79980ca9d7df14c5eb
 
 PODFILE CHECKSUM: e6a4983f5d2b0935c60348faa3845a421204c2a2

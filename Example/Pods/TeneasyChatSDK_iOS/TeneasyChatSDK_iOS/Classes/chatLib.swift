@@ -20,7 +20,7 @@ extension teneasySDKDelegate {
     }
 }*/
 
-public class ChatLib {
+public class chatLib {
     public private(set) var text = "Teneasy Chat SDK 启动"
     var baseUrl = "wss://csapi.xdev.stream/v1/gateway/h5?token="
     var websocket : WebSocket? = nil
@@ -180,7 +180,7 @@ public class ChatLib {
 }
 
 // MARK: - WebSocketDelegate
-extension ChatLib : WebSocketDelegate {
+extension chatLib : WebSocketDelegate {
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("got some text: \(text)")
@@ -237,6 +237,7 @@ extension ChatLib : WebSocketDelegate {
                        print("消息回执")
                        if sendingMsg != nil{
                            sendingMsg?.msgID = scMsg.msgID //发送成功会得到消息ID
+                           sendingMsg?.msgTime = scMsg.msgTime
                            delegate?.msgReceipt(msg: sendingMsg!)
                            print(scMsg)
                            sendingMsg = nil
@@ -266,8 +267,6 @@ extension ChatLib : WebSocketDelegate {
            isConnected = false
        }
     }
-    
-    
     /*public func toastHello(vc : UIViewController){
         let alert = UIAlertController(title: "你好", message: "Message", preferredStyle: UIAlertController.Style.actionSheet)
         alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: { _ in
