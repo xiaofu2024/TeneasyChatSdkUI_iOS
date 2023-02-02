@@ -37,7 +37,7 @@ class BEmotionHelper: NSObject {
         self.cacheEmojiDict = [:];
         for em in self.emotionArray {
             if em.image == nil {
-                em.image = UIImage(named: em.identifier);
+                em.image = UIImage(named: em.identifier, in: BundleUtil.getCurrentBundle(), compatibleWith: nil);
             }
             self.cacheEmojiDict.updateValue(em.image ?? UIImage(), forKey: em.displayName);
         }

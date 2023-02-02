@@ -41,7 +41,7 @@ class BWKeFuChatEmojiView: UIView {
         //表情按钮
         let emoImageView = UIButton(type: .custom)
         emoImageView.isUserInteractionEnabled = false
-        emoImageView.setImage(UIImage(named: "lt_biaoqing"), for: .normal)
+        emoImageView.setImage(UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
         emoImageView.backgroundColor = .white
         emoImageView.layer.cornerRadius = 5
         emoImageView.contentMode = .scaleAspectFit
@@ -50,8 +50,8 @@ class BWKeFuChatEmojiView: UIView {
         
         //删除按钮
         deleteBtn = WButton()
-        deleteBtn.setImage(UIImage(named: "xtbq_guanbi1"), for: .normal)
-        deleteBtn.setImage(UIImage(named: "xtbq_guanbi2"), for: .disabled)
+        deleteBtn.setImage(UIImage(named: "xtbq_guanbi1", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
+        deleteBtn.setImage(UIImage(named: "xtbq_guanbi2", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .disabled)
         deleteBtn.isEnabled = false
         toolView.addSubview(deleteBtn)
         deleteBtn.addTarget(self, action: #selector(deleteBtnAction(sender:)), for: UIControlEvents.touchUpInside)

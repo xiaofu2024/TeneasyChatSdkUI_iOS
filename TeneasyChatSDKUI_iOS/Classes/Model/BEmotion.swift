@@ -21,6 +21,6 @@ class BEmotion {
         self.init()
         self.identifier = identifier;
         self.displayName = displayName;
-        self.image = UIImage(named: identifier)
+        self.image = UIImage(named: identifier, in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
     }
 }

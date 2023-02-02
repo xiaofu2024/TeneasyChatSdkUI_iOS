@@ -44,7 +44,7 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var emojiBtn: WButton = {
         let btn = WButton()
-        let image = UIImage(named: "emoticon_103", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
+        let image = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
         let selImage = UIImage(named: "lt_jianpan", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
         btn.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         btn.setImage(selImage, for: .selected)
@@ -112,7 +112,7 @@ class BWKeFuChatToolBar: UIView {
             make.right.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
             make.height.equalTo(23)
-            make.width.equalTo(40)
+            make.width.equalTo(25)
         }
 
         /// 表情按钮
@@ -296,12 +296,18 @@ extension BWKeFuChatToolBar: UITextViewDelegate, UITextFieldDelegate {
             menuBtn.setTitleColor(UIColor.black, for: UIControlState.normal)
             menuBtn.layer.cornerRadius = 4
             menuBtn.layer.masksToBounds = true
+            menuBtn.snp.updateConstraints { make in
+                make.width.equalTo(40)
+            }
         } else {
             menuBtn.backgroundColor = UIColor.clear
             menuBtn.setTitle("", for: UIControlState.normal)
             menuBtn.setImage(UIImage(named: "lt_photo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
             menuBtn.layer.cornerRadius = 0
             menuBtn.layer.masksToBounds = true
+            menuBtn.snp.updateConstraints { make in
+                make.width.equalTo(25)
+            }
         }
     }
     

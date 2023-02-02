@@ -64,7 +64,7 @@ class BWKeFuChatMenuCell: UICollectionViewCell {
     }
     
     private func updateUI(collectionView:UICollectionView, indexPath:IndexPath, model:BEmotion) {
-        imgView.image = UIImage(named: model.identifier)
+        imgView.image = UIImage(named: model.identifier, in: BundleUtil.getCurrentBundle(), compatibleWith: nil)
         if imgView.image == nil{
 //            imgView.image = UIImage.svgInit(model.identifier,size: .init(width: 24, height: 21))
         }
