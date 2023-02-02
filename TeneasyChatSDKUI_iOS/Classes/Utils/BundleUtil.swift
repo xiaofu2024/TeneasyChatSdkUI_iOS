@@ -10,7 +10,7 @@ import Foundation
 
 class BundleUtil {
     
-    static func getCurrentBundle() -> Bundle{
+    /*static func getCurrentBundle() -> Bundle{
         
         let podBundle = Bundle(for: ChatViewController.self)
         
@@ -28,6 +28,22 @@ class BundleUtil {
         } else{
             return Bundle.main
         }
+    }*/
+    
+    static func getCurrentBundle() -> Bundle{
+        
+        let frameworkClass: AnyClass = ChatViewController.self
+        guard let moduleName = String(reflecting: ChatViewController.self).components(separatedBy: ".").first else {
+            fatalError("Couldn't determine module name from class \(frameworkClass)")
+        }
+
+        let frameworkBundle = Bundle(for: frameworkClass)
+        guard let resourceBundleURL = frameworkBundle.url(forResource: moduleName, withExtension: "bundle"),
+              let resourceBundle = Bundle(url: resourceBundleURL) else {
+            fatalError("\(moduleName).bundle not found in \(frameworkBundle)")
+        }
+
+        return resourceBundle
     }
     
     public static func resourceBundle(for frameworkClass: AnyClass) -> Bundle {
@@ -41,6 +57,8 @@ class BundleUtil {
                  let resourceBundle = Bundle(url: resourceBundleURL) else {
                fatalError("\(moduleName).bundle not found in \(frameworkBundle)")
            }
+        
+        print(resourceBundleURL)
 
            return resourceBundle
        }
