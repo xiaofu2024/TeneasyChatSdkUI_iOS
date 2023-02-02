@@ -464,6 +464,7 @@
 		87D4A1CA5E8430524CEA1D33E0AC5DE0 /* emoticon_4_gif.gif in Sources */ = {isa = PBXBuildFile; fileRef = 16A973213F85ECA310EF7C9F20CF35B7 /* emoticon_4_gif.gif */; };
 		8815AC42B3DAF14E8D06E7A4CD6B405D /* front.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1D73AE94B44D1761F740D684B836C /* front.pb.swift */; };
 		885731A27FCBE989B12C06F2EB89DD88 /* emoticon_45.png in Resources */ = {isa = PBXBuildFile; fileRef = 06D4F3B9213E5544E9835EF60747AB20 /* emoticon_45.png */; };
+		8858539E298BA3B700DECA24 /* NetUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8858539D298BA3B700DECA24 /* NetUtil.swift */; };
 		886B8123E0024DEA27CF89968B2B9EEE /* emoticon_71_gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3BD2DE5611F72E066A9256E7344E6CF8 /* emoticon_71_gif.gif */; };
 		88A8CD28DCB967DCED02FC4597F82386 /* emoticon_14_gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 76867E9CA1825B1F13D93589E1C06EAE /* emoticon_14_gif.gif */; };
 		88D54CB4AD84C2179FEDEC090A6A6FE1 /* emoticon_20_gif.gif in Sources */ = {isa = PBXBuildFile; fileRef = 3E0A54CC770BF7E0DCC44ABC07855627 /* emoticon_20_gif.gif */; };
@@ -1307,6 +1308,7 @@
 		87317F44CD738EC9229D325015BF175E /* emoticon_116.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_116.png; sourceTree = "<group>"; };
 		875E9397BFDFE3E33B6FDCE9E91447BF /* emoticon_62_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_62_gif.gif; sourceTree = "<group>"; };
 		87B2C21B6C3CA0F4A70B007E55AE8352 /* Calendars.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Calendars.swift; path = Sources/SwiftDate/Supports/Calendars.swift; sourceTree = "<group>"; };
+		8858539D298BA3B700DECA24 /* NetUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetUtil.swift; sourceTree = "<group>"; };
 		886C106EE1B4124F6A85B373A082F737 /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "IQNSArray+Sort.swift"; path = "IQKeyboardManagerSwift/Categories/IQNSArray+Sort.swift"; sourceTree = "<group>"; };
 		88714AED4F66A72D52C17622AE648840 /* SwiftDate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftDate.swift; path = Sources/SwiftDate/SwiftDate.swift; sourceTree = "<group>"; };
 		889CCCFEBD45DD4746B29706A932D99A /* emoticon_77.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_77.png; sourceTree = "<group>"; };
@@ -1363,7 +1365,7 @@
 		9C265E8833861DE1D5A56355883FACAC /* Starscream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Starscream.release.xcconfig; sourceTree = "<group>"; };
 		9CCA123C98DB59AD69FFA494B44E7329 /* SimpleExtensionMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SimpleExtensionMap.swift; path = Sources/SwiftProtobuf/SimpleExtensionMap.swift; sourceTree = "<group>"; };
 		9D7E563E74FD3F951D3E86258D2FD143 /* CustomJSONCodable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CustomJSONCodable.swift; path = Sources/SwiftProtobuf/CustomJSONCodable.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E6C8DEEE0571DA62C221520239DD91F /* TeneasyChatSDK_iOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TeneasyChatSDK_iOS-dummy.m"; sourceTree = "<group>"; };
 		9F675BBAB8717FEE05C4944137AAEF60 /* JSONScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONScanner.swift; path = Sources/SwiftProtobuf/JSONScanner.swift; sourceTree = "<group>"; };
 		9F78DBD309B20F91F48367B60EC205A9 /* emoticon_44.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_44.png; sourceTree = "<group>"; };
@@ -1453,7 +1455,7 @@
 		C71856478BD64A13314B26A23F33BE0C /* ConstraintPriorityTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriorityTarget.swift; path = Source/ConstraintPriorityTarget.swift; sourceTree = "<group>"; };
 		C727813540BC3D4CEB9E36D1E0E00D0C /* emoticon_115.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_115.png; sourceTree = "<group>"; };
 		C7DE4867DB9477B239AB10B78E4711F6 /* emoticon_97.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_97.png; sourceTree = "<group>"; };
-		C84EAA91D3675497227CEDD4D23FB2C9 /* TeneasyChatSDKUI_iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = TeneasyChatSDKUI_iOS.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C84EAA91D3675497227CEDD4D23FB2C9 /* TeneasyChatSDKUI_iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = TeneasyChatSDKUI_iOS.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C88B5508938121B940D5050C9B757BD4 /* emoticon_5_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_5_gif.gif; sourceTree = "<group>"; };
 		C897CFD787F88A703DA33A611E092F9D /* IQKeyboardManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IQKeyboardManager.swift; path = IQKeyboardManagerSwift/IQKeyboardManager.swift; sourceTree = "<group>"; };
 		C8BDE434D5ED030315BD4D63C2873F71 /* emoticon_34.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_34.png; sourceTree = "<group>"; };
@@ -1479,7 +1481,7 @@
 		CF178FF025230E5B1A3547113F5A8F6B /* emoticon_59_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_59_gif.gif; sourceTree = "<group>"; };
 		CFC497A33D833C4E4C688D70AC6ECE25 /* g_pubsub.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = g_pubsub.pb.swift; path = TeneasyChatSDK_iOS/Classes/swiftOut/gateway/g_pubsub.pb.swift; sourceTree = "<group>"; };
 		D03C92267F94BD03299546F6156B275C /* TeneasyChatSDK_iOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TeneasyChatSDK_iOS-umbrella.h"; sourceTree = "<group>"; };
-		D0B3603C551F309F43F1D0F98E965755 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		D0B3603C551F309F43F1D0F98E965755 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D0E7596512F5EB06CF5DC54CF7471C82 /* SwiftProtobuf-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftProtobuf-umbrella.h"; sourceTree = "<group>"; };
 		D2172584F30CE88DB81A5691E9BBBAFE /* emoticon_66_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_66_gif.gif; sourceTree = "<group>"; };
 		D22FDB84B4BCB4A2AC2F06E20C55945C /* BinaryDecodingError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BinaryDecodingError.swift; path = Sources/SwiftProtobuf/BinaryDecodingError.swift; sourceTree = "<group>"; };
@@ -1523,7 +1525,7 @@
 		E4F8FE813F2694E725DB66470E05C3BC /* emoticon_33.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_33.png; sourceTree = "<group>"; };
 		E5226AD5279E31C9722F542E04B7F70A /* emoticon_103.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_103.png; sourceTree = "<group>"; };
 		E57598C4F0FEF8B4AC8EE58C5B653B8B /* emoticon_70_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_70_gif.gif; sourceTree = "<group>"; };
-		E583E9C443CBD6750FD859A2A9EB7234 /* langs */ = {isa = PBXFileReference; includeInIndex = 1; name = langs; path = Sources/SwiftDate/Formatters/RelativeFormatter/langs; sourceTree = "<group>"; };
+		E583E9C443CBD6750FD859A2A9EB7234 /* langs */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = langs; path = Sources/SwiftDate/Formatters/RelativeFormatter/langs; sourceTree = "<group>"; };
 		E65F96BF479517CCF0F9C87935D9C1BD /* IQKeyboardManagerConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IQKeyboardManagerConstants.swift; path = IQKeyboardManagerSwift/Constants/IQKeyboardManagerConstants.swift; sourceTree = "<group>"; };
 		E6EE1C0EC9017163DB380EBC19008E48 /* TimePeriod+Support.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "TimePeriod+Support.swift"; path = "Sources/SwiftDate/TimePeriod/TimePeriod+Support.swift"; sourceTree = "<group>"; };
 		E7408A72121CC0555E5F17EC5599BE2D /* Debugging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Debugging.swift; path = Source/Debugging.swift; sourceTree = "<group>"; };
@@ -1544,7 +1546,7 @@
 		ED5570A5B8FDB2620B0DD4907BCBBF4C /* RelativeFormatter+Style.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "RelativeFormatter+Style.swift"; path = "Sources/SwiftDate/Formatters/RelativeFormatter/RelativeFormatter+Style.swift"; sourceTree = "<group>"; };
 		EE8EBA8F8D8D6D1D97D74F482D0BB2B7 /* emoticon_13.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_13.png; sourceTree = "<group>"; };
 		EE993B4CBD2DD6022EA6017A54A25995 /* AnyMessageStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnyMessageStorage.swift; path = Sources/SwiftProtobuf/AnyMessageStorage.swift; sourceTree = "<group>"; };
-		EECB908BD0BBB26973CB9F2580821CFF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		EECB908BD0BBB26973CB9F2580821CFF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		EF453861B4B87F592EE79B6A3FAED10D /* emoticon_111_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_111_gif.gif; sourceTree = "<group>"; };
 		F170363CCAB74D18E38DE9FEA2347C43 /* emoticon_43.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_43.png; sourceTree = "<group>"; };
 		F1ADCB18299B9100479FD1DBEE71DFE7 /* emoticon_41_gif.gif */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.gif; path = emoticon_41_gif.gif; sourceTree = "<group>"; };
@@ -1722,7 +1724,6 @@
 				8686E9D95E81730016C0C9CBD638FC9C /* worker_group.pb.swift */,
 				BC3803286A521357519135464F5F3D03 /* Support Files */,
 			);
-			name = TeneasyChatSDK_iOS;
 			path = TeneasyChatSDK_iOS;
 			sourceTree = "<group>";
 		};
@@ -1754,7 +1755,6 @@
 				C04227D8C21F2AE35B5DDAE38BC0D6F2 /* IQUIViewController+Additions.swift */,
 				C81D38F775E5100D053FEFC55A018733 /* Support Files */,
 			);
-			name = IQKeyboardManagerSwift;
 			path = IQKeyboardManagerSwift;
 			sourceTree = "<group>";
 		};
@@ -1783,7 +1783,6 @@
 				5DA1C88F54CAF7F66F7D5FE4CDC2B92B /* WSEngine.swift */,
 				C9EED24CBB6A04B48CE7BEC9A2875CED /* Support Files */,
 			);
-			name = Starscream;
 			path = Starscream;
 			sourceTree = "<group>";
 		};
@@ -2211,7 +2210,6 @@
 				B3F583D5851CBFD331EEB53F5E4813FE /* ZigZag.swift */,
 				8B560A727450C2A509C9A759C053DD99 /* Support Files */,
 			);
-			name = SwiftProtobuf;
 			path = SwiftProtobuf;
 			sourceTree = "<group>";
 		};
@@ -2266,7 +2264,6 @@
 				3A6801AD601BE5B4F541CFE0C6B06DD1 /* Resources */,
 				AC28443B2E85F356B8F7AC9F880304A4 /* Support Files */,
 			);
-			name = SwiftDate;
 			path = SwiftDate;
 			sourceTree = "<group>";
 		};
@@ -2333,6 +2330,7 @@
 				10287F2284F9B55A8BBBF5C7F65FC90A /* BundleUtil.swift */,
 				4A4A41256CA262058E5B1E790BE206DD /* BWLabel.swift */,
 				CB4323FD26BE012037EA328672F50346 /* Utils.swift */,
+				8858539D298BA3B700DECA24 /* NetUtil.swift */,
 			);
 			name = Utils;
 			path = TeneasyChatSDKUI_iOS/Classes/Utils;
@@ -2508,7 +2506,6 @@
 				96040DAE50EEF45F814889D13B553E47 /* UILayoutSupport+Extensions.swift */,
 				4A674F2F3A61059345749397BE9061C0 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -3508,6 +3505,7 @@
 				4FC9E1086CAF5CECA0E43309B0FF1B74 /* emoticon_30.png in Sources */,
 				CD77DD3F6278BD97A00B41B34E5DB6CF /* emoticon_30_gif.gif in Sources */,
 				77F4157176ABA8AAB977060C290E34BC /* emoticon_31.png in Sources */,
+				8858539E298BA3B700DECA24 /* NetUtil.swift in Sources */,
 				701F9478429D8C454A3A277DD3119886 /* emoticon_31_gif.gif in Sources */,
 				2BDB7326535816E7A4F766A1D32ADE94 /* emoticon_32.png in Sources */,
 				6FE6EA6EBB4EF97942A5184D9C42ACC3 /* emoticon_32_gif.gif in Sources */,
@@ -4218,8 +4216,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

@@ -2,7 +2,7 @@
 //  WWNoAuthorizeVC.swift
 //  WangWang
 //
-//  Created by darren chen on 2023/1/1.
+//  Created by XiaoFu on 2023/1/1.
 //
 
 import Foundation

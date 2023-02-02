@@ -2,7 +2,7 @@
 //  BWKeFuChatMenuCellCollectionViewCell.swift
 //  ProgramIOS
 //
-//  Created by 韩寒 on 2021/8/20.
+//  Created by XiaoFu on 2021/8/20.
 //
 
 import UIKit

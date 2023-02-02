@@ -2,7 +2,7 @@
 //  BWKeFuChatMenuView.swift
 //  ProgramIOS
 //
-//  Created by 韩寒 on 2021/8/19.
+//  Created by XiaoFu on 2021/8/19.
 //  其他功能视图
 
 import UIKit

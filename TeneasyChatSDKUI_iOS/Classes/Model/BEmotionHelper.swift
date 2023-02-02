@@ -2,7 +2,7 @@
 //  BEmotionHelper.swift
 //  SkinIOS
 //
-//  Created by laoge on 24/8/2022.
+//  Created by XiaoFu on 24/8/2022.
 //
 
 import UIKit
