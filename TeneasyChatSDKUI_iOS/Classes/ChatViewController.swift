@@ -43,7 +43,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     var datasouceArray: [ChatModel] = []
 
-    var lib = chatLib()
+    var lib = ChatLib()
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +75,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     func initSDK() {
         // 从网页端把chatId和token传进sdk,
-        lib = chatLib(chatId: 2692944494602,
+        lib = ChatLib(chatId: 2692944494602,
                       token: "CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ")
         lib.callWebsocket()
         lib.delegate = self

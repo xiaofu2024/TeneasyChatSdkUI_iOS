@@ -20,7 +20,7 @@ extension teneasySDKDelegate {
     }
 }*/
 
-public class chatLib {
+public class ChatLib {
     public private(set) var text = "Teneasy Chat SDK 启动"
     var baseUrl = "wss://csapi.xdev.stream/v1/gateway/h5?token="
     var websocket : WebSocket? = nil
@@ -180,7 +180,7 @@ public class chatLib {
 }
 
 // MARK: - WebSocketDelegate
-extension chatLib : WebSocketDelegate {
+extension ChatLib : WebSocketDelegate {
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("got some text: \(text)")
