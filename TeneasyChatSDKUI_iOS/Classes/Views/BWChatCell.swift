@@ -44,32 +44,17 @@ class BWChatCell: UITableViewCell {
         
         self.addSubview(self.timeLab)
         self.addSubview(self.titleLab)
-        
     }
     
     var model: ChatModel? {
         didSet {
-            
             //现在SDK并没有把时间传回来，所以暂时不用这样转换
             if let mTime = model?.message.msgTime{
-                let timeIn = mTime.seconds// +  Int64(mTime.nanos) / 1000000
-                self.timeLab.text =  WTimeConvertUtil.convertTimeStampToDate(from: Double(timeIn))
+                self.timeLab.text =  WTimeConvertUtil.displayLocalTime(from: mTime.date)
             }
-            //let timestamp = Date().timeIntervalSince1970
-            //self.timeLab.text =  WTimeConvertUtil.displayChatTime()
             self.titleLab.text = model?.message.content.data
         }
     }
-    func timeIntervalChangeToTimeStr(timeInterval:Double, _ dateFormat:String? = "yyyy-MM-dd HH:mm:ss") -> String {
-            let date:Date = Date.init(timeIntervalSince1970: timeInterval)
-            let formatter = DateFormatter.init()
-            if dateFormat == nil {
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            }else{
-                formatter.dateFormat = dateFormat
-            }
-            return formatter.string(from: date as Date)
-        }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -77,7 +62,7 @@ class BWChatCell: UITableViewCell {
 }
 
 class BWChatLeftCell: BWChatCell {
-    override required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.titleLab.backgroundColor = .white
 
@@ -99,7 +84,7 @@ class BWChatLeftCell: BWChatCell {
 }
 
 class BWChatRightCell: BWChatCell {
-    override required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.titleLab.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 89/255, alpha: 1)

@@ -54,7 +54,7 @@ class BWKeFuChatEmojiView: UIView {
         deleteBtn.setImage(UIImage(named: "xtbq_guanbi2", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .disabled)
         deleteBtn.isEnabled = false
         toolView.addSubview(deleteBtn)
-        deleteBtn.addTarget(self, action: #selector(deleteBtnAction(sender:)), for: UIControlEvents.touchUpInside)
+        deleteBtn.addTarget(self, action: #selector(deleteBtnAction(sender:)), for: UIControl.Event.touchUpInside)
         
         toolView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()

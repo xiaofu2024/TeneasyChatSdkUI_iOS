@@ -149,8 +149,8 @@ class BWKeFuChatToolBar: UIView {
         textView.addObserver(self, forKeyPath: "attributedText", options: .new, context: nil)
         textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         
-        menuBtn.addTarget(self, action: #selector(menuBtnAction(sender:)), for: UIControlEvents.touchUpInside)
-        emojiBtn.addTarget(self, action: #selector(emojiBtnAction(sender:)), for: UIControlEvents.touchUpInside)
+        menuBtn.addTarget(self, action: #selector(menuBtnAction(sender:)), for: UIControl.Event.touchUpInside)
+        emojiBtn.addTarget(self, action: #selector(emojiBtnAction(sender:)), for: UIControl.Event.touchUpInside)
                 
         /// 主动调一下懒加载，提前创建好两个视图
         placeTextField.inputView = menuView
@@ -291,9 +291,9 @@ extension BWKeFuChatToolBar: UITextViewDelegate, UITextFieldDelegate {
     func updateMenuBtn() {
         if textView.text.count > 0 || textView.attributedText.length > 0 {
             menuBtn.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 89/255, alpha: 1)
-            menuBtn.setTitle("发送", for: UIControlState.normal)
-            menuBtn.setImage(nil, for: UIControlState.normal)
-            menuBtn.setTitleColor(UIColor.black, for: UIControlState.normal)
+            menuBtn.setTitle("发送", for: UIControl.State.normal)
+            menuBtn.setImage(nil, for: UIControl.State.normal)
+            menuBtn.setTitleColor(UIColor.black, for: UIControl.State.normal)
             menuBtn.layer.cornerRadius = 4
             menuBtn.layer.masksToBounds = true
             menuBtn.snp.updateConstraints { make in
@@ -301,7 +301,7 @@ extension BWKeFuChatToolBar: UITextViewDelegate, UITextFieldDelegate {
             }
         } else {
             menuBtn.backgroundColor = UIColor.clear
-            menuBtn.setTitle(nil, for: UIControlState.normal)
+            menuBtn.setTitle(nil, for: UIControl.State.normal)
             menuBtn.setImage(UIImage(named: "lt_photo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
             menuBtn.layer.cornerRadius = 0
             menuBtn.layer.masksToBounds = true
