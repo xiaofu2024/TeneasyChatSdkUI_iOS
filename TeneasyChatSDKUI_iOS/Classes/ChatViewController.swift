@@ -18,6 +18,8 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         return pick
     }()
 
+    var chooseImg: UIImage?
+
     /// 输入框工具栏
     lazy var toolBar: BWKeFuChatToolBar = {
         let toolBar = BWKeFuChatToolBar()
@@ -49,7 +51,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
     }
 
@@ -130,9 +132,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedMenu btn: UIButton) {}
 
     /// 表情
-    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedEmoji btn: UIButton) {
-    }
-  
+    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedEmoji btn: UIButton) {}
 
     /// 录音
     func toolBar(toolBar: BWKeFuChatToolBar, sendVoice gesture: UILongPressGestureRecognizer) {}
@@ -143,12 +143,12 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
             sendMsg(context: toolBar.textView.text)
         } else {
             // 选图片
-            chooseImg()
+            chooseImgFunc()
         }
         self.toolBar.resetStatus()
     }
 
-    func chooseImg() {
+    func chooseImgFunc() {
         let alertVC = UIAlertController(title: "选择图片", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         let alertAction1 = UIAlertAction(title: "从相册选择", style: .default, handler: { [weak self] _ in
             self?.authorize { state in
@@ -174,7 +174,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
 
         })
         alertVC.addAction(cancelAction)
-        self.present(alertVC, animated: true, completion: nil)
+        present(alertVC, animated: true, completion: nil)
     }
 
     func sendMsg(context: String) {
@@ -226,14 +226,12 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
-        if info[UIImagePickerControllerMediaType] is String {
-            return imagePickerControllerDidCancel(picker)
-        }
-
-        // 显示编辑后的图片
+   
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return imagePickerControllerDidCancel(picker)
         }
+        chooseImg = image
+        self.upload()
 
         picker.dismiss(animated: false) {
 //            let vc = WWResizerController()
@@ -284,24 +282,52 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             authorizeClouse(status)
         }
     }
+
+    func upload() {
+        print(getStrFromImage())
+//        NetRequest.standard.enqueuePOSTRequest(urlStr: "https://csapi.xdev.stream/v1/assets/upload", params: <#T##[String : Any]?#>)
+//        WWProgressHUD.showLoading()
+//        var req = ApiAssetUploadAvatarRequest(data: getStrFromImage())
+//        ApiAssetAsset.UploadAvatar(req: &req) { [weak self] code, rep in
+//            WWProgressHUD.dismiss()
+//            if WApiControUtil.controll(code, rep) {
+//                let assetId = rep?.data?.assetId
+//                guard let id = assetId else { return }
+        ////                let assetUrl = IFinal.assetUrl + String(id)
+//                self?.settingAvator(id: id)
+//            }
+//        }
+    }
+
+    func getStrFromImage() -> String {
+        let imageOrigin = chooseImg
+        if let image = imageOrigin {
+            let dataTmp = UIImageJPEGRepresentation(image, 0.1)
+            if let data = dataTmp {
+                let imageStrTT = data.base64EncodedString()
+                return imageStrTT
+            }
+        }
+        return ""
+    }
 }
 
-//MARK:-----------------监听键盘高度变化
+// MARK: - ----------------监听键盘高度变化
+
 extension ChatViewController {
-    @objc func keyboardWillChangeFrame(node : Notification){
-        
+    @objc func keyboardWillChangeFrame(node: Notification) {
         // 1.获取动画执行的时间
         let duration = node.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
-        
+
         // 2.获取键盘最终 Y值
         let endFrame = (node.userInfo?[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let y = endFrame.origin.y
-        
-        //3计算工具栏距离底部的间距
+
+        // 3计算工具栏距离底部的间距
         let margin = UIScreen.main.bounds.height - y
-        
-        //4.执行动画
-        UIView.animate(withDuration: duration) {[weak self] in
+
+        // 4.执行动画
+        UIView.animate(withDuration: duration) { [weak self] in
             self?.toolBar.snp.updateConstraints { make in
                 if margin == 0 {
                     make.bottom.equalToSuperview().offset(-kDeviceBottom)
