@@ -21,6 +21,7 @@
   "source_files": "TeneasyChatSDKUI_iOS/Classes/**/*",
   "resource_bundles": {
     "TeneasyChatSDKUI_iOS": [
+      "TeneasyChatSDKUI_iOS/Assets/**/*",
       "TeneasyChatSDKUI_iOS/Assets/png/*.png",
       "TeneasyChatSDKUI_iOS/Assets/emoticon/*.gif"
     ]
