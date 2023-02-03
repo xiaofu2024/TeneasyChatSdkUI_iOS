@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.4.4)
   - IQKeyboardManagerSwift (6.5.11)
   - Kingfisher (6.3.1)
   - SnapKit (5.0.1)
@@ -9,6 +10,7 @@ PODS:
     - Starscream (= 4.0.4)
     - SwiftProtobuf (~> 1.20.3)
   - TeneasyChatSDKUI_iOS (0.1.0):
+    - Alamofire (~> 5.4.4)
     - IQKeyboardManagerSwift (~> 6.5.9)
     - Kingfisher (~> 6.3.1)
     - SnapKit (~> 5.0.1)
@@ -23,6 +25,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - IQKeyboardManagerSwift
     - Kingfisher
     - SnapKit
@@ -42,6 +45,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/tianxuefeng/TeneasyChatSDK_iOS.git
 
 SPEC CHECKSUMS:
+  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
   Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
@@ -49,7 +53,7 @@ SPEC CHECKSUMS:
   SwiftDate: 72d28954e8e1c6c1c0f917ccc8005e4f83c7d4b2
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TeneasyChatSDK_iOS: b355074b1ff949f174f1f10702897fb0d32b5b5e
-  TeneasyChatSDKUI_iOS: c65d7e0f6a80cce4af1eb7e14e13266a1f8739ad
+  TeneasyChatSDKUI_iOS: cdc211876455db9032506707345a1733a94f03fe
 
 PODFILE CHECKSUM: e6a4983f5d2b0935c60348faa3845a421204c2a2
 

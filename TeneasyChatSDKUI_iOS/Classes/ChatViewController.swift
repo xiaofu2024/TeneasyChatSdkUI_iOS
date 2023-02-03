@@ -51,7 +51,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
@@ -226,25 +226,14 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         present(controller, animated: true)
     }
 
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-   
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
             return imagePickerControllerDidCancel(picker)
         }
         chooseImg = image
-        self.upload()
+        upload()
 
-        picker.dismiss(animated: false) {
-//            let vc = WWResizerController()
-//            vc.img = image
-//            vc.modalPresentationStyle = .fullScreen
-//            vc.doneClock = { [weak self] img in
-//                self?.chooseImg = img
-//                self?.headView.imageView.image = img
-//                self?.upload()
-//            }
-//            self.present(vc, animated: true)
-        }
+        picker.dismiss(animated: false) {}
     }
 
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -285,8 +274,11 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 
     func upload() {
-        print(getStrFromImage())
-//        NetRequest.standard.enqueuePOSTRequest(urlStr: "https://csapi.xdev.stream/v1/assets/upload", params: <#T##[String : Any]?#>)
+        guard let imagetask = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
+
+        NetRequest.standard.uploadDocument(file: imagetask, filename: "lt_biaoqing.png") { _ in
+        }
+//        NetRequest.standard.uploadingImage(imageData: chooseImg!.jpegData(compressionQuality: 0.1) ?? Data())
 //        WWProgressHUD.showLoading()
 //        var req = ApiAssetUploadAvatarRequest(data: getStrFromImage())
 //        ApiAssetAsset.UploadAvatar(req: &req) { [weak self] code, rep in

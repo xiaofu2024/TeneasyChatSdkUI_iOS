@@ -49,4 +49,5 @@ TODO: Add long description of the pod here.
    s.dependency 'IQKeyboardManagerSwift', '~> 6.5.9'
    s.dependency 'SwiftDate', '~> 6.3.1'
    s.dependency 'Kingfisher', '~> 6.3.1'
+   s.dependency 'Alamofire', '~> 5.4.4'
 end
