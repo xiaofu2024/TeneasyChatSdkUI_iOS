@@ -65,7 +65,12 @@ class BWChatCell: UITableViewCell {
             if let mTime = model?.message.msgTime {
                 self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
             }
-            self.titleLab.text = model?.message.content.data
+            if (model?.message.content.data.contains("[emoticon_") == true) {
+                let atttext = BEmotionHelper.shared.attributedStringByText(text: model?.message.content.data ?? "", font: self.titleLab.font)
+                self.titleLab.attributedText = atttext
+            } else {
+                self.titleLab.text = model?.message.content.data
+            }
             if model?.message.image.uri.isEmpty == false {
                 let imgUrl = URL(string: model?.message.image.uri ?? "")
                 if imgUrl != nil {
@@ -73,16 +78,19 @@ class BWChatCell: UITableViewCell {
                     self.imgView.snp.updateConstraints { make in
                         make.height.equalTo(160)
                     }
+                    self.titleLab.isHidden = true
                 } else {
                     self.imgView.snp.updateConstraints { make in
                         make.height.equalTo(0)
                     }
+                    self.titleLab.isHidden = false
                 }
                 
             } else {
                 self.imgView.snp.updateConstraints { make in
                     make.height.equalTo(0)
                 }
+                self.titleLab.isHidden = false
             }
         }
     }

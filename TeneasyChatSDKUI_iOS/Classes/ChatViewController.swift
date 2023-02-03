@@ -51,7 +51,6 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
-
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
@@ -141,7 +140,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     /// 点击发送或者图片
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
         if btn.titleLabel?.text == "发送" {
-            sendMsg(context: toolBar.textView.text)
+            sendMsg(context: toolBar.textView.normalText())
         } else {
             // 选图片
             chooseImgFunc()
@@ -199,6 +198,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     /// 发送文字
     func toolBar(toolBar: BWKeFuChatToolBar, sendText context: String) {
         sendMsg(context: context)
+        self.toolBar.resetStatus()
     }
 
     @objc func toolBar(toolBar: BWKeFuChatToolBar, delete text: String, range: NSRange) -> Bool {
