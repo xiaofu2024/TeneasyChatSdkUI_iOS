@@ -227,6 +227,9 @@ extension ChatLib : WebSocketDelegate {
                        self.payloadId = msg.id
                        self.chatId = msg.id
                        self.token = msg.token
+                       
+                       let autoMsg = composeMessage(textMsg: "你好，我是客服小福")
+                       delegate?.receivedMsg(msg: autoMsg)
                        print(msg)
                    }
                }else if payLoad?.act == .forward{
@@ -266,6 +269,23 @@ extension ChatLib : WebSocketDelegate {
          print("cancelled")
            isConnected = false
        }
+    }
+    
+    private func composeMessage(textMsg: String) -> CommonMessage{
+        //第一层
+        var content = CommonMessageContent()
+        content.data = textMsg
+        
+        //第二层, 消息主题
+        var msg = CommonMessage()
+        msg.content = content
+        msg.sender = 0
+        msg.chatID = self.chatId!
+        msg.payload = .content(content)
+        msg.worker = 5
+        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        
+        return msg
     }
     /*public func toastHello(vc : UIViewController){
         let alert = UIAlertController(title: "你好", message: "Message", preferredStyle: UIAlertController.Style.actionSheet)

@@ -41,7 +41,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TeneasyChatSDK_iOS:
-    :commit: 8e8a1b855e9fd8c3fe5b61b9a4e9cb0295194513
+    :commit: 13e534e77831d0019f29763325bc70e79c0936f2
     :git: https://github.com/tianxuefeng/TeneasyChatSDK_iOS.git
 
 SPEC CHECKSUMS:

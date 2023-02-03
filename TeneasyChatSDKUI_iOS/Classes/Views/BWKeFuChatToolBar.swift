@@ -111,7 +111,7 @@ class BWKeFuChatToolBar: UIView {
         menuBtn.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
-            make.height.equalTo(23)
+            make.height.equalTo(28)
             make.width.equalTo(25)
         }
 

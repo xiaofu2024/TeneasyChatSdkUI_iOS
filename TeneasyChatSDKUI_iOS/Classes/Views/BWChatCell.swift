@@ -17,6 +17,11 @@ class BWChatCell: UITableViewCell {
         lab.lineBreakMode = .byTruncatingTail
         return lab
     }()
+    
+    lazy var imgView: UIImageView = {
+        let v = UIImageView()
+        return v
+    }()
 
     lazy var titleLab: BWLabel = {
         let lab = BWLabel()
@@ -28,7 +33,7 @@ class BWChatCell: UITableViewCell {
         return lab
     }()
 
-    lazy var imgView: UIImageView = {
+    lazy var failedDotView: UIImageView = {
         let v = UIImageView()
         return v
     }()

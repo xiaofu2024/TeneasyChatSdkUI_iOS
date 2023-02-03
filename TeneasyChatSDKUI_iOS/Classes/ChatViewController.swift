@@ -10,6 +10,8 @@ import PhotosUI
 import TeneasyChatSDK_iOS
 // import TeneasyChatSDKUI_iOS
 import UIKit
+import Alamofire
+import Network
 
 open class ChatViewController: UIViewController, teneasySDKDelegate {
     lazy var imagePickerController: UIImagePickerController = {
@@ -140,7 +142,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     /// 点击发送或者图片
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
         if btn.titleLabel?.text == "发送" {
-            sendMsg(context: toolBar.textView.normalText())
+            sendMsg(textMsg: toolBar.textView.normalText())
         } else {
             // 选图片
             chooseImgFunc()
@@ -177,11 +179,11 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
         present(alertVC, animated: true, completion: nil)
     }
 
-    func sendMsg(context: String) {
-        lib.sendMessage(msg: context)
+    func sendMsg(textMsg: String) {
+        lib.sendMessage(msg: textMsg)
     }
 
-    func sendImage(context: String) {
+    func sendImage(url: String) {
         lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
     }
 
@@ -197,7 +199,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
 
     /// 发送文字
     func toolBar(toolBar: BWKeFuChatToolBar, sendText context: String) {
-        sendMsg(context: context)
+        sendMsg(textMsg: context)
         self.toolBar.resetStatus()
     }
 
@@ -232,7 +234,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
         chooseImg = image
         upload()
-
+        self.sendImage(url: "")
         picker.dismiss(animated: false) {}
     }
 
@@ -272,24 +274,102 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             authorizeClouse(status)
         }
     }
+    
+    func upload3(){
+        
+        guard let imageData = chooseImg?.jpegData(compressionQuality: 0.5) else{ return }
+        
+
+            var url = URL(string: "https://csapi.xdev.stream/v1/assets/upload")!
+        var request = URLRequest(url: url )
+        request.httpMethod = "POST"
+        request.httpBody = imageData
+        request.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
+
+        var response: URLResponse?
+        var error: NSError?
+        let urlData = try? NSURLConnection.sendSynchronousRequest(request, returning: &response)
+
+        let results = NSString(data: urlData!, encoding: String.Encoding.utf8.rawValue)
+            print("API Response: \(results)")
+    }
 
     func upload() {
-        guard let imagetask = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
+//        guard let imgData = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
+        
+        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else{ return }
+        
 
-        NetRequest.standard.uploadDocument(file: imagetask, filename: "lt_biaoqing.png") { _ in
-        }
-//        NetRequest.standard.uploadingImage(imageData: chooseImg!.jpegData(compressionQuality: 0.1) ?? Data())
-//        WWProgressHUD.showLoading()
-//        var req = ApiAssetUploadAvatarRequest(data: getStrFromImage())
-//        ApiAssetAsset.UploadAvatar(req: &req) { [weak self] code, rep in
-//            WWProgressHUD.dismiss()
-//            if WApiControUtil.controll(code, rep) {
-//                let assetId = rep?.data?.assetId
-//                guard let id = assetId else { return }
-        ////                let assetUrl = IFinal.assetUrl + String(id)
-//                self?.settingAvator(id: id)
-//            }
-//        }
+
+        //Set Your URL
+           let api_url = "https://csapi.xdev.stream/v1/assets/upload"
+           guard let url = URL(string: api_url) else {
+               return
+           }
+
+           var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+           urlRequest.httpMethod = "POST"
+           //urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let contentType = "multipart/form-data; " + boundary
+            
+
+        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
+        urlRequest.httpBody = imgData
+
+        
+        urlRequest.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
+
+           //Set Your Parameter
+           let parameterDict = NSMutableDictionary()
+           parameterDict.setValue(1, forKey: "type")
+       // parameterDict.setValue("phot.png", forKey: "myFile")
+
+          // Now Execute
+           AF.upload(multipartFormData: { multiPart in
+              for (key, value) in parameterDict {
+                   if let temp = value as? String {
+                       multiPart.append(temp.data(using: .utf8)!, withName: key as! String)
+                   }
+                   if let temp = value as? Int {
+                       multiPart.append("\(temp)".data(using: .utf8)!, withName: key as! String)
+                   }
+               }
+               multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
+           }, with: urlRequest)
+               .uploadProgress(queue: .main, closure: { progress in
+                   //Current upload progress of file
+                   print("Upload Progress: \(progress.fractionCompleted)")
+               })
+               .responseJSON(completionHandler: { data in
+
+                          switch data.result {
+
+                          case .success(_):
+                           do {
+                           
+                           let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
+                             
+                               print("Success!")
+                               print(dictionary)
+                          }
+                          catch {
+                             // catch error.
+                           print("catch error")
+
+                                 }
+                           break
+                               
+                          case .failure(let error):
+                              print("failure" + error.localizedDescription)
+
+                           break
+                           
+                       }
+
+
+               })
     }
 
     func getStrFromImage() -> String {
