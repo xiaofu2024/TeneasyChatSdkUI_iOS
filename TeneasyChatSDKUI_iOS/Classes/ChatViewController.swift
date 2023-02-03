@@ -83,6 +83,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
+        print(msg.image)
         appendDataSource(msg: msg, isLeft: true)
     }
 
@@ -225,9 +226,9 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         present(controller, animated: true)
     }
 
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
    
-        guard let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage else {
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
             return imagePickerControllerDidCancel(picker)
         }
         chooseImg = image

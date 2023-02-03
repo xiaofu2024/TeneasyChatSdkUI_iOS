@@ -1,5 +1,6 @@
 PODS:
   - IQKeyboardManagerSwift (6.5.11)
+  - Kingfisher (6.3.1)
   - SnapKit (5.0.1)
   - Starscream (4.0.4)
   - SwiftDate (6.3.1)
@@ -9,6 +10,7 @@ PODS:
     - SwiftProtobuf (~> 1.20.3)
   - TeneasyChatSDKUI_iOS (0.1.0):
     - IQKeyboardManagerSwift (~> 6.5.9)
+    - Kingfisher (~> 6.3.1)
     - SnapKit (~> 5.0.1)
     - SwiftDate (~> 6.3.1)
     - TeneasyChatSDK_iOS (~> 1.0.0)
@@ -22,6 +24,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - IQKeyboardManagerSwift
+    - Kingfisher
     - SnapKit
     - Starscream
     - SwiftDate
@@ -40,12 +43,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   IQKeyboardManagerSwift: c7955c0bdbf7b2eb29bb7daaa44e3d90f55a9a85
+  Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftDate: 72d28954e8e1c6c1c0f917ccc8005e4f83c7d4b2
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TeneasyChatSDK_iOS: b355074b1ff949f174f1f10702897fb0d32b5b5e
-  TeneasyChatSDKUI_iOS: 91b28d6122707cfd417480f7a4c274571265a67d
+  TeneasyChatSDKUI_iOS: c65d7e0f6a80cce4af1eb7e14e13266a1f8739ad
 
 PODFILE CHECKSUM: e6a4983f5d2b0935c60348faa3845a421204c2a2
 

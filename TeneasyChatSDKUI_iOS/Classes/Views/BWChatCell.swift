@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class BWChatCell: UITableViewCell {
     lazy var timeLab: UILabel = {
@@ -22,9 +23,14 @@ class BWChatCell: UITableViewCell {
         lab.font = UIFont.systemFont(ofSize: 15)
         lab.textColor = .black
         lab.numberOfLines = 1000
-        lab.textInsets = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
+        lab.textInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         lab.preferredMaxLayoutWidth = kScreenWidth - 100
         return lab
+    }()
+
+    lazy var imgView: UIImageView = {
+        let v = UIImageView()
+        return v
     }()
     
     static func cell(tableView: UITableView) -> Self {
@@ -44,15 +50,40 @@ class BWChatCell: UITableViewCell {
         
         self.addSubview(self.timeLab)
         self.addSubview(self.titleLab)
+        self.addSubview(self.imgView)
+        self.imgView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-100)
+            make.top.equalTo(self.timeLab.snp.bottom)
+            make.height.equalTo(160)
+        }
     }
     
     var model: ChatModel? {
         didSet {
-            //现在SDK并没有把时间传回来，所以暂时不用这样转换
-            if let mTime = model?.message.msgTime{
-                self.timeLab.text =  WTimeConvertUtil.displayLocalTime(from: mTime.date)
+            // 现在SDK并没有把时间传回来，所以暂时不用这样转换
+            if let mTime = model?.message.msgTime {
+                self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
             }
             self.titleLab.text = model?.message.content.data
+            if model?.message.image.uri.isEmpty == false {
+                let imgUrl = URL(string: model?.message.image.uri ?? "")
+                if imgUrl != nil {
+                    imgView.kf.setImage(with: imgUrl!)
+                    self.imgView.snp.updateConstraints { make in
+                        make.height.equalTo(160)
+                    }
+                } else {
+                    self.imgView.snp.updateConstraints { make in
+                        make.height.equalTo(0)
+                    }
+                }
+                
+            } else {
+                self.imgView.snp.updateConstraints { make in
+                    make.height.equalTo(0)
+                }
+            }
         }
     }
     
@@ -72,7 +103,7 @@ class BWChatLeftCell: BWChatCell {
             make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
-            make.top.equalTo(self.timeLab.snp.bottom)
+            make.top.equalTo(self.imgView.snp.bottom)
             make.left.equalToSuperview().offset(12)
             make.bottom.equalToSuperview()
         }
@@ -95,7 +126,7 @@ class BWChatRightCell: BWChatCell {
             make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
-            make.top.equalTo(self.timeLab.snp.bottom)
+            make.top.equalTo(self.imgView.snp.bottom)
             make.right.equalToSuperview().offset(-12)
             make.bottom.equalToSuperview()
         }
