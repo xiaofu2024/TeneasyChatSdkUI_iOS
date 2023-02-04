@@ -88,15 +88,17 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         appendDataSource(msg: msg, isLeft: true)
     }
 
-    public func msgReceipt(msg: CommonMessage) {
+    public func msgReceipt(msg: CommonMessage, payloadId: UInt64) {
         print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
-        appendDataSource(msg: msg, isLeft: false)
+        //appendDataSource(msg: msg, isLeft: false)
+        //通过payloadId从DataSource里面找对应记录，并更新状态和时间
     }
 
-    func appendDataSource(msg: CommonMessage, isLeft: Bool) {
+    func appendDataSource(msg: CommonMessage, isLeft: Bool, payLoadId: UInt64 = 0) {
         let model = ChatModel()
         model.isLeft = isLeft
         model.message = msg
+        model.payLoadId = payLoadId
         datasouceArray.append(model)
         tableView.reloadData()
     }
@@ -143,6 +145,9 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
         if btn.titleLabel?.text == "发送" {
             sendMsg(textMsg: toolBar.textView.normalText())
+            if let cMsg = lib.sendingMsg{
+                appendDataSource(msg: cMsg, isLeft: false)
+            }
         } else {
             // 选图片
             chooseImgFunc()
