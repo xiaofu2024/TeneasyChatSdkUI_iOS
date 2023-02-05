@@ -146,6 +146,8 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
         if btn.titleLabel?.text == "发送" {
             sendMsg(textMsg: toolBar.textView.normalText())
             if let cMsg = lib.sendingMsg{
+                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
+                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
                 appendDataSource(msg: cMsg, isLeft: false)
             }
         } else {
