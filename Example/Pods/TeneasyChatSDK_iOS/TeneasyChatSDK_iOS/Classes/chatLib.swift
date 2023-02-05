@@ -90,7 +90,7 @@ public class ChatLib {
         msg.chatID = self.chatId!
         msg.payload = .content(content)
         msg.worker = 5
-        msg.msgTime.seconds = Int64(Date().timeIntervalSinceNow)
+        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
 
          
         //第三层
@@ -128,7 +128,7 @@ public class ChatLib {
         msg.chatID = self.chatId!
         msg.payload = .image(content)
         msg.worker = 5
-        msg.msgTime.seconds = Int64(Date().timeIntervalSinceNow)
+        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
 
          
         //第三层
