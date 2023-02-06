@@ -29,7 +29,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     lazy var headerImg: UIImageView = {
         let img = UIImageView(frame: CGRect.zero)
         img.layer.cornerRadius = 25
-        img.image = UIImage.svgInit("tb_jinrizixun")
+        img.image = UIImage.svgInit("com_moren")
         return img
     }()
 

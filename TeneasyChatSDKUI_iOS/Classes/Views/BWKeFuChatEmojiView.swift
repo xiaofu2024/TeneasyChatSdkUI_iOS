@@ -41,7 +41,7 @@ class BWKeFuChatEmojiView: UIView {
         //表情按钮
         let emoImageView = UIButton(type: .custom)
         emoImageView.isUserInteractionEnabled = false
-        let image = UIImage.svgInit("lt_biaoqing")
+        let image = UIImage.svgInit("h5_biaoqing")
         emoImageView.setImage(image, for: .normal)
         emoImageView.backgroundColor = .white
         emoImageView.layer.cornerRadius = 5
@@ -51,8 +51,8 @@ class BWKeFuChatEmojiView: UIView {
         
         //删除按钮
         deleteBtn = WButton()
-        let image1 = UIImage.svgInit("xtbq_guanbi1")
-        let image2 = UIImage.svgInit("xtbq_guanbi2")
+        let image1 = UIImage.svgInit("h5_qingchu")
+        let image2 = UIImage.svgInit("h5_qingchu")
         deleteBtn.setImage(image1, for: .normal)
         deleteBtn.setImage(image2, for: .disabled)
         deleteBtn.isEnabled = false

@@ -44,8 +44,8 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var emojiBtn: WButton = {
         let btn = WButton()
-        let image = UIImage.svgInit("lt_biaoqing")
-        let selImage = UIImage.svgInit("lt_jianpan")
+        let image = UIImage.svgInit("h5_biaoqing")
+        let selImage = UIImage.svgInit("ht_shuru")
         btn.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         btn.setImage(selImage, for: .selected)
         return btn
@@ -53,7 +53,7 @@ class BWKeFuChatToolBar: UIView {
 
     private lazy var menuBtn: WButton = {
         let btn = WButton()
-        let image = UIImage.svgInit("lt_photo")
+        let image = UIImage.svgInit("h5_zhaoping")
         btn.setImage(image, for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return btn
