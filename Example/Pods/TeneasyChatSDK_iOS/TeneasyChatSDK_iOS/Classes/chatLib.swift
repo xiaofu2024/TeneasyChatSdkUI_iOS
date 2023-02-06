@@ -33,6 +33,10 @@ public class ChatLib {
     var token: String? = ""
     var session = Session()
     
+    var myTimer: Timer?
+    var timerFlag: Int = 60
+    var chooseImg: UIImage?
+    
     public init() {
     }
     public init(chatId: Int64, token: String) {
@@ -60,15 +64,33 @@ public class ChatLib {
           request.setValue("chat,superchat", forHTTPHeaderField: "Sec-WebSocket-Protocol")
           request.setValue("Everything is Awesome!", forHTTPHeaderField: "My-Awesome-Header")
           */
-
+         startTimer()
          print("call web socket")
      }
     
     deinit {
-      if (websocket != nil){
-          websocket!.disconnect()
-          websocket!.delegate = nil
-      }
+        disConnect()
+    }
+    
+    func startTimer() {
+        myTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updataSecond), userInfo: nil, repeats: true)
+        myTimer!.fire()
+    }
+
+    @objc func updataSecond() {
+        timerFlag -= 1
+        if timerFlag <= 0 {
+            timerFlag = 60
+            //print("发送心跳" + Date().getFormattedDate(format: "HH:mm:ss"))
+            sendHeartBeat()
+        }
+    }
+
+    func stopTimer() {
+        if myTimer != nil {
+            myTimer!.invalidate() // 销毁timer
+            myTimer = nil
+        }
     }
     
     public func deleteMessage(){
@@ -155,10 +177,14 @@ public class ChatLib {
     }
     
     public func sendHeartBeat(){
-        var myInt = 0
-        let myIntData = Data(bytes: &myInt,
-                             count: MemoryLayout.size(ofValue: myInt))
-        send(binaryData: myIntData)
+//        var myInt = 0
+//        let myIntData = Data(bytes: &myInt,
+//                             count: MemoryLayout.size(ofValue: myInt))
+        
+        let array:[UInt8] = [0]
+
+        let myData = Data(bytes: array)
+        send(binaryData: myData)
     }
     
     private func send(binaryData: Data){
@@ -171,6 +197,16 @@ public class ChatLib {
                print("msg sent")
             }))
         }
+    }
+    
+    public func disConnect(){
+        stopTimer()
+        if (websocket != nil){
+            websocket!.disconnect()
+            websocket!.delegate = nil
+            websocket = nil
+        }
+        print("通信SDK 断开连接")
     }
     
     private func serilizeSample(){

@@ -60,6 +60,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     var datasouceArray: [ChatModel] = []
 
     var lib = ChatLib()
+    var chooseImg : UIImage? = nil
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -67,12 +68,11 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
-        startTimer()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     open override func viewDidDisappear(_ animated: Bool) {
-        lib.websocket?.disconnect()
+        lib.disConnect()
     }
 
     func initView() {
