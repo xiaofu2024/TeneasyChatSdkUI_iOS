@@ -39,10 +39,6 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         return v
     }()
 
-    var myTimer: Timer?
-    var timerFlag: Int = 60
-    var chooseImg: UIImage?
-
     /// 输入框工具栏
     lazy var toolBar: BWKeFuChatToolBar = {
         let toolBar = BWKeFuChatToolBar()
@@ -73,6 +69,10 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         initView()
         startTimer()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        lib.websocket?.disconnect()
     }
 
     func initView() {
@@ -115,30 +115,6 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
                       token: "CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ")
         lib.callWebsocket()
         lib.delegate = self
-    }
-
-    func startTimer() {
-        myTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updataSecond), userInfo: nil, repeats: true)
-        myTimer!.fire()
-    }
-
-    @objc func updataSecond() {
-        timerFlag -= 1
-        if timerFlag <= 0 {
-            timerFlag = 60
-            lib.sendHeartBeat()
-        }
-    }
-
-    deinit {
-        stopTimer()
-    }
-
-    func stopTimer() {
-        if myTimer != nil {
-            myTimer!.invalidate() // 销毁timer
-            myTimer = nil
-        }
     }
 
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
