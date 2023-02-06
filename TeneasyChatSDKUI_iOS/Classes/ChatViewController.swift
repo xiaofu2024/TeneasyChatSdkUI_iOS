@@ -6,12 +6,12 @@
 //  Copyright (c) 2023 XiaoFu. All rights reserved.
 //
 
+import Alamofire
+import Network
 import PhotosUI
 import TeneasyChatSDK_iOS
 // import TeneasyChatSDKUI_iOS
 import UIKit
-import Alamofire
-import Network
 
 open class ChatViewController: UIViewController, teneasySDKDelegate {
     lazy var imagePickerController: UIImagePickerController = {
@@ -20,6 +20,27 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         return pick
     }()
 
+    lazy var headerView: UIView = {
+        let v = UIView(frame: CGRect.zero)
+        v.backgroundColor = .white
+        return v
+    }()
+
+    lazy var headerImg: UIImageView = {
+        let img = UIImageView(frame: CGRect.zero)
+        img.layer.cornerRadius = 25
+        img.image = UIImage.svgInit("tb_jinrizixun")
+        return img
+    }()
+
+    lazy var headerTitle: UILabel = {
+        let v = UILabel(frame: CGRect.zero)
+        v.text = "客服小福"
+        return v
+    }()
+
+    var myTimer: Timer?
+    var timerFlag: Int = 60
     var chooseImg: UIImage?
 
     /// 输入框工具栏
@@ -35,9 +56,6 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         view.dataSource = self
         view.backgroundColor = .groupTableViewBackground
         view.separatorStyle = .none
-        /// 设置tableview 顶部间距
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 10))
-        view.tableHeaderView = footerView
         view.estimatedRowHeight = 50
         view.rowHeight = UITableView.automaticDimension
         return view
@@ -53,6 +71,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
         initSDK()
         initView()
+        startTimer()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
@@ -68,6 +87,22 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
             make.top.equalToSuperview()
             make.bottom.equalTo(toolBar.snp.top)
         }
+        headerView.snp.makeConstraints { make in
+            make.width.equalTo(kScreenWidth)
+            make.height.equalTo(60)
+        }
+        headerView.addSubview(headerImg)
+        headerImg.snp.makeConstraints { make in
+            make.width.height.equalTo(50)
+            make.left.equalToSuperview().offset(12)
+            make.centerY.equalToSuperview()
+        }
+        headerView.addSubview(headerTitle)
+        headerTitle.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(self.headerImg.snp.right).offset(12)
+        }
+        tableView.tableHeaderView = headerView
     }
 
     override open func didReceiveMemoryWarning() {
@@ -82,6 +117,30 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         lib.delegate = self
     }
 
+    func startTimer() {
+        myTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updataSecond), userInfo: nil, repeats: true)
+        myTimer!.fire()
+    }
+
+    @objc func updataSecond() {
+        timerFlag -= 1
+        if timerFlag <= 0 {
+            timerFlag = 60
+            lib.sendHeartBeat()
+        }
+    }
+
+    deinit {
+        stopTimer()
+    }
+
+    func stopTimer() {
+        if myTimer != nil {
+            myTimer!.invalidate() // 销毁timer
+            myTimer = nil
+        }
+    }
+
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
         print(msg.image)
@@ -90,8 +149,8 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     public func msgReceipt(msg: CommonMessage, payloadId: UInt64) {
         print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
-        //appendDataSource(msg: msg, isLeft: false)
-        //通过payloadId从DataSource里面找对应记录，并更新状态和时间
+        // appendDataSource(msg: msg, isLeft: false)
+        // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
     }
 
     func appendDataSource(msg: CommonMessage, isLeft: Bool, payLoadId: UInt64 = 0) {
@@ -145,7 +204,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
         if btn.titleLabel?.text == "发送" {
             sendMsg(textMsg: toolBar.textView.normalText())
-            if let cMsg = lib.sendingMsg{
+            if let cMsg = lib.sendingMsg {
                 print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
                 print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
                 appendDataSource(msg: cMsg, isLeft: false)
@@ -241,7 +300,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
         chooseImg = image
         upload()
-        self.sendImage(url: "")
+        sendImage(url: "")
         picker.dismiss(animated: false) {}
     }
 
@@ -281,14 +340,12 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             authorizeClouse(status)
         }
     }
-    
-    func upload3(){
-        
-        guard let imageData = chooseImg?.jpegData(compressionQuality: 0.5) else{ return }
-        
 
-            var url = URL(string: "https://csapi.xdev.stream/v1/assets/upload")!
-        var request = URLRequest(url: url )
+    func upload3() {
+        guard let imageData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
+
+        var url = URL(string: "https://csapi.xdev.stream/v1/assets/upload")!
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = imageData
         request.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
@@ -298,85 +355,72 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         let urlData = try? NSURLConnection.sendSynchronousRequest(request, returning: &response)
 
         let results = NSString(data: urlData!, encoding: String.Encoding.utf8.rawValue)
-            print("API Response: \(results)")
+        print("API Response: \(results)")
     }
 
     func upload() {
 //        guard let imgData = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
-        
-        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else{ return }
-        
 
+        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
 
-        //Set Your URL
-           let api_url = "https://csapi.xdev.stream/v1/assets/upload"
-           guard let url = URL(string: api_url) else {
-               return
-           }
+        // Set Your URL
+        let api_url = "https://csapi.xdev.stream/v1/assets/upload"
+        guard let url = URL(string: api_url) else {
+            return
+        }
 
-           var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
-           urlRequest.httpMethod = "POST"
-           //urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+        urlRequest.httpMethod = "POST"
+        // urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         let boundary = "Boundary-\(UUID().uuidString)"
         let contentType = "multipart/form-data; " + boundary
-            
 
         urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
         urlRequest.httpBody = imgData
 
-        
         urlRequest.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
 
-           //Set Your Parameter
-           let parameterDict = NSMutableDictionary()
-           parameterDict.setValue(1, forKey: "type")
-       // parameterDict.setValue("phot.png", forKey: "myFile")
+        // Set Your Parameter
+        let parameterDict = NSMutableDictionary()
+        parameterDict.setValue(1, forKey: "type")
+        // parameterDict.setValue("phot.png", forKey: "myFile")
 
-          // Now Execute
-           AF.upload(multipartFormData: { multiPart in
-              for (key, value) in parameterDict {
-                   if let temp = value as? String {
-                       multiPart.append(temp.data(using: .utf8)!, withName: key as! String)
-                   }
-                   if let temp = value as? Int {
-                       multiPart.append("\(temp)".data(using: .utf8)!, withName: key as! String)
-                   }
-               }
-               multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
-           }, with: urlRequest)
-               .uploadProgress(queue: .main, closure: { progress in
-                   //Current upload progress of file
-                   print("Upload Progress: \(progress.fractionCompleted)")
-               })
-               .responseJSON(completionHandler: { data in
+        // Now Execute
+        AF.upload(multipartFormData: { multiPart in
+            for (key, value) in parameterDict {
+                if let temp = value as? String {
+                    multiPart.append(temp.data(using: .utf8)!, withName: key as! String)
+                }
+                if let temp = value as? Int {
+                    multiPart.append("\(temp)".data(using: .utf8)!, withName: key as! String)
+                }
+            }
+            multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
+        }, with: urlRequest)
+            .uploadProgress(queue: .main, closure: { progress in
+                // Current upload progress of file
+                print("Upload Progress: \(progress.fractionCompleted)")
+            })
+            .responseJSON(completionHandler: { data in
 
-                          switch data.result {
+                switch data.result {
+                case .success:
+                    do {
+                        let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
 
-                          case .success(_):
-                           do {
-                           
-                           let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
-                             
-                               print("Success!")
-                               print(dictionary)
-                          }
-                          catch {
-                             // catch error.
-                           print("catch error")
+                        print("Success!")
+                        print(dictionary)
+                    } catch {
+                        // catch error.
+                        print("catch error")
+                    }
 
-                                 }
-                           break
-                               
-                          case .failure(let error):
-                              print("failure" + error.localizedDescription)
+                case .failure(let error):
+                    print("failure" + error.localizedDescription)
+                }
 
-                           break
-                           
-                       }
-
-
-               })
+            })
     }
 
     func getStrFromImage() -> String {

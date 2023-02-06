@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SVGKit
 
 extension Date {
    func getFormattedDate(format: String) -> String {
@@ -31,4 +32,27 @@ extension Date {
             return Int64(self.timeIntervalSince1970 * 1000)
         }
     
+}
+
+
+extension UIImage{
+    ///svg初始化
+    static func svgInit(_ name:String) -> UIImage?{
+        let svg = SVGKImage.init(named: name, in: BundleUtil.getCurrentBundle())
+        return svg?.uiImage
+    }
+    
+    static func svgInit(_ name:String,size:CGSize) -> UIImage?{
+        let svg = SVGKImage.init(named: name, in: BundleUtil.getCurrentBundle())
+        if size != .zero{
+            svg?.size = size
+        }
+        return svg?.uiImage
+    }
+    
+    static func svgView(_ name:String)->SVGKLayeredImageView?{
+        let svg:SVGKImage=SVGKImage(named: "lt_zuixinweizhi", in: BundleUtil.getCurrentBundle())
+        let svgView = SVGKLayeredImageView(svgkImage: svg)
+        return svgView
+    }
 }

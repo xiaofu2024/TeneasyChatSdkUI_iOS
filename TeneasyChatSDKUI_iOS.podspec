@@ -50,4 +50,6 @@ TODO: Add long description of the pod here.
    s.dependency 'SwiftDate', '~> 6.3.1'
    s.dependency 'Kingfisher', '~> 6.3.1'
    s.dependency 'Alamofire', '~> 5.4.4'
+   s.dependency 'SVGKit'
+
 end
