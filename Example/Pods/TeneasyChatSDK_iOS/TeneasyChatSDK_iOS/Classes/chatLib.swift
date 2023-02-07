@@ -11,7 +11,8 @@ public protocol teneasySDKDelegate{
     func receivedMsg(msg: CommonMessage)
     func msgReceipt(msg: CommonMessage, payloadId : UInt64)
     func systemMsg(msg: String)
-    func connected(c: Bool)
+    func connected(c: Gateway_SCHi)
+    func workChanged(msg: Gateway_SCWorkerChanged)
 }
 
 /*
@@ -36,12 +37,15 @@ public class ChatLib {
     var myTimer: Timer?
     var timerFlag: Int = 60
     var chooseImg: UIImage?
+    var beatMinutes = 0
+    var maxSessionMinutes = 5
     
     public init() {
     }
     public init(chatId: Int64, token: String) {
         self.chatId = chatId
         self.token = token
+        beatMinutes = 0
         print(text)
     }
     
@@ -79,10 +83,14 @@ public class ChatLib {
 
     @objc func updataSecond() {
         timerFlag -= 1
-        if timerFlag <= 0 {
+        if beatMinutes > maxSessionMinutes{
+            stopTimer()
+        }
+        else if timerFlag <= 0 {
             timerFlag = 60
             //print("发送心跳" + Date().getFormattedDate(format: "HH:mm:ss"))
             sendHeartBeat()
+            beatMinutes += 1
         }
     }
 
@@ -190,12 +198,23 @@ public class ChatLib {
     private func send(binaryData: Data){
         if !isConnected{
             print("断开了")
-           callWebsocket()
-            delegate?.systemMsg(msg: "断开了，重新连接。。。")
+            if (beatMinutes > maxSessionMinutes){
+                delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
+            }else{
+                callWebsocket()
+                delegate?.systemMsg(msg: "断开了，重新连接。。。")
+            }
         }else{
-            self.websocket?.write(data: binaryData, completion: ({
-               print("msg sent")
-            }))
+            if (beatMinutes > maxSessionMinutes){
+                delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
+            }else {
+                
+                self.websocket?.write(data: binaryData, completion: ({
+                print("msg sent")
+             }))
+                
+            }
+        
         }
     }
     
@@ -239,7 +258,7 @@ extension ChatLib : WebSocketDelegate {
        switch event {
        case .connected( _):
            //print("connected" + headers.description)
-           self.delegate?.connected(c: true)
+           self.delegate?.systemMsg(msg: "已断开连接")
 //           if sendingMsg != nil{
 //               self.sendMessage(msg: sendingMsg!.content.data)
 //           }
@@ -278,14 +297,37 @@ extension ChatLib : WebSocketDelegate {
                    if let msg = try? Gateway_SCHi(serializedData: msgData!){
                      
                        print("chatID:" + String(msg.id))
-                       self.chatId = msg.id
-                       self.token = msg.token
-                       session.ID = payLoad?.id
-                       let autoMsg = composeMessage(textMsg: "你好，我是客服小福")
-                       delegate?.receivedMsg(msg: autoMsg)
+                       delegate?.connected(c: msg)
                        print(msg)
                    }
-               }else if payLoad?.act == .forward{
+               }else if payLoad?.act == .scworkerChanged{
+                   if let msg = try? Gateway_SCWorkerChanged(serializedData: msgData!){
+                       delegate?.workChanged(msg: msg)
+                       print(msg)
+                   }
+               }
+               
+               
+               /*
+                sendInputtingBegin(msg) {
+                       const data = gateway.Payload.create({
+                           act: gateway.Action.ActionInputtingBegin,
+                           data: gateway.InputtingBegin.encode(msg).finish()
+                       });
+                       this.ev.onSend.emit(data);
+                   }
+                   ;
+                   sendInputtingEnd(msg) {
+                       const data = gateway.Payload.create({
+                           act: gateway.Action.ActionInputtingEnd,
+                           data: gateway.InputtingEnd.encode(msg).finish()
+                       });
+                       this.ev.onSend.emit(data);
+                   }
+                   ;
+                */
+               
+               else if payLoad?.act == .forward{
                    let msg = try? Gateway_CSForward(serializedData: msgData!)
                    print(msg!)
                }else if payLoad?.act == .scsendMsgAck{ //服务器告诉此条信息是否发送成功
@@ -320,13 +362,13 @@ extension ChatLib : WebSocketDelegate {
        case .reconnectSuggested:
          print("reconnectSuggested")
        case .cancelled:
-           self.delegate?.connected(c: false)
+           self.delegate?.systemMsg(msg: "已断开连接")
          print("cancelled")
            isConnected = false
        }
     }
     
-    private func composeMessage(textMsg: String) -> CommonMessage{
+    public func composeMessage(textMsg: String) -> CommonMessage{
         //第一层
         var content = CommonMessageContent()
         content.data = textMsg
