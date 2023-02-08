@@ -14,6 +14,10 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class ChatViewController: UIViewController, teneasySDKDelegate {
+    public func workChanged(msg: Gateway_SCWorkerChanged) {
+        print(msg.workerName)
+    }
+    
     lazy var imagePickerController: UIImagePickerController = {
         let pick = UIImagePickerController()
         pick.delegate = self
@@ -142,8 +146,8 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         print("systemMsg")
     }
 
-    public func connected(c: Bool) {
-        print("connected")
+    public func connected(c: Gateway_SCHi) {
+        print("work id\(c.workerID)")
     }
 }
 
