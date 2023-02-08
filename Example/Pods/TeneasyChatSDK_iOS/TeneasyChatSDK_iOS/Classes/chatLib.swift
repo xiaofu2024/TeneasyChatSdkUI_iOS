@@ -28,7 +28,7 @@ public class ChatLib {
     var websocket : WebSocket? = nil
     var isConnected = false
     open var delegate : teneasySDKDelegate? = nil
-    var payloadId : UInt64? = 0
+    open var payloadId : UInt64? = 0
     public var sendingMsg: CommonMessage? = nil
     var chatId: Int64? = 0
     var token: String? = ""

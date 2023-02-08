@@ -37,12 +37,12 @@ TODO: Add long description of the pod here.
    #}
    
    s.resource_bundles = {
-     'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Assets/**/*','TeneasyChatSDKUI_iOS/Assets/svg/*.svg', 'TeneasyChatSDKUI_iOS/Assets/png/*.png', 'TeneasyChatSDKUI_iOS/Assets/emoticon/*.gif']
+     'TeneasyChatSDKUI_iOS' => ['TeneasyChatSDKUI_iOS/Assets/**/*','TeneasyChatSDKUI_iOS/Assets/svg/*', 'TeneasyChatSDKUI_iOS/Assets/png/*.png', 'TeneasyChatSDKUI_iOS/Assets/emoticon/*.gif']
    }
    
    #s.resources = "Resources/**/*.{png,storyboard}" //for storyboard and png files
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
+#   s.public_header_files = 'TeneasyChatSDKUI_iOS/Classes/xclient.framework/**/*.h'
    s.frameworks = 'UIKit'#, 'MapKit'
    s.dependency 'TeneasyChatSDK_iOS', '~> 1.0.0'
    s.dependency 'SnapKit', '~> 5.0.1'
@@ -51,5 +51,8 @@ TODO: Add long description of the pod here.
    s.dependency 'Kingfisher', '~> 6.3.1'
    s.dependency 'Alamofire', '~> 5.4.4'
    s.dependency 'SVGKit'
+   s.dependency 'Moya', '~> 15.0.0'
+   s.dependency 'HandyJSON', '~> 5.0.2'
+   s.dependency 'SVProgressHUD', '~> 2.2.5'
 
 end

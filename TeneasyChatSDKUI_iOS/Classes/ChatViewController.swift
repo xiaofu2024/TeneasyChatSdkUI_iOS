@@ -17,7 +17,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
     }
-    
+
     lazy var imagePickerController: UIImagePickerController = {
         let pick = UIImagePickerController()
         pick.delegate = self
@@ -65,19 +65,20 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     var datasouceArray: [ChatModel] = []
 
     var lib = ChatLib()
-    var chooseImg : UIImage? = nil
+    var chooseImg: UIImage?
 
     override open func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = kBgColor
+        WWProgressHUD.showLoading("连接中...")
 
         initSDK()
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
-    
-    open override func viewDidDisappear(_ animated: Bool) {
-        lib.disConnect()
+
+    override open func viewDidDisappear(_ animated: Bool) {
+//        lib.disConnect()
     }
 
     func initView() {
@@ -129,8 +130,21 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     public func msgReceipt(msg: CommonMessage, payloadId: UInt64) {
         print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
-        // appendDataSource(msg: msg, isLeft: false)
         // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
+        print("------\(payloadId)")
+        let index = datasouceArray.firstIndex { model in
+            model.payLoadId == payloadId
+        }
+        if (index ?? -1) > -1 {
+            if msg.msgID == 0 {
+                datasouceArray[index!].sendStatus = .发送失败
+            } else {
+                datasouceArray[index!].sendStatus = .发送成功
+                datasouceArray[index!].message = msg
+            }
+            
+            tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
+        }
     }
 
     func appendDataSource(msg: CommonMessage, isLeft: Bool, payLoadId: UInt64 = 0) {
@@ -138,6 +152,9 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
         model.isLeft = isLeft
         model.message = msg
         model.payLoadId = payLoadId
+        if !isLeft {
+            model.sendStatus = .发送中
+        }
         datasouceArray.append(model)
         tableView.reloadData()
     }
@@ -148,6 +165,13 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     public func connected(c: Gateway_SCHi) {
         print("work id\(c.workerID)")
+        WWProgressHUD.dismiss()
+        loadWorker(workerId: c.workerID)
+    }
+
+    func loadWorker(workerId: Int32) {
+        NetworkUtil.getWorker(workerId: workerId) { _, _ in
+        }
     }
 }
 
@@ -161,6 +185,10 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         }
         let cell = BWChatRightCell.cell(tableView: tableView)
         cell.model = model
+        cell.resendBlock = {[weak self] msg in
+            self?.datasouceArray[indexPath.row].sendStatus = .发送中
+//            lib.sendMessage(msg: <#T##String#>)
+        }
         return cell
     }
 
@@ -185,9 +213,9 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
         if btn.titleLabel?.text == "发送" {
             sendMsg(textMsg: toolBar.textView.normalText())
             if let cMsg = lib.sendingMsg {
-                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
-                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
-                appendDataSource(msg: cMsg, isLeft: false)
+//                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
+//                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
+                appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId ?? 0)
             }
         } else {
             // 选图片

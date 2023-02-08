@@ -9,9 +9,10 @@
 import Foundation
 import TeneasyChatSDK_iOS
 
-enum MessageSendState:String { case 发送中="0", 发送成功="1", 发送失败="2", 未知="-1" }
-    class ChatModel {
+enum MessageSendState: String { case 发送中="0", 发送成功="1", 发送失败="2", 未知="-1" }
+class ChatModel {
     var message: CommonMessage!
-    var isLeft: Bool = false
-        var payLoadId: UInt64 = 0
+    var isLeft: Bool=false
+    var sendStatus: MessageSendState = .发送中
+    var payLoadId: UInt64=0
 }

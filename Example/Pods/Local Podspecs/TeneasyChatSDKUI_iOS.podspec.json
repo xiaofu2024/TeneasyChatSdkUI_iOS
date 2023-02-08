@@ -22,7 +22,7 @@
   "resource_bundles": {
     "TeneasyChatSDKUI_iOS": [
       "TeneasyChatSDKUI_iOS/Assets/**/*",
-      "TeneasyChatSDKUI_iOS/Assets/svg/*.svg",
+      "TeneasyChatSDKUI_iOS/Assets/svg/*",
       "TeneasyChatSDKUI_iOS/Assets/png/*.png",
       "TeneasyChatSDKUI_iOS/Assets/emoticon/*.gif"
     ]
@@ -49,6 +49,15 @@
     ],
     "SVGKit": [
 
+    ],
+    "Moya": [
+      "~> 15.0.0"
+    ],
+    "HandyJSON": [
+      "~> 5.0.2"
+    ],
+    "SVProgressHUD": [
+      "~> 2.2.5"
     ]
   }
 }

@@ -6,8 +6,8 @@
 //  Copyright © 2023 CocoaPods. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
 class BWChatCell: UITableViewCell {
     lazy var timeLab: UILabel = {
@@ -32,7 +32,7 @@ class BWChatCell: UITableViewCell {
         lab.preferredMaxLayoutWidth = kScreenWidth - 100
         return lab
     }()
-
+    
     lazy var failedDotView: UIImageView = {
         let v = UIImageView()
         return v
@@ -70,34 +70,40 @@ class BWChatCell: UITableViewCell {
             if let mTime = model?.message.msgTime {
                 self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
             }
-            if (model?.message.content.data.contains("[emoticon_") == true) {
-                let atttext = BEmotionHelper.shared.attributedStringByText(text: model?.message.content.data ?? "", font: self.titleLab.font)
+            if self.model?.message.content.data.contains("[emoticon_") == true {
+                let atttext = BEmotionHelper.shared.attributedStringByText(text: self.model?.message.content.data ?? "", font: self.titleLab.font)
                 self.titleLab.attributedText = atttext
             } else {
-                self.titleLab.text = model?.message.content.data
+                self.titleLab.text = self.model?.message.content.data
             }
-            if model?.message.image.uri.isEmpty == false {
+            if self.model?.message.image.uri.isEmpty == false {
                 let imgUrl = URL(string: model?.message.image.uri ?? "")
                 if imgUrl != nil {
-                    imgView.kf.setImage(with: imgUrl!)
-                    self.imgView.snp.updateConstraints { make in
-                        make.height.equalTo(160)
-                    }
-                    self.titleLab.isHidden = true
+                    self.initImg(imgUrl: imgUrl!)
                 } else {
-                    self.imgView.snp.updateConstraints { make in
-                        make.height.equalTo(0)
-                    }
-                    self.titleLab.isHidden = false
+                    self.initTitle()
                 }
-                
             } else {
-                self.imgView.snp.updateConstraints { make in
-                    make.height.equalTo(0)
-                }
-                self.titleLab.isHidden = false
+                self.initTitle()
             }
         }
+    }
+    
+    func initImg(imgUrl: URL) {
+        self.imgView.kf.setImage(with: imgUrl)
+        self.imgView.snp.updateConstraints { make in
+            make.height.equalTo(160)
+        }
+        self.titleLab.isHidden = true
+        
+    }
+
+    func initTitle() {
+        self.imgView.snp.updateConstraints { make in
+            make.height.equalTo(0)
+        }
+        self.titleLab.isHidden = false
+        
     }
     
     required init?(coder: NSCoder) {
@@ -126,8 +132,16 @@ class BWChatLeftCell: BWChatCell {
         super.init(coder: coder)
     }
 }
+typealias  BWChatRightCellResendBlock = (String) -> ()
 
 class BWChatRightCell: BWChatCell {
+    var resendBlock: BWChatRightCellResendBlock?
+
+    lazy var loadingView: UIImageView = {
+        let img = UIImageView(frame: CGRect.zero)
+        return img
+    }()
+    
     required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -142,6 +156,62 @@ class BWChatRightCell: BWChatCell {
             make.top.equalTo(self.imgView.snp.bottom)
             make.right.equalToSuperview().offset(-12)
             make.bottom.equalToSuperview()
+        }
+        self.addSubview(self.loadingView)
+        self.loadingView.snp.makeConstraints { make in
+            make.centerY.equalTo(self.titleLab.snp.centerY)
+            make.width.height.equalTo(20)
+            make.right.equalTo(self.titleLab.snp.left).offset(-10)
+        }
+        
+        self.loadingView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(clickErrorIcon)))
+    }
+    
+    @objc func clickErrorIcon() {
+        self.resendBlock!(self.titleLab.text ?? "")
+    }
+    
+    override func initTitle() {
+        super.initTitle()
+        self.initLoadingForTitel()
+    }
+
+    override func initImg(imgUrl: URL) {
+        super.initImg(imgUrl: imgUrl)
+        self.initLoadingForImage()
+    }
+    
+    func initLoadingForTitel() {
+        self.loadingView.snp.updateConstraints { make in
+            make.centerY.equalTo(self.titleLab.snp.centerY)
+            make.right.equalTo(self.titleLab.snp.left).offset(-10)
+        }
+        self.initLoadingicon()
+    }
+
+    func initLoadingForImage() {
+        self.loadingView.snp.updateConstraints { make in
+            make.centerY.equalTo(self.imgView.snp.centerY)
+            make.right.equalTo(self.imgView.snp.left).offset(-10)
+        }
+        self.initLoadingicon()
+    }
+    
+    func initLoadingicon() {
+        let path = BundleUtil.getCurrentBundle().path(forResource:"clock", ofType:"gif")
+        let url = URL(fileURLWithPath: path!)
+        let provider = LocalFileImageDataProvider(fileURL: url)
+        if model?.sendStatus == .发送中 {
+            self.loadingView.kf.setImage(with: provider)
+            self.loadingView.isHidden = false
+        } else if model?.sendStatus == .发送成功 {
+            self.loadingView.isHidden = true
+        } else if model?.sendStatus == .发送失败 {
+            self.loadingView.image = UIImage.svgInit("error")
+            self.loadingView.isHidden = false
+        } else {
+            self.loadingView.kf.setImage(with: provider)
+            self.loadingView.isHidden = false
         }
     }
     

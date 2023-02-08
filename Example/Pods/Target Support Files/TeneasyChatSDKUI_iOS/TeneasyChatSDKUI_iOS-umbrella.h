@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "UIImage+GIF.h"
 #import "TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h"
 
 FOUNDATION_EXPORT double TeneasyChatSDKUI_iOSVersionNumber;
