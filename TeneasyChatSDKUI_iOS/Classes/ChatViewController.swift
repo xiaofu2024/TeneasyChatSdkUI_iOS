@@ -29,6 +29,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     lazy var headerImg: UIImageView = {
         let img = UIImageView(frame: CGRect.zero)
         img.layer.cornerRadius = 25
+        img.layer.masksToBounds = true
         img.image = UIImage.svgInit("com_moren")
         return img
     }()
@@ -119,7 +120,6 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
-        print(msg.image)
         appendDataSource(msg: msg, isLeft: true)
     }
 
