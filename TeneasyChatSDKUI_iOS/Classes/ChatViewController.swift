@@ -126,6 +126,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
         appendDataSource(msg: msg, isLeft: true)
+        scrollToBottom()
     }
 
     public func msgReceipt(msg: CommonMessage, payloadId: UInt64) {
@@ -144,6 +145,12 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
             }
             
             tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
+        }
+        scrollToBottom()
+    }
+    func scrollToBottom() {
+        if (tableView.contentSize.height > kScreenHeight - kDeviceBottom - 50 - kDeviceTop - 60) {
+            tableView.scrollToRow(at: IndexPath.init(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
         }
     }
 
@@ -187,7 +194,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         cell.model = model
         cell.resendBlock = {[weak self] msg in
             self?.datasouceArray[indexPath.row].sendStatus = .发送中
-//            lib.sendMessage(msg: <#T##String#>)
+            self?.lib.resendMsg(msg: model.message, payloadId: Int(model.payLoadId))
         }
         return cell
     }

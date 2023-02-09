@@ -1,35 +1,35 @@
-import UIKit
+import Foundation
 import Starscream
 import SwiftProtobuf
-import Foundation
-//import Toast
+import UIKit
+// import Toast
 
-//https://swiftpackageregistry.com/daltoniam/Starscream
-//https://www.kodeco.com/861-websockets-on-ios-with-starscream
-public protocol teneasySDKDelegate{
-    //func receivedMsg(msg: String)
+// https://swiftpackageregistry.com/daltoniam/Starscream
+// https://www.kodeco.com/861-websockets-on-ios-with-starscream
+public protocol teneasySDKDelegate {
+    // func receivedMsg(msg: String)
     func receivedMsg(msg: CommonMessage)
-    func msgReceipt(msg: CommonMessage, payloadId : UInt64)
+    func msgReceipt(msg: CommonMessage, payloadId: UInt64)
     func systemMsg(msg: String)
     func connected(c: Gateway_SCHi)
     func workChanged(msg: Gateway_SCWorkerChanged)
 }
 
 /*
-extension teneasySDKDelegate {
-    func receivedMsg2(msg: EasyMessage) {
-        /* return a default value or just leave empty */
-    }
-}*/
+ extension teneasySDKDelegate {
+     func receivedMsg2(msg: EasyMessage) {
+         /* return a default value or just leave empty */
+     }
+ }*/
 
 public class ChatLib {
     public private(set) var text = "Teneasy Chat SDK 启动"
     var baseUrl = "wss://csapi.xdev.stream/v1/gateway/h5?token="
-    var websocket : WebSocket? = nil
+    var websocket: WebSocket?
     var isConnected = false
-    open var delegate : teneasySDKDelegate? = nil
-    open var payloadId : UInt64? = 0
-    public var sendingMsg: CommonMessage? = nil
+    open var delegate: teneasySDKDelegate?
+    open var payloadId: UInt64? = 0
+    public var sendingMsg: CommonMessage?
     var chatId: Int64? = 0
     var token: String? = ""
     var session = Session()
@@ -40,8 +40,8 @@ public class ChatLib {
     var beatMinutes = 0
     var maxSessionMinutes = 5
     
-    public init() {
-    }
+    public init() {}
+
     public init(chatId: Int64, token: String) {
         self.chatId = chatId
         self.token = token
@@ -53,24 +53,24 @@ public class ChatLib {
         self.session = session
     }
 
-     public func callWebsocket(){
-         //var request = URLRequest(url: URL(string: baseUrl))
-         let request = URLRequest(url: URL(string: baseUrl + self.token!)!)
-         //request.setValue("chat,superchat", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-         websocket = WebSocket(request: request)
-         websocket?.request.timeoutInterval = 5 // Sets the timeout for the connection
-         websocket?.delegate = self
-         websocket?.connect()
+    public func callWebsocket() {
+        // var request = URLRequest(url: URL(string: baseUrl))
+        let request = URLRequest(url: URL(string: baseUrl + token!)!)
+        // request.setValue("chat,superchat", forHTTPHeaderField: "Sec-WebSocket-Protocol")
+        websocket = WebSocket(request: request)
+        websocket?.request.timeoutInterval = 5 // Sets the timeout for the connection
+        websocket?.delegate = self
+        websocket?.connect()
          
-         /* 添加header的办法
-          request.setValue("someother protocols", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-          request.setValue("14", forHTTPHeaderField: "Sec-WebSocket-Version")
-          request.setValue("chat,superchat", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-          request.setValue("Everything is Awesome!", forHTTPHeaderField: "My-Awesome-Header")
-          */
-         startTimer()
-         print("call web socket")
-     }
+        /* 添加header的办法
+         request.setValue("someother protocols", forHTTPHeaderField: "Sec-WebSocket-Protocol")
+         request.setValue("14", forHTTPHeaderField: "Sec-WebSocket-Version")
+         request.setValue("chat,superchat", forHTTPHeaderField: "Sec-WebSocket-Protocol")
+         request.setValue("Everything is Awesome!", forHTTPHeaderField: "My-Awesome-Header")
+         */
+        startTimer()
+        print("call web socket")
+    }
     
     deinit {
         disConnect()
@@ -83,12 +83,11 @@ public class ChatLib {
 
     @objc func updataSecond() {
         timerFlag -= 1
-        if beatMinutes > maxSessionMinutes{
+        if beatMinutes > maxSessionMinutes {
             stopTimer()
-        }
-        else if timerFlag <= 0 {
+        } else if timerFlag <= 0 {
             timerFlag = 60
-            //print("发送心跳" + Date().getFormattedDate(format: "HH:mm:ss"))
+            // print("发送心跳" + Date().getFormattedDate(format: "HH:mm:ss"))
             sendHeartBeat()
             beatMinutes += 1
         }
@@ -101,126 +100,140 @@ public class ChatLib {
         }
     }
     
-    public func deleteMessage(){
-        
-    }
+    public func deleteMessage() {}
     
-    public func sendMessage(msg: String){
-        //发送信息的封装，有四层
-        //payload -> CSSendMessage -> common message -> CommonMessageContent
+    public func sendMessage(msg: String) {
+        // 发送信息的封装，有四层
+        // payload -> CSSendMessage -> common message -> CommonMessageContent
         
-        //第一层
+        // 第一层
         var content = CommonMessageContent()
         content.data = msg
         
-        //第二层, 消息主题
+        // 第二层, 消息主题
         var msg = CommonMessage()
         msg.content = content
         msg.sender = 0
-        msg.chatID = self.chatId!
+        msg.chatID = chatId!
         msg.payload = .content(content)
         msg.worker = 5
         msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
 
-         
-        //第三层
+        // 第三层
         var cSendMsg = Gateway_CSSendMessage()
         cSendMsg.msg = msg
         // Serialize to binary protobuf format:
         let cSendMsgData: Data = try! cSendMsg.serializedData()
         
-        //第四层
+        // 第四层
         var payLoad = Gateway_Payload()
         payLoad.data = cSendMsgData
         payLoad.act = .cssendMsg
-        self.payloadId! += 1
-        print("payloadID:" + String(self.payloadId!))
-        payLoad.id = self.payloadId!
+        payloadId! += 1
+        print("payloadID:" + String(payloadId!))
+        payLoad.id = payloadId!
         let binaryData: Data = try! payLoad.serializedData()
         
-        //临时放到一个变量
+        // 临时放到一个变量
         sendingMsg = msg
         
         send(binaryData: binaryData)
     }
     
-    public func sendMessageImage(url: String){
-        //发送信息的封装，有四层
-        //payload -> CSSendMessage -> common message -> CommonMessageContent
-        //第一层
+    public func sendMessageImage(url: String) {
+        // 发送信息的封装，有四层
+        // payload -> CSSendMessage -> common message -> CommonMessageContent
+        // 第一层
         var content = CommonMessageImage()
         content.uri = url
         
-        //第二层, 消息主题
+        // 第二层, 消息主题
         var msg = CommonMessage()
         msg.image = content
         msg.sender = 0
-        msg.chatID = self.chatId!
+        msg.chatID = chatId!
         msg.payload = .image(content)
         msg.worker = 5
         msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
 
-         
-        //第三层
+        // 第三层
         var cSendMsg = Gateway_CSSendMessage()
         cSendMsg.msg = msg
         // Serialize to binary protobuf format:
         let cSendMsgData: Data = try! cSendMsg.serializedData()
         
-        //第四层
+        // 第四层
         var payLoad = Gateway_Payload()
         payLoad.data = cSendMsgData
         payLoad.act = .cssendMsg
-        self.payloadId! += 1
+        payloadId! += 1
         
-        //self.payloadId! += Int64.random(in: 1000...19999)
-        let bigUInt:UInt64 = UInt64(self.payloadId!)
+        // self.payloadId! += Int64.random(in: 1000...19999)
+        let bigUInt = UInt64(payloadId!)
         payLoad.id = bigUInt
         let binaryData: Data = try! payLoad.serializedData()
         
-        //临时放到一个变量
+        // 临时放到一个变量
         sendingMsg = msg
         
         send(binaryData: binaryData)
     }
     
-    public func sendHeartBeat(){
+    public func resendMsg(msg: CommonMessage, payloadId: Int) {
+        // 第三层
+        var cSendMsg = Gateway_CSSendMessage()
+        cSendMsg.msg = msg
+        // Serialize to binary protobuf format:
+        let cSendMsgData: Data = try! cSendMsg.serializedData()
+        
+        // 第四层
+        var payLoad = Gateway_Payload()
+        payLoad.data = cSendMsgData
+        payLoad.act = .cssendMsg
+        self.payloadId! = UInt64(payloadId)
+        payLoad.id = self.payloadId!
+        let binaryData: Data = try! payLoad.serializedData()
+        
+        // 临时放到一个变量
+        sendingMsg = msg
+        
+        send(binaryData: binaryData)
+    }
+    
+    public func sendHeartBeat() {
 //        var myInt = 0
 //        let myIntData = Data(bytes: &myInt,
 //                             count: MemoryLayout.size(ofValue: myInt))
         
-        let array:[UInt8] = [0]
+        let array: [UInt8] = [0]
 
         let myData = Data(bytes: array)
         send(binaryData: myData)
     }
     
-    private func send(binaryData: Data){
-        if !isConnected{
+    private func send(binaryData: Data) {
+        if !isConnected {
             print("断开了")
-            if (beatMinutes > maxSessionMinutes){
+            if beatMinutes > maxSessionMinutes {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
-            }else{
+            } else {
                 callWebsocket()
                 delegate?.systemMsg(msg: "断开了，重新连接。。。")
             }
-        }else{
-            if (beatMinutes > maxSessionMinutes){
+        } else {
+            if beatMinutes > maxSessionMinutes {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
-            }else {
-                
-                self.websocket?.write(data: binaryData, completion: ({
-                print("msg sent")
-             }))
-                
+            } else {
+                websocket?.write(data: binaryData, completion: ({
+                    print("msg sent")
+                }))
             }
-        
         }
     }
     
-    public func disConnect(){
+    public func disConnect() {
         stopTimer()
-        if (websocket != nil){
+        if websocket != nil {
             websocket!.disconnect()
             websocket!.delegate = nil
             websocket = nil
@@ -228,7 +241,7 @@ public class ChatLib {
         print("通信SDK 断开连接")
     }
     
-    private func serilizeSample(){
+    private func serilizeSample() {
         var info = CommonPhoneNumber()
         info.countryCode = 65
         info.nationalNumber = 99999
@@ -248,147 +261,141 @@ public class ChatLib {
 }
 
 // MARK: - WebSocketDelegate
-extension ChatLib : WebSocketDelegate {
-    
+
+extension ChatLib: WebSocketDelegate {
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("got some text: \(text)")
     }
 
-   public func didReceive(event: WebSocketEvent, client: WebSocket){
-       switch event {
-       case .connected( _):
-           //print("connected" + headers.description)
-           self.delegate?.systemMsg(msg: "已断开连接")
+    public func didReceive(event: WebSocketEvent, client: WebSocket) {
+        switch event {
+        case .connected:
+            // print("connected" + headers.description)
+            delegate?.systemMsg(msg: "已断开连接")
 //           if sendingMsg != nil{
 //               self.sendMessage(msg: sendingMsg!.content.data)
 //           }
-           isConnected = true
-       case .disconnected(let reason, let closeCode):
-         print("disconnected \(reason) \(closeCode)")
-           isConnected = false
-       case .text(let text):
-         print("received text: \(text)")
-       case .binary(let data):
-           if data.count == 1{
-               print("在别处登录了")
-               if let d = String(data: data, encoding: .utf8){
-                
-                   if (d.contains("2")){
-                       delegate?.systemMsg(msg: "无效的Token")
-                   }else{
-                       delegate?.systemMsg(msg: "在别处登录了")
-                   }
-                   print(d)
-               }
-           }else{
-               let payLoad = try? Gateway_Payload(serializedData: data)
-               let msgData = payLoad?.data
-               self.payloadId = payLoad?.id
+            isConnected = true
+        case .disconnected(let reason, let closeCode):
+            print("disconnected \(reason) \(closeCode)")
+            isConnected = false
+        case .text(let text):
+            print("received text: \(text)")
+        case .binary(let data):
+            if data.count == 1 {
+                print("在别处登录了")
+                if let d = String(data: data, encoding: .utf8) {
+                    if d.contains("2") {
+                        delegate?.systemMsg(msg: "无效的Token")
+                    } else {
+                        delegate?.systemMsg(msg: "在别处登录了")
+                    }
+                    print(d)
+                }
+            } else {
+                let payLoad = try? Gateway_Payload(serializedData: data)
+                let msgData = payLoad?.data
+                payloadId = payLoad?.id
 
-               print("payloadID:" + String(self.payloadId!))
+                print("payloadID:" + String(payloadId!))
                
-               if (payLoad?.act == .screcvMsg){
-                   let msg = try? Gateway_SCRecvMessage(serializedData: msgData!)
-                   if let msC = msg?.msg{
-
-                    delegate?.receivedMsg(msg: msC)
-                   }
-               }else if payLoad?.act == .schi{//连接成功后收到的信息，会返回clientId, Token
-                   if let msg = try? Gateway_SCHi(serializedData: msgData!){
-                     
-                       print("chatID:" + String(msg.id))
-                       delegate?.connected(c: msg)
-                       print(msg)
-                   }
-               }else if payLoad?.act == .scworkerChanged{
-                   if let msg = try? Gateway_SCWorkerChanged(serializedData: msgData!){
-                       delegate?.workChanged(msg: msg)
-                       print(msg)
-                   }
-               }
+                if payLoad?.act == .screcvMsg {
+                    let msg = try? Gateway_SCRecvMessage(serializedData: msgData!)
+                    if let msC = msg?.msg {
+                        delegate?.receivedMsg(msg: msC)
+                    }
+                } else if payLoad?.act == .schi { // 连接成功后收到的信息，会返回clientId, Token
+                    if let msg = try? Gateway_SCHi(serializedData: msgData!) {
+                        print("chatID:" + String(msg.id))
+                        delegate?.connected(c: msg)
+                        print(msg)
+                    }
+                } else if payLoad?.act == .scworkerChanged {
+                    if let msg = try? Gateway_SCWorkerChanged(serializedData: msgData!) {
+                        delegate?.workChanged(msg: msg)
+                        print(msg)
+                    }
+                }
                
+                /*
+                 sendInputtingBegin(msg) {
+                        const data = gateway.Payload.create({
+                            act: gateway.Action.ActionInputtingBegin,
+                            data: gateway.InputtingBegin.encode(msg).finish()
+                        });
+                        this.ev.onSend.emit(data);
+                    }
+                    ;
+                    sendInputtingEnd(msg) {
+                        const data = gateway.Payload.create({
+                            act: gateway.Action.ActionInputtingEnd,
+                            data: gateway.InputtingEnd.encode(msg).finish()
+                        });
+                        this.ev.onSend.emit(data);
+                    }
+                    ;
+                 */
                
-               /*
-                sendInputtingBegin(msg) {
-                       const data = gateway.Payload.create({
-                           act: gateway.Action.ActionInputtingBegin,
-                           data: gateway.InputtingBegin.encode(msg).finish()
-                       });
-                       this.ev.onSend.emit(data);
-                   }
-                   ;
-                   sendInputtingEnd(msg) {
-                       const data = gateway.Payload.create({
-                           act: gateway.Action.ActionInputtingEnd,
-                           data: gateway.InputtingEnd.encode(msg).finish()
-                       });
-                       this.ev.onSend.emit(data);
-                   }
-                   ;
-                */
-               
-               else if payLoad?.act == .forward{
-                   let msg = try? Gateway_CSForward(serializedData: msgData!)
-                   print(msg!)
-               }else if payLoad?.act == .scsendMsgAck{ //服务器告诉此条信息是否发送成功
-                   if let scMsg = try? Gateway_SCSendMessage(serializedData: msgData!){
-                       print("消息回执")
-                       if sendingMsg != nil{
-                        
-                           sendingMsg?.msgID = scMsg.msgID //发送成功会得到消息ID
-                           sendingMsg?.msgTime = scMsg.msgTime
+                else if payLoad?.act == .forward {
+                    let msg = try? Gateway_CSForward(serializedData: msgData!)
+                    print(msg!)
+                } else if payLoad?.act == .scsendMsgAck { // 服务器告诉此条信息是否发送成功
+                    if let scMsg = try? Gateway_SCSendMessage(serializedData: msgData!) {
+                        print("消息回执")
+                        if sendingMsg != nil {
+                            sendingMsg?.msgID = scMsg.msgID // 发送成功会得到消息ID
+                            sendingMsg?.msgTime = scMsg.msgTime
                          
-                           delegate?.msgReceipt(msg: sendingMsg!, payloadId: payLoad!.id)
-                           print(scMsg)
-                           sendingMsg = nil
-                       }
-                   }
-               }
-               else{
-                   print("received data: \(data)")
-               }
-           }
+                            delegate?.msgReceipt(msg: sendingMsg!, payloadId: payLoad!.id)
+                            print(scMsg)
+                            sendingMsg = nil
+                        }
+                    }
+                } else {
+                    print("received data: \(data)")
+                }
+            }
 
-       case .pong(let pongData):
-         print("received pong: \(pongData)")
-       case .ping(let pingData):
-         print("received ping: \(pingData)")
-       case .error(let error):
-          // self.delegate?.connected(c: false)
-         print("error \(error)")
-           isConnected = false
-       case .viabilityChanged:
-         print("viabilityChanged")
-       case .reconnectSuggested:
-         print("reconnectSuggested")
-       case .cancelled:
-           self.delegate?.systemMsg(msg: "已断开连接")
-         print("cancelled")
-           isConnected = false
-       }
+        case .pong(let pongData):
+            print("received pong: \(pongData)")
+        case .ping(let pingData):
+            print("received ping: \(pingData)")
+        case .error(let error):
+            // self.delegate?.connected(c: false)
+            print("error \(error)")
+            isConnected = false
+        case .viabilityChanged:
+            print("viabilityChanged")
+        case .reconnectSuggested:
+            print("reconnectSuggested")
+        case .cancelled:
+            delegate?.systemMsg(msg: "已断开连接")
+            print("cancelled")
+            isConnected = false
+        }
     }
     
-    public func composeMessage(textMsg: String) -> CommonMessage{
-        //第一层
+    public func composeMessage(textMsg: String) -> CommonMessage {
+        // 第一层
         var content = CommonMessageContent()
         content.data = textMsg
         
-        //第二层, 消息主题
+        // 第二层, 消息主题
         var msg = CommonMessage()
         msg.content = content
         msg.sender = 0
-        msg.chatID = self.chatId!
+        msg.chatID = chatId!
         msg.payload = .content(content)
         msg.worker = 5
         msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
         
         return msg
     }
-    /*public func toastHello(vc : UIViewController){
-        let alert = UIAlertController(title: "你好", message: "Message", preferredStyle: UIAlertController.Style.actionSheet)
-        alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: { _ in
+    /* public func toastHello(vc : UIViewController){
+         let alert = UIAlertController(title: "你好", message: "Message", preferredStyle: UIAlertController.Style.actionSheet)
+         alert.addAction(UIAlertAction(title: "Click", style: UIAlertAction.Style.default, handler: { _ in
            
-        }))
-        vc.present(alert, animated: true, completion: nil)
-    }*/
+         }))
+         vc.present(alert, animated: true, completion: nil)
+     } */
 }
