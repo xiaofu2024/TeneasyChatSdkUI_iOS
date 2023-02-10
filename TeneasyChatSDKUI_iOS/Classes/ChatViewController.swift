@@ -272,7 +272,13 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     }
 
     func sendImage(url: String) {
-        lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
+        //lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
+        lib.sendMessageImage(url: url)
+        if let cMsg = lib.sendingMsg {
+//                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
+//                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId ?? 0)
+        }
     }
 
     func toolBar(toolBar: BWKeFuChatToolBar, menuView: BWKeFuChatMenuView, collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, model: BEmotion) {
@@ -363,30 +369,13 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
     }
 
-    func upload3() {
-        guard let imageData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
-
-        var url = URL(string: "https://csapi.xdev.stream/v1/assets/upload")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = imageData
-        request.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
-
-        var response: URLResponse?
-        var error: NSError?
-        let urlData = try? NSURLConnection.sendSynchronousRequest(request, returning: &response)
-
-        let results = NSString(data: urlData!, encoding: String.Encoding.utf8.rawValue)
-        print("API Response: \(results)")
-    }
-
     func upload() {
 //        guard let imgData = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
 
         guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
 
         // Set Your URL
-        let api_url = "https://csapi.xdev.stream/v1/assets/upload"
+        let api_url =  baseUrlApi +  "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
             return
         }
@@ -424,24 +413,20 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 // Current upload progress of file
                 print("Upload Progress: \(progress.fractionCompleted)")
             })
-            .responseJSON(completionHandler: { data in
-
-                switch data.result {
-                case .success:
+            .response(completionHandler: { data in
+                switch data.result{
+                case .success :
                     do {
-                        let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
-
-                        print("Success!")
-                        print(dictionary)
-                    } catch {
-                        // catch error.
+                        let path = String(data: data.data!, encoding: String.Encoding.utf8)
+                        let imgUrl = baseUrlImage + path!
+                        print(imgUrl)
+                        self.sendImage(url: imgUrl)
+                    }catch{
                         print("catch error")
                     }
-
                 case .failure(let error):
                     print("failure" + error.localizedDescription)
                 }
-
             })
     }
 
