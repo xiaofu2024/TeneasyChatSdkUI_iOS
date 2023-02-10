@@ -57,8 +57,6 @@ class BWChatCell: UITableViewCell {
         self.addSubview(self.titleLab)
         self.addSubview(self.imgView)
         self.imgView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(12)
-            make.right.equalToSuperview().offset(-100)
             make.top.equalTo(self.timeLab.snp.bottom)
             make.height.equalTo(160)
         }
@@ -127,6 +125,11 @@ class BWChatLeftCell: BWChatCell {
             make.left.equalToSuperview().offset(12)
             make.bottom.equalToSuperview()
         }
+        self.imgView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-100)
+        }
+
     }
     
     required init?(coder: NSCoder) {
@@ -163,7 +166,10 @@ class BWChatRightCell: BWChatCell {
             make.width.height.equalTo(20)
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
         }
-        
+        self.imgView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(100)
+            make.right.equalToSuperview().offset(-12)
+        }
         self.loadingView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(clickErrorIcon)))
     }
     
