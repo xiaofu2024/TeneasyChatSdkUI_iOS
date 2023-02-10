@@ -57,6 +57,8 @@ class BWChatCell: UITableViewCell {
         self.addSubview(self.titleLab)
         self.addSubview(self.imgView)
         self.imgView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(12)
+            make.width.equalTo(kScreenWidth - 12 - 80)
             make.top.equalTo(self.timeLab.snp.bottom)
             make.height.equalTo(160)
         }
@@ -89,12 +91,12 @@ class BWChatCell: UITableViewCell {
     }
     
     func initImg(imgUrl: URL) {
-        self.imgView.kf.setImage(with: imgUrl)
         self.imgView.snp.updateConstraints { make in
             make.height.equalTo(160)
         }
+        self.imgView.kf.setImage(with: imgUrl)
         self.titleLab.isHidden = true
-        
+        self.imgView.isHidden = false
     }
 
     func initTitle() {
@@ -102,7 +104,7 @@ class BWChatCell: UITableViewCell {
             make.height.equalTo(0)
         }
         self.titleLab.isHidden = false
-        
+        self.imgView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -125,18 +127,17 @@ class BWChatLeftCell: BWChatCell {
             make.left.equalToSuperview().offset(12)
             make.bottom.equalToSuperview()
         }
-        self.imgView.snp.makeConstraints { make in
+        self.imgView.snp.updateConstraints { make in
             make.left.equalToSuperview().offset(12)
-            make.right.equalToSuperview().offset(-100)
         }
-
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 }
-typealias  BWChatRightCellResendBlock = (String) -> ()
+
+typealias BWChatRightCellResendBlock = (String) -> ()
 
 class BWChatRightCell: BWChatCell {
     var resendBlock: BWChatRightCellResendBlock?
@@ -161,16 +162,16 @@ class BWChatRightCell: BWChatCell {
             make.right.equalToSuperview().offset(-12)
             make.bottom.equalToSuperview()
         }
+        self.imgView.snp.updateConstraints { make in
+            make.left.equalToSuperview().offset(80)
+        }
         self.addSubview(self.loadingView)
         self.loadingView.snp.makeConstraints { make in
-            make.width.height.equalTo(20)
+            make.top.equalTo(self.timeLab.snp.bottom).offset(0)
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
+            make.width.height.equalTo(20)
         }
-        self.imgView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(100)
-            make.right.equalToSuperview().offset(-12)
-        }
-        self.loadingView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(clickErrorIcon)))
+        self.loadingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.clickErrorIcon)))
     }
     
     @objc func clickErrorIcon() {
@@ -188,23 +189,21 @@ class BWChatRightCell: BWChatCell {
     }
     
     func initLoadingForTitel() {
-        self.loadingView.snp.makeConstraints { make in
-            make.centerY.equalTo(self.titleLab.snp.centerY)
+        self.loadingView.snp.updateConstraints { make in
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
         }
         self.initLoadingicon()
     }
 
     func initLoadingForImage() {
-        self.loadingView.snp.makeConstraints { make in
-            make.centerY.equalTo(self.imgView.snp.centerY)
-            make.right.equalTo(self.imgView.snp.left).offset(-10)
+        self.loadingView.snp.updateConstraints { make in
+            make.right.equalTo(self.titleLab.snp.left).offset(-kScreenWidth + 88)
         }
         self.initLoadingicon()
     }
     
     func initLoadingicon() {
-        let path = BundleUtil.getCurrentBundle().path(forResource:"clock", ofType:"gif")
+        let path = BundleUtil.getCurrentBundle().path(forResource: "clock", ofType: "gif")
         let url = URL(fileURLWithPath: path!)
         let provider = LocalFileImageDataProvider(fileURL: url)
         if model?.sendStatus == .发送中 {
