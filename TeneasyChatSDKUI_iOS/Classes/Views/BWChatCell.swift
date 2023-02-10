@@ -160,7 +160,6 @@ class BWChatRightCell: BWChatCell {
         }
         self.addSubview(self.loadingView)
         self.loadingView.snp.makeConstraints { make in
-            make.centerY.equalTo(self.titleLab.snp.centerY)
             make.width.height.equalTo(20)
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
         }
@@ -183,7 +182,7 @@ class BWChatRightCell: BWChatCell {
     }
     
     func initLoadingForTitel() {
-        self.loadingView.snp.updateConstraints { make in
+        self.loadingView.snp.makeConstraints { make in
             make.centerY.equalTo(self.titleLab.snp.centerY)
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
         }
@@ -191,7 +190,7 @@ class BWChatRightCell: BWChatCell {
     }
 
     func initLoadingForImage() {
-        self.loadingView.snp.updateConstraints { make in
+        self.loadingView.snp.makeConstraints { make in
             make.centerY.equalTo(self.imgView.snp.centerY)
             make.right.equalTo(self.imgView.snp.left).offset(-10)
         }
