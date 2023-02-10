@@ -40,7 +40,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     lazy var headerTitle: UILabel = {
         let v = UILabel(frame: CGRect.zero)
-        v.text = "客服小福"
+        v.text = "--"
         return v
     }()
 
@@ -177,7 +177,13 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     }
 
     func loadWorker(workerId: Int32) {
-        NetworkUtil.getWorker(workerId: workerId) { _, _ in
+        NetworkUtil.getWorker(workerId: workerId) { success, model in
+            if (success ) {
+                self.headerTitle.text = model?.workerName ?? "--"
+                if (model?.workerAvatar?.isEmpty == false) {
+                    self.headerImg.kf.setImage(with: URL.init(string: model?.workerAvatar ?? "")!)
+                }
+            }
         }
     }
 }

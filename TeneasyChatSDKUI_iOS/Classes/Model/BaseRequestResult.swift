@@ -8,14 +8,15 @@
 import Foundation
 import HandyJSON
 
-class BaseRequestResult: HandyJSON {
+class BaseRequestResult<T>: HandyJSON {
     var code: Int?
-    var success: Bool?
+    var msg: String?
+    var data: T?
     required init() {}
 }
 
 class WorkerModel: HandyJSON {
-//    var code: Int?
-//    var success: Bool?
+    var workerName: String?
+    var workerAvatar: String?
     required init() {}
 }
