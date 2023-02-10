@@ -168,6 +168,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
 
     public func systemMsg(msg: String) {
         print("systemMsg")
+        print(msg)
     }
 
     public func connected(c: Gateway_SCHi) {
