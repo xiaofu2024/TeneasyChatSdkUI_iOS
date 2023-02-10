@@ -329,7 +329,6 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
         chooseImg = image
         upload()
-        sendImage(url: "")
         picker.dismiss(animated: false) {}
     }
 
