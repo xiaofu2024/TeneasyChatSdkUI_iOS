@@ -14,6 +14,7 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
+    var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
     }
@@ -116,9 +117,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     }
 
     func initSDK() {
-        // 从网页端把chatId和token传进sdk,
-        lib = ChatLib(chatId: 2692944494602,
-                      token: "CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ")
+        // 从网页端把chatId和token传进sdk, 测试chatId:2692944494602, 实际放0就好
+        lib = ChatLib(chatId: 0,
+                      token: self.token)
         lib.callWebsocket()
         lib.delegate = self
     }
@@ -136,12 +137,14 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let index = datasouceArray.firstIndex { model in
             model.payLoadId == payloadId
         }
-        if (index ?? -1) > -1 {
+        if index != nil &&  index != -1{
             if msg.msgID == 0 {
                 datasouceArray[index!].sendStatus = .发送失败
+                print("状态更新 -> 发送失败")
             } else {
                 datasouceArray[index!].sendStatus = .发送成功
                 datasouceArray[index!].message = msg
+                print("状态更新 -> 发送成功")
             }
             
             tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
@@ -181,8 +184,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         NetworkUtil.getWorker(workerId: workerId) { success, model in
             if (success ) {
                 self.headerTitle.text = model?.workerName ?? "--"
-                if (model?.workerAvatar?.isEmpty == false) {
-                    self.headerImg.kf.setImage(with: URL.init(string: model?.workerAvatar ?? "")!)
+                if (model?.workerAvatar?.isEmpty == false && model?.workerAvatar != nil) {
+                    self.headerImg.kf.setImage(with: URL.init(string: baseUrlImage + model!.workerAvatar!))
                 }
                 let msg = self.lib.composeMessage(textMsg: "你好，我是客服" + (model?.workerName ?? "") )
                 self.appendDataSource(msg: msg, isLeft: true)
@@ -418,14 +421,14 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
             .response(completionHandler: { data in
                 switch data.result{
                 case .success :
-                    do {
-                        let path = String(data: data.data!, encoding: String.Encoding.utf8)
-                        let imgUrl = baseUrlImage + path!
+                    
+                    if let filePath = data.data{
+                        let path = String(data: filePath, encoding: String.Encoding.utf8)
+                        let imgUrl = baseUrlImage + (path ?? "")
                         print(imgUrl)
                         self.sendImage(url: imgUrl)
-                    }catch{
-                        print("catch error")
                     }
+                   
                 case .failure(let error):
                     print("failure" + error.localizedDescription)
                 }

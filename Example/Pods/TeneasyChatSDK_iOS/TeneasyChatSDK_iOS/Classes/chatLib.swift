@@ -35,10 +35,10 @@ public class ChatLib {
     var session = Session()
     
     var myTimer: Timer?
-    var timerFlag: Int = 60
+    var timerFlag: Int = 5
     var chooseImg: UIImage?
     var beatMinutes = 0
-    var maxSessionMinutes = 5
+    var maxSessionMinutes = 30
     
     public init() {}
 
@@ -86,7 +86,7 @@ public class ChatLib {
         if beatMinutes > maxSessionMinutes {
             stopTimer()
         } else if timerFlag <= 0 {
-            timerFlag = 60
+            timerFlag = 5
             // print("发送心跳" + Date().getFormattedDate(format: "HH:mm:ss"))
             sendHeartBeat()
             beatMinutes += 1
@@ -209,6 +209,7 @@ public class ChatLib {
 
         let myData = Data(bytes: array)
         send(binaryData: myData)
+        print("sending heart beat")
     }
     
     private func send(binaryData: Data) {
@@ -216,18 +217,27 @@ public class ChatLib {
             print("断开了")
             if beatMinutes > maxSessionMinutes {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
+                failedToSend()
             } else {
                 callWebsocket()
                 delegate?.systemMsg(msg: "断开了，重新连接。。。")
+                failedToSend()
             }
         } else {
             if beatMinutes > maxSessionMinutes {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
+                failedToSend()
             } else {
                 websocket?.write(data: binaryData, completion: ({
                     print("msg sent")
                 }))
             }
+        }
+    }
+    
+    private func failedToSend(){
+        if sendingMsg != nil{
+            delegate?.msgReceipt(msg: sendingMsg!, payloadId: payloadId!)
         }
     }
     
@@ -271,7 +281,7 @@ extension ChatLib: WebSocketDelegate {
         switch event {
         case .connected:
             // print("connected" + headers.description)
-            delegate?.systemMsg(msg: "已断开连接")
+            delegate?.systemMsg(msg: "已连接上")
 //           if sendingMsg != nil{
 //               self.sendMessage(msg: sendingMsg!.content.data)
 //           }
