@@ -35,9 +35,9 @@ public class ChatLib {
     var session = Session()
     
     var myTimer: Timer?
-    var timerFlag: Int = 5
+    var sessionTime: Int = 0
     var chooseImg: UIImage?
-    var beatMinutes = 0
+    var beatTimes = 0
     var maxSessionMinutes = 30
     
     public init() {}
@@ -45,7 +45,7 @@ public class ChatLib {
     public init(chatId: Int64, token: String) {
         self.chatId = chatId
         self.token = token
-        beatMinutes = 0
+        beatTimes = 0
         print(text)
     }
     
@@ -81,15 +81,15 @@ public class ChatLib {
         myTimer!.fire()
     }
 
+    
     @objc func updataSecond() {
-        timerFlag -= 1
-        if beatMinutes > maxSessionMinutes {
+        sessionTime += 1
+        if sessionTime/8 == 0{//每隔8秒发送一个心跳
+            beatTimes += 1
+        }
+        
+        if sessionTime * 60 > maxSessionMinutes{//超过最大会话，停止发送心跳
             stopTimer()
-        } else if timerFlag <= 0 {
-            timerFlag = 5
-            // print("发送心跳" + Date().getFormattedDate(format: "HH:mm:ss"))
-            sendHeartBeat()
-            beatMinutes += 1
         }
     }
 
@@ -215,7 +215,7 @@ public class ChatLib {
     private func send(binaryData: Data) {
         if !isConnected {
             print("断开了")
-            if beatMinutes > maxSessionMinutes {
+            if sessionTime > maxSessionMinutes {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
                 failedToSend()
             } else {
@@ -224,7 +224,7 @@ public class ChatLib {
                 failedToSend()
             }
         } else {
-            if beatMinutes > maxSessionMinutes {
+            if sessionTime * 60 > maxSessionMinutes {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
                 failedToSend()
             } else {
@@ -301,7 +301,9 @@ extension ChatLib: WebSocketDelegate {
                         delegate?.systemMsg(msg: "在别处登录了")
                     }
                     print(d)
+                    isConnected = false
                 }
+                
             } else {
                 let payLoad = try? Gateway_Payload(serializedData: data)
                 let msgData = payLoad?.data

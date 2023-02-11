@@ -14,7 +14,8 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
-   open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+   //open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+    open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
     }
@@ -137,7 +138,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let index = datasouceArray.firstIndex { model in
             model.payLoadId == payloadId
         }
-        if index != nil &&  index != -1{
+        if (index ?? -1) > -1{
             if msg.msgID == 0 {
                 datasouceArray[index!].sendStatus = .发送失败
                 print("状态更新 -> 发送失败")
@@ -177,7 +178,11 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func connected(c: Gateway_SCHi) {
         print("work id\(c.workerID)")
         WWProgressHUD.dismiss()
-        loadWorker(workerId: c.workerID)
+        if c.workerID == 0{//如果没有分配到客服
+            lib.callWebsocket() //重新连接
+        }else{
+            loadWorker(workerId: c.workerID)
+        }
     }
 
     func loadWorker(workerId: Int32) {
