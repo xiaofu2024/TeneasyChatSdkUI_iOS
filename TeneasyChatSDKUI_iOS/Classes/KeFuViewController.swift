@@ -14,7 +14,7 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
-    var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+   open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
     }
