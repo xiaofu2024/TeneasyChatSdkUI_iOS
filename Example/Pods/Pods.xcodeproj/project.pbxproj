@@ -1945,7 +1945,6 @@
 		C74B654260D4AA3E35750E58FCFEB5DD /* emoticon_117.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_117.png; sourceTree = "<group>"; };
 		C763F3CC22B9FA4A05F73327A60295CF /* SVGKLayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVGKLayer.h; path = "Source/QuartzCore additions/SVGKLayer.h"; sourceTree = "<group>"; };
 		C79A57199251B79F1324FA0E20290C67 /* ISOFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ISOFormatter.swift; path = Sources/SwiftDate/Formatters/ISOFormatter.swift; sourceTree = "<group>"; };
-		C7D67F562996728B00B56650 /* TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		C7D67F572996728C00B56650 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constant.swift; path = ../Constant.swift; sourceTree = "<group>"; };
 		C856480DE77B2EA337CF8640696B5A16 /* sentry.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = sentry.pb.swift; path = TeneasyChatSDK_iOS/Classes/swiftOut/api/sentry/sentry.pb.swift; sourceTree = "<group>"; };
 		C8871F5957FDECEFEA206C2EF3311D2E /* emoticon_32.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_32.png; sourceTree = "<group>"; };
@@ -2916,7 +2915,6 @@
 				B82699B2AAE07DAA9586E88C075A67CB /* BEmotionHelper.swift */,
 				ADCB1D4504B4DE51AB421DFEDB1849C1 /* ChatModel.swift */,
 				C7D67F572996728C00B56650 /* Constant.swift */,
-				C7D67F562996728B00B56650 /* TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h */,
 			);
 			name = Model;
 			path = TeneasyChatSDKUI_iOS/Classes/Model;
