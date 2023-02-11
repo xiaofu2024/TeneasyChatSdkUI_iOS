@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/7938813/TeneasyChatSDKUI_iOS'
+  s.homepage         = 'https://repo.xdev.stream/xiaofu/TeneasyChatSdkUI_iOS'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { '7938813' => 'tianxuefeng2010@gmail.com' }
