@@ -13,7 +13,7 @@ import TeneasyChatSDK_iOS
 // import TeneasyChatSDKUI_iOS
 import UIKit
 
-open class ChatViewController: UIViewController, teneasySDKDelegate {
+open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
     }
@@ -189,7 +189,7 @@ open class ChatViewController: UIViewController, teneasySDKDelegate {
     }
 }
 
-extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
+extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = datasouceArray[indexPath.row]
         if model.isLeft {
@@ -211,7 +211,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension ChatViewController: BWKeFuChatToolBarDelegate {
+extension KeFuViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedVoice btn: UIButton) {}
 
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedMenu btn: UIButton) {}
@@ -307,7 +307,7 @@ extension ChatViewController: BWKeFuChatToolBarDelegate {
     }
 }
 
-extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func presentNoauth(isPhoto: Bool) {
         let vc = WWNoAuthorizeVC()
         vc.modalPresentationStyle = .fullScreen
@@ -445,7 +445,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 
 // MARK: - ----------------监听键盘高度变化
 
-extension ChatViewController {
+extension KeFuViewController {
     @objc func keyboardWillChangeFrame(node: Notification) {
         // 1.获取动画执行的时间
         let duration = node.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval

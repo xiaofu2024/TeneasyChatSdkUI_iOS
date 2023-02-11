@@ -509,7 +509,7 @@
 		895AC7915912B0FBB5894EC5D56757F7 /* error.svg in Resources */ = {isa = PBXBuildFile; fileRef = 38B476F60EC49BAD647C3DA6F65969E5 /* error.svg */; };
 		89DF2D9C5EFB02A72EC0CE2138B77F35 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 91EF2812F18C955E691D785D16402E2E /* SVProgressHUD.m */; };
 		8A7A14267160A9EACDC74A9E21B8F058 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E221C07D3CA41183DAE4A8F51FD78C /* Image.swift */; };
-		8B3442EF9690AE464CC190D9118E49D8 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6915AE610CB19232E0051F784F6B /* ChatViewController.swift */; };
+		8B3442EF9690AE464CC190D9118E49D8 /* KeFuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6915AE610CB19232E0051F784F6B /* KeFuViewController.swift */; };
 		8B3B49988BC7AC0299B25A5F0477EA01 /* emoticon_60.png in Resources */ = {isa = PBXBuildFile; fileRef = 010566263C381980465785F4C6F377C1 /* emoticon_60.png */; };
 		8B53093E7FF4BA6221AA9EC142DED544 /* SVGGradientStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C25F560687799F8AC785A4686FAD78 /* SVGGradientStop.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		8B8262CD8C627538A4A174B9A1096AD4 /* TeneasyChatSDK_iOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BF097235453D86B533C857E1975E2674 /* TeneasyChatSDK_iOS-dummy.m */; };
@@ -1284,7 +1284,7 @@
 		2429BF539712C8405650F4F10DC40509 /* ConstraintPriorityTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriorityTarget.swift; path = Source/ConstraintPriorityTarget.swift; sourceTree = "<group>"; };
 		24CD71EBE629C7EDB9D3355378B4414E /* DiskStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DiskStorage.swift; path = Sources/Cache/DiskStorage.swift; sourceTree = "<group>"; };
 		24D91DB62FFC69BDB66B1779A3BB2A23 /* CALayerWithChildHitTest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CALayerWithChildHitTest.m; path = "Source/QuartzCore additions/CALayerWithChildHitTest.m"; sourceTree = "<group>"; };
-		24DD6915AE610CB19232E0051F784F6B /* ChatViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = TeneasyChatSDKUI_iOS/Classes/ChatViewController.swift; sourceTree = "<group>"; };
+		24DD6915AE610CB19232E0051F784F6B /* KeFuViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeFuViewController.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController.swift; sourceTree = "<group>"; };
 		251EE265E794A85D196F2F50CCA45B59 /* HandyJSON-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "HandyJSON-prefix.pch"; sourceTree = "<group>"; };
 		2540BCDDE562F35B0BFC7A9080B5CCD3 /* source_context.pb.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = source_context.pb.swift; path = Sources/SwiftProtobuf/source_context.pb.swift; sourceTree = "<group>"; };
 		2549D8C0C7FDF35E9EB5AB4980640B85 /* CharacterData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CharacterData.m; path = "Source/DOM classes/Core DOM/CharacterData.m"; sourceTree = "<group>"; };
@@ -3177,7 +3177,7 @@
 		9B8200DEBB650385860A291938059603 /* TeneasyChatSDKUI_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				24DD6915AE610CB19232E0051F784F6B /* ChatViewController.swift */,
+				24DD6915AE610CB19232E0051F784F6B /* KeFuViewController.swift */,
 				74FF55A1E75AA08180FC827FA9742BA7 /* emoticon */,
 				6F79959DA3EEB88C24EE3E783A613032 /* png */,
 				11096A78E50E1CD9010520B01E5847E6 /* svg */,
@@ -5282,7 +5282,7 @@
 				19BD3CCBA3073B48247E39C4FB36E37F /* BWKeFuChatToolBar.swift in Sources */,
 				CDA2E8A7D033419ED2EB89AB7309DC28 /* BWLabel.swift in Sources */,
 				750B739F5A3B25432AB243EC796DC81E /* ChatModel.swift in Sources */,
-				8B3442EF9690AE464CC190D9118E49D8 /* ChatViewController.swift in Sources */,
+				8B3442EF9690AE464CC190D9118E49D8 /* KeFuViewController.swift in Sources */,
 				806F22FEBE81B9C9B0A98DDE2331EA7D /* ConstConfig.swift in Sources */,
 				DDA9FFC1183BB8A48635433D2788ED43 /* NetUtil.swift in Sources */,
 				DE73861ED52B9BB1A0C464E1945FB15A /* NetworkUtil.swift in Sources */,

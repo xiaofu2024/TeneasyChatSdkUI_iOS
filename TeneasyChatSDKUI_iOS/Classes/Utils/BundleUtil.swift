@@ -32,8 +32,8 @@ class BundleUtil {
     
     static func getCurrentBundle() -> Bundle{
         
-        let frameworkClass: AnyClass = ChatViewController.self
-        guard let moduleName = String(reflecting: ChatViewController.self).components(separatedBy: ".").first else {
+        let frameworkClass: AnyClass = KeFuViewController.self
+        guard let moduleName = String(reflecting: KeFuViewController.self).components(separatedBy: ".").first else {
             fatalError("Couldn't determine module name from class \(frameworkClass)")
         }
 
