@@ -83,7 +83,6 @@
 		102C6776250F72C509A1E2AEB76A1945 /* CustomJSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F809D7320A8DCEEFD39C5E4688EC07BF /* CustomJSONCodable.swift */; };
 		103EDAAFB0BC2BE72BD9A4408081B3E1 /* emoticon_80.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A70DF0237D1BDCE99AA102A3D6EE9F2 /* emoticon_80.png */; };
 		111A94C799B868EF01639B2B7E403D5C /* CDATASection.h in Headers */ = {isa = PBXBuildFile; fileRef = D9BB203EB80D362FA4AFA193CA2B356D /* CDATASection.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		11CB88C45BBBA682FD66AD13A9D0EDC7 /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1168BFE21AA12DBCAC45510149C93 /* UIImage+GIF.m */; };
 		11CF31D1DE5D236753432889A481731E /* SVGMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = C93DDFBB79EB7BD6CB786B2E1217C18B /* SVGMatrix.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		11D2CC613DDFB60FD80568353A2EB706 /* emoticon_43.png in Resources */ = {isa = PBXBuildFile; fileRef = 994ED9EBEC12FDBFE37AB07053875A45 /* emoticon_43.png */; };
 		11F2B1DF419EC68AD10D2A1D1176B082 /* SwiftDate-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 086534C7351D06D1871A7F2D7A7DB9C9 /* SwiftDate-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -256,7 +255,6 @@
 		42775AAB6DF49634F57264496C65C443 /* c_operate.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11298B6A24E05F961F4C57C172B83E82 /* c_operate.pb.swift */; };
 		42B43A15ADA9F66F4E2AD66666943F26 /* SwiftDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF475DA2FC5387473F694CCDD74622DA /* SwiftDate.swift */; };
 		430ACE0BBF2BA1E545B1EC37AF36EDF3 /* CocoaLumberjack-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B042821DD090233353863FE3EF826C6 /* CocoaLumberjack-dummy.m */; };
-		430E132F49382D4E47B7ED439CC7181F /* UIImage+GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = 595F7FCD27CC294B9C94039705456F81 /* UIImage+GIF.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43695D42876A152D816E37EF5702E445 /* emoticon_129.png in Resources */ = {isa = PBXBuildFile; fileRef = 18138976E5C4B987A3D214CC3E8D0AD5 /* emoticon_129.png */; };
 		438435650DCB53ECC4DD0CB73F96A109 /* g_pubsub.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED68299FC0F413E54132822390DCE09E /* g_pubsub.pb.swift */; };
 		43863B6D6A0E47B6648BB7B469736EDD /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9168012F8EB4330BE667CFAF3F352BBE /* LayoutConstraint.swift */; };
@@ -1189,7 +1187,6 @@
 		0B6706460A0085AB305D63FBAE70B0EF /* SVGGradientStop.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVGGradientStop.h; path = "Source/DOM classes/Unported or Partial DOM/SVGGradientStop.h"; sourceTree = "<group>"; };
 		0BA6632EB1511B94BE12B46C852FDFDA /* TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		0BC006182A9090EF4930A9C4702FCED1 /* Message+BinaryAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Message+BinaryAdditions.swift"; path = "Sources/SwiftProtobuf/Message+BinaryAdditions.swift"; sourceTree = "<group>"; };
-		0BF1168BFE21AA12DBCAC45510149C93 /* UIImage+GIF.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GIF.m"; sourceTree = "<group>"; };
 		0C2F3CABD7A9D4E0EA56772844A4C938 /* ExtensionHelpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtensionHelpers.swift; path = Sources/Utility/ExtensionHelpers.swift; sourceTree = "<group>"; };
 		0C6BD92D59F269B1B28ABC2CDCCCD263 /* Node+Mutable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Node+Mutable.h"; path = "Source/DOM classes/Core DOM/Node+Mutable.h"; sourceTree = "<group>"; };
 		0D8554F9D9BDC6AF70DE779D25BBDE96 /* BWLabel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BWLabel.swift; sourceTree = "<group>"; };
@@ -1501,7 +1498,6 @@
 		59099082BF68FCDC9AEE5D7A4482D23E /* IQKeyboardReturnKeyHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IQKeyboardReturnKeyHandler.swift; path = IQKeyboardManagerSwift/IQKeyboardReturnKeyHandler.swift; sourceTree = "<group>"; };
 		59152DF1C130E4288F25DD72EB7393AA /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/SessionDelegate.swift; sourceTree = "<group>"; };
 		594D2F724DA95F967EE04EFD7CD4B388 /* DocumentFragment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DocumentFragment.h; path = "Source/DOM classes/Core DOM/DocumentFragment.h"; sourceTree = "<group>"; };
-		595F7FCD27CC294B9C94039705456F81 /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImage+GIF.h"; sourceTree = "<group>"; };
 		5962FDCBFBD6C2738C0AC8D592BA243F /* h5_kfrukou.svg */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = h5_kfrukou.svg; sourceTree = "<group>"; };
 		59ECFE71E7682A57F1BB6A84D514C1AF /* emoticon_86.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_86.png; sourceTree = "<group>"; };
 		5A4A6D43D35A17DEC13142FD4756812D /* SVGKParserExtension.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVGKParserExtension.h; path = Source/Parsers/SVGKParserExtension.h; sourceTree = "<group>"; };
@@ -2900,8 +2896,6 @@
 		46238D1A31C0B8E5133C6648157937F6 /* WWProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
-				595F7FCD27CC294B9C94039705456F81 /* UIImage+GIF.h */,
-				0BF1168BFE21AA12DBCAC45510149C93 /* UIImage+GIF.m */,
 				A7E7C586969D05ED3C8208F1BAA7E142 /* WWProgressHUD.swift */,
 			);
 			path = WWProgressHUD;
@@ -3848,7 +3842,6 @@
 			files = (
 				4D11BACC1CE3424EEAF101A946CD8194 /* TeneasyChatSDKUI_iOS-TeneasyChatSDKUI_iOS-Bridging-Header.h in Headers */,
 				6C8B51FA8BCC4F4BC157BFB43D88EB01 /* TeneasyChatSDKUI_iOS-umbrella.h in Headers */,
-				430E132F49382D4E47B7ED439CC7181F /* UIImage+GIF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5286,7 +5279,6 @@
 				DE73861ED52B9BB1A0C464E1945FB15A /* NetworkUtil.swift in Sources */,
 				7E6A6B2124192E29F5DD5C101D46DBEC /* TeneasyChatSDKUI_iOS-dummy.m in Sources */,
 				C7D67F582996728C00B56650 /* Constant.swift in Sources */,
-				11CB88C45BBBA682FD66AD13A9D0EDC7 /* UIImage+GIF.m in Sources */,
 				9430FE19522782C46EE71BFCEEDEC2AC /* Utils.swift in Sources */,
 				4CBA0B3F128A8000B553B3FA9AC37EBA /* WButton.swift in Sources */,
 				5DB2629F1796ED0C883F90FFA0A4B798 /* WTimeConvertUtil.swift in Sources */,
