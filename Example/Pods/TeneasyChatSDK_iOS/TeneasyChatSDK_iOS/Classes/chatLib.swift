@@ -88,7 +88,7 @@ public class ChatLib {
             beatTimes += 1
         }
         
-        if sessionTime * 60 > maxSessionMinutes{//超过最大会话，停止发送心跳
+        if sessionTime > maxSessionMinutes * 60{//超过最大会话，停止发送心跳
             stopTimer()
         }
     }
@@ -215,7 +215,7 @@ public class ChatLib {
     private func send(binaryData: Data) {
         if !isConnected {
             print("断开了")
-            if sessionTime > maxSessionMinutes {
+            if sessionTime > maxSessionMinutes * 60 {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
                 failedToSend()
             } else {
@@ -224,7 +224,7 @@ public class ChatLib {
                 failedToSend()
             }
         } else {
-            if sessionTime * 60 > maxSessionMinutes {
+            if sessionTime > maxSessionMinutes * 60 {
                 delegate?.systemMsg(msg: "会话超过30分钟，需要重新进入")
                 failedToSend()
             } else {

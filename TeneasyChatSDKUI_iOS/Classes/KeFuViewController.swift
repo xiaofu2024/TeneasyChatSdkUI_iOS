@@ -383,6 +383,14 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
 //        guard let imgData = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
 
         guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
+        
+        //let imageStrTT = imgData.base64EncodedString()
+        //if imageStrTT.lengthOfBytes(using: <#T##String.Encoding#>)
+        let tt = imgData.count
+        if tt > 1024000{
+            print("图片不能超过1M")
+            return
+        }
 
         // Set Your URL
         let api_url =  baseUrlApi +  "/v1/assets/upload/"
