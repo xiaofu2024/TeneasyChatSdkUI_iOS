@@ -98,14 +98,11 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
-        self.navigationItem.leftBarButtonItem = nil
+        //self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.setHidesBackButton(true, animated: false)
         
         let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action:  #selector(quit))
-        rightBarItem.setTitleTextAttributes([.font:UIFont.systemFontSize, .foregroundColor:UIColor.black], for: .normal)
-        rightBarItem.setTitleTextAttributes([.font:UIFont.systemFontSize, .foregroundColor:UIColor.black], for: .disabled)
         self.navigationItem.rightBarButtonItem = rightBarItem
-        
-        //self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
