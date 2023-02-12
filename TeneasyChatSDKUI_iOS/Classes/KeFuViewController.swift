@@ -316,21 +316,8 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
         return true
     }
     
-    func upload() {
-        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
-        let tt = imgData.count
-        if tt > 1024000{
-            print("图片不能超过1M")
-            // Create a new alert
-            /*let alertVC = UIAlertController(title: "提示", message: "图片不能超过1M", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { (_) in
-                
-            })
-            alertVC.addAction(cancelAction)
-            present(alertVC, animated: true, completion: nil)*/
-            return
-        }
-
+    func upload(imgData: Data) {
+        
         // Set Your URL
         let api_url =  baseUrlApi +  "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
@@ -410,7 +397,18 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
             return imagePickerControllerDidCancel(picker)
         }
         chooseImg = image
-        upload()
+        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
+        let tt = imgData.count
+        if tt > 1024000{
+            print("图片不能超过1M")
+            let alertVC = UIAlertController(title: "提示", message: "图片不能超过1M", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { (_) in
+            })
+            alertVC.addAction(cancelAction)
+            picker.present(alertVC, animated: true, completion: nil)
+            return
+        }
+        upload(imgData: imgData)
         picker.dismiss(animated: false) {}
     }
 
