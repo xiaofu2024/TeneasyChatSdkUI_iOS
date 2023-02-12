@@ -315,6 +315,78 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     @objc func toolBar(toolBar: BWKeFuChatToolBar, changed text: String, range: NSRange) -> Bool {
         return true
     }
+    
+    func upload() {
+        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
+        let tt = imgData.count
+        if tt > 1024000{
+            print("图片不能超过1M")
+            // Create a new alert
+            /*let alertVC = UIAlertController(title: "提示", message: "图片不能超过1M", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { (_) in
+                
+            })
+            alertVC.addAction(cancelAction)
+            present(alertVC, animated: true, completion: nil)*/
+            return
+        }
+
+        // Set Your URL
+        let api_url =  baseUrlApi +  "/v1/assets/upload/"
+        guard let url = URL(string: api_url) else {
+            return
+        }
+
+        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+        urlRequest.httpMethod = "POST"
+        // urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let contentType = "multipart/form-data; " + boundary
+
+        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
+        urlRequest.httpBody = imgData
+
+        urlRequest.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
+
+        // Set Your Parameter
+        let parameterDict = NSMutableDictionary()
+        parameterDict.setValue(1, forKey: "type")
+        // parameterDict.setValue("phot.png", forKey: "myFile")
+
+        // Now Execute
+        AF.upload(multipartFormData: { multiPart in
+            for (key, value) in parameterDict {
+                if let temp = value as? String {
+                    multiPart.append(temp.data(using: .utf8)!, withName: key as! String)
+                }
+                if let temp = value as? Int {
+                    multiPart.append("\(temp)".data(using: .utf8)!, withName: key as! String)
+                }
+            }
+            multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
+        }, with: urlRequest)
+            .uploadProgress(queue: .main, closure: { progress in
+                // Current upload progress of file
+                print("Upload Progress: \(progress.fractionCompleted)")
+            })
+            .response(completionHandler: { data in
+                switch data.result{
+                case .success :
+                    
+                    if let filePath = data.data{
+                        let path = String(data: filePath, encoding: String.Encoding.utf8)
+                        let imgUrl = baseUrlImage + (path ?? "")
+                        print(imgUrl)
+                        self.sendImage(url: imgUrl)
+                    }
+                   
+                case .failure(let error):
+                    print("failure" + error.localizedDescription)
+                }
+            })
+    }
+
 }
 
 extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -379,75 +451,7 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
     }
 
-    func upload() {
-//        guard let imgData = UIImage(named: "lt_biaoqing", in: BundleUtil.getCurrentBundle(), compatibleWith: nil)?.jpegData(compressionQuality: 0.5) else { return }
-
-        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
-        
-        //let imageStrTT = imgData.base64EncodedString()
-        //if imageStrTT.lengthOfBytes(using: <#T##String.Encoding#>)
-        let tt = imgData.count
-        if tt > 1024000{
-            print("图片不能超过1M")
-            return
-        }
-
-        // Set Your URL
-        let api_url =  baseUrlApi +  "/v1/assets/upload/"
-        guard let url = URL(string: api_url) else {
-            return
-        }
-
-        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
-        urlRequest.httpMethod = "POST"
-        // urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-        let boundary = "Boundary-\(UUID().uuidString)"
-        let contentType = "multipart/form-data; " + boundary
-
-        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
-        urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
-        urlRequest.httpBody = imgData
-
-        urlRequest.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
-
-        // Set Your Parameter
-        let parameterDict = NSMutableDictionary()
-        parameterDict.setValue(1, forKey: "type")
-        // parameterDict.setValue("phot.png", forKey: "myFile")
-
-        // Now Execute
-        AF.upload(multipartFormData: { multiPart in
-            for (key, value) in parameterDict {
-                if let temp = value as? String {
-                    multiPart.append(temp.data(using: .utf8)!, withName: key as! String)
-                }
-                if let temp = value as? Int {
-                    multiPart.append("\(temp)".data(using: .utf8)!, withName: key as! String)
-                }
-            }
-            multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
-        }, with: urlRequest)
-            .uploadProgress(queue: .main, closure: { progress in
-                // Current upload progress of file
-                print("Upload Progress: \(progress.fractionCompleted)")
-            })
-            .response(completionHandler: { data in
-                switch data.result{
-                case .success :
-                    
-                    if let filePath = data.data{
-                        let path = String(data: filePath, encoding: String.Encoding.utf8)
-                        let imgUrl = baseUrlImage + (path ?? "")
-                        print(imgUrl)
-                        self.sendImage(url: imgUrl)
-                    }
-                   
-                case .failure(let error):
-                    print("failure" + error.localizedDescription)
-                }
-            })
-    }
-
+   
     func getStrFromImage() -> String {
         let imageOrigin = chooseImg
         if let image = imageOrigin {
