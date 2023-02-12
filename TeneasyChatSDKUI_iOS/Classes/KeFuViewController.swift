@@ -31,6 +31,26 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         v.backgroundColor = .white
         return v
     }()
+    lazy var systemInfoView: UIView = {
+        let v = UIView(frame: CGRect.zero)
+        v.backgroundColor = .clear
+        return v
+    }()
+    lazy var timeLabel: UILabel = {
+        let label = UILabel.init(frame: CGRect.zero)
+        label.textAlignment = .center
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    lazy var systemMsgLabel: UILabel = {
+        let label = UILabel.init(frame: CGRect.zero)
+        label.textAlignment = .center
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 13)
+        return label
+    }()
+
 
     lazy var headerImg: UIImageView = {
         let img = UIImageView(frame: CGRect.zero)
@@ -89,28 +109,48 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-kDeviceBottom)
         }
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalTo(toolBar.snp.top)
-        }
+        
+        self.view.addSubview(self.headerView)
         headerView.snp.makeConstraints { make in
             make.width.equalTo(kScreenWidth)
             make.height.equalTo(60)
+            make.left.equalToSuperview()
+            make.top.equalToSuperview().offset(kDeviceTop)
         }
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.headerView.snp.bottom)
+            make.bottom.equalTo(toolBar.snp.top)
+        }
+        
         headerView.addSubview(headerImg)
         headerImg.snp.makeConstraints { make in
             make.width.height.equalTo(50)
             make.left.equalToSuperview().offset(12)
-            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().offset(5)
         }
         headerView.addSubview(headerTitle)
         headerTitle.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(self.headerImg.snp.centerY)
             make.left.equalTo(self.headerImg.snp.right).offset(12)
         }
-        tableView.tableHeaderView = headerView
+        self.systemInfoView.addSubview(self.timeLabel)
+        self.systemInfoView.snp.makeConstraints { make in
+            make.height.equalTo(40)
+        }
+        self.timeLabel.snp.makeConstraints { make in
+            make.width.equalTo(kScreenWidth)
+            make.left.equalToSuperview()
+            make.top.equalToSuperview().offset(6)
+        }
+        self.systemInfoView.addSubview(self.systemMsgLabel)
+        self.systemMsgLabel.snp.makeConstraints { make in
+            make.width.equalTo(kScreenWidth)
+            make.left.equalToSuperview()
+            make.top.equalTo(self.timeLabel.snp.bottom)
+        }
+        tableView.tableHeaderView = systemInfoView
     }
 
     override open func didReceiveMemoryWarning() {
@@ -153,7 +193,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         scrollToBottom()
     }
     func scrollToBottom() {
-        if (tableView.contentSize.height > kScreenHeight - kDeviceBottom - 50 - kDeviceTop - 60) {
+        if (tableView.contentSize.height > kScreenHeight - kDeviceBottom - 60 - kDeviceTop - 40) {
             tableView.scrollToRow(at: IndexPath.init(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
         }
     }
@@ -173,6 +213,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func systemMsg(msg: String) {
         print("systemMsg")
         print(msg)
+        self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
+        self.systemMsgLabel.text = msg
     }
 
     public func connected(c: Gateway_SCHi) {

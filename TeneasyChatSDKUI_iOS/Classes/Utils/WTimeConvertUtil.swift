@@ -164,6 +164,14 @@ extension Date {
         return selfStr
     }
     
+    func dataWithFormat(fmtString: String) -> String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = fmtString
+        let selfStr = fmt.string(from: self)
+        let result = fmt.date(from: selfStr)!
+        return selfStr
+    }
+    
     ///获取当前年月日的时间戳
     func timeIntervalWithYMDDate() -> TimeInterval {
         let fmt = DateFormatter()
