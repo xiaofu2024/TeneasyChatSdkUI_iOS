@@ -101,7 +101,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         //self.navigationItem.leftBarButtonItem = nil
 //        self.navigationItem.setHidesBackButton(true, animated: false)
 //
-        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: KeFuViewController.self, action:  #selector(quit))
+        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action:  #selector(quit))
         self.navigationItem.rightBarButtonItem = rightBarItem
     }
 
@@ -111,6 +111,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     
     @objc func quit() {
         lib.disConnect()
+        self.navigationController?.popToRootViewController(animated: true)
     }
 
     func initView() {
