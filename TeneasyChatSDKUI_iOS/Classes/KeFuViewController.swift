@@ -99,9 +99,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         //self.navigationItem.leftBarButtonItem = nil
-        self.navigationItem.setHidesBackButton(true, animated: false)
-        
-        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action:  #selector(quit))
+//        self.navigationItem.setHidesBackButton(true, animated: false)
+//
+        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: KeFuViewController.self, action:  #selector(quit))
         self.navigationItem.rightBarButtonItem = rightBarItem
     }
 
