@@ -190,6 +190,12 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             
             tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
         }
+        
+        let arr = datasouceArray.filter{ modal in modal.message.msgID == 0}
+        for p in arr{
+            p.sendStatus = .发送失败
+            tableView.reloadData()
+        }
         scrollToBottom()
     }
     func scrollToBottom() {
@@ -213,7 +219,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func systemMsg(msg: String) {
         print("systemMsg")
         print(msg)
-        self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
+        //self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
+        self.timeLabel.text = WTimeConvertUtil.displayLocalTime(from: Date())
         self.systemMsgLabel.text = msg
     }
 
@@ -441,10 +448,11 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
         chooseImg = image
         guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
         let tt = imgData.count
-        if tt > 1024000{
-            print("图片不能超过1M")
-            let alertVC = UIAlertController(title: "提示", message: "图片不能超过1M", preferredStyle: .alert)
+        if tt > 2048000{
+            print("图片不能超过2M")
+            let alertVC = UIAlertController(title: "提示", message: "图片不能超过2M", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { (_) in
+                picker.dismiss(animated: true)
             })
             alertVC.addAction(cancelAction)
             picker.present(alertVC, animated: true, completion: nil)

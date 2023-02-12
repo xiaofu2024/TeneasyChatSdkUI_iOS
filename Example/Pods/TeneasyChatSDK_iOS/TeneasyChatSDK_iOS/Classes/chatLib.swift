@@ -72,6 +72,12 @@ public class ChatLib {
         print("call web socket")
     }
     
+    public func reConnect(){
+        if websocket != nil{
+            websocket?.connect()
+        }
+    }
+    
     deinit {
         disConnect()
     }
@@ -84,8 +90,10 @@ public class ChatLib {
     
     @objc func updataSecond() {
         sessionTime += 1
-        if sessionTime/8 == 0{//每隔8秒发送一个心跳
+        if sessionTime%5 == 0{//每隔8秒发送一个心跳
             beatTimes += 1
+            print("send beat")
+            sendHeartBeat()
         }
         
         if sessionTime > maxSessionMinutes * 60{//超过最大会话，停止发送心跳
@@ -289,6 +297,7 @@ extension ChatLib: WebSocketDelegate {
         case .disconnected(let reason, let closeCode):
             print("disconnected \(reason) \(closeCode)")
             isConnected = false
+            failedToSend()
         case .text(let text):
             print("received text: \(text)")
         case .binary(let data):
@@ -381,7 +390,8 @@ extension ChatLib: WebSocketDelegate {
         case .reconnectSuggested:
             print("reconnectSuggested")
         case .cancelled:
-            delegate?.systemMsg(msg: "已断开连接")
+            delegate?.systemMsg(msg: "已取消连接")
+            failedToSend()
             print("cancelled")
             isConnected = false
         }
