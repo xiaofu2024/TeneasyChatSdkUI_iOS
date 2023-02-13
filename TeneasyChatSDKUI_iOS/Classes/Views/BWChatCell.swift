@@ -52,7 +52,7 @@ class BWChatCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .clear
-        
+                
         self.addSubview(self.timeLab)
         self.addSubview(self.titleLab)
         self.addSubview(self.imgView)
@@ -60,7 +60,7 @@ class BWChatCell: UITableViewCell {
             make.left.equalToSuperview().offset(12)
             make.width.equalTo(kScreenWidth - 12 - 80)
             make.top.equalTo(self.timeLab.snp.bottom)
-            make.height.equalTo(160)
+            make.height.equalTo(0)
         }
     }
     
@@ -69,12 +69,6 @@ class BWChatCell: UITableViewCell {
             // 现在SDK并没有把时间传回来，所以暂时不用这样转换
             if let mTime = model?.message.msgTime {
                 self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
-            }
-            if self.model?.message.content.data.contains("[emoticon_") == true {
-                let atttext = BEmotionHelper.shared.attributedStringByText(text: self.model?.message.content.data ?? "", font: self.titleLab.font)
-                self.titleLab.attributedText = atttext
-            } else {
-                self.titleLab.text = self.model?.message.content.data
             }
             if self.model?.message.image.uri.isEmpty == false {
                 let imgUrl = URL(string: model?.message.image.uri ?? "")
@@ -86,6 +80,12 @@ class BWChatCell: UITableViewCell {
                 }
             } else {
                 self.initTitle()
+            }
+            if self.model?.message.content.data.contains("[emoticon_") == true {
+                let atttext = BEmotionHelper.shared.attributedStringByText(text: self.model?.message.content.data ?? "", font: self.titleLab.font)
+                self.titleLab.attributedText = atttext
+            } else {
+                self.titleLab.text = self.model?.message.content.data
             }
         }
     }
@@ -120,6 +120,7 @@ class BWChatLeftCell: BWChatCell {
         self.timeLab.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.top.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-12)
             make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
@@ -155,6 +156,7 @@ class BWChatRightCell: BWChatCell {
         self.timeLab.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-12)
             make.top.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-12)
             make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
