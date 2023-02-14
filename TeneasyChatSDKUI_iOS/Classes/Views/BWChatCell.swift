@@ -78,7 +78,7 @@ class BWChatCell: UITableViewCell {
             }
             if self.model?.message.image.uri.isEmpty == false {
                 let imgUrl = URL(string: model?.message.image.uri ?? "")
-                print(imgUrl?.absoluteURL)
+                print(imgUrl?.absoluteString ?? "")
                 if imgUrl != nil {
                     self.initImg(imgUrl: imgUrl!)
                 } else {
