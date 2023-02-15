@@ -211,7 +211,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         scrollToBottom()
     }
     func scrollToBottom() {
-        if (tableView.contentSize.height > kScreenHeight - kDeviceBottom - 60 - kDeviceTop - 40) {
+        if (datasouceArray.count > 1) {
             tableView.scrollToRow(at: IndexPath.init(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
         }
     }
