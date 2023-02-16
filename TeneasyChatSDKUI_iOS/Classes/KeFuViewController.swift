@@ -250,6 +250,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         NetworkUtil.getWorker(workerId: workerId) { success, model in
             if (success ) {
                 self.headerTitle.text = model?.workerName ?? "--"
+                print("baseUrlImage:" + baseUrlImage)
                 if (model?.workerAvatar?.isEmpty == false && model?.workerAvatar != nil) {
                     let url = baseUrlImage + model!.workerAvatar!
                     print("avatar:" + url)
