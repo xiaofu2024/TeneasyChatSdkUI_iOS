@@ -7,8 +7,8 @@
 
 import Foundation
 
-let baseUrlImage = "https://sssacc.wwc09.com"
-let baseUrlApi = "https://csapi.xdev.stream"
+let baseUrlImage = "https://sssacc.wwc09.com" //用于拼接图片地址
+let baseUrlApi = "https://csapi.xdev.stream"  //用于请求数据，上传图片
 /*
  sssacc.wwc09.com  预发客户
  sssapi.wwc09.com  预发程序

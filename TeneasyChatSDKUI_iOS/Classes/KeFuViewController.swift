@@ -163,6 +163,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.top.equalTo(self.timeLabel.snp.bottom)
         }
         tableView.tableHeaderView = systemInfoView
+        
+        toolBar.textView.placeholder = "请输入想咨询的问题"
     }
 
     override open func didReceiveMemoryWarning() {
@@ -430,10 +432,12 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
                         let imgUrl = baseUrlImage + (path ?? "")
                         print(imgUrl)
                         self.sendImage(url: imgUrl)
+                    }else{
+                        print("图片上传失败：")
                     }
                    
                 case .failure(let error):
-                    print("failure" + error.localizedDescription)
+                    print("图片上传失败：" + error.localizedDescription)
                 }
             })
     }
