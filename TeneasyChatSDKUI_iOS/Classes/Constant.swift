@@ -7,12 +7,17 @@
 
 import Foundation
 
+//开发环境
 let baseUrlImage = "https://sssacc.wwc09.com" //用于拼接图片地址
 let baseUrlApi = "https://csapi.xdev.stream"  //用于请求数据，上传图片
+//线上环境
+//let baseUrlImage = "https://images2acc.wwc09.com" //用于拼接图片地址
+//let baseUrlApi = "https://csapi.ertw.xyz"//用于请求数据，上传图片
+
+
+
 /*
- sssacc.wwc09.com  预发客户
- sssapi.wwc09.com  预发程序
- 
+ sssacc.wwc09.com  预发客户。//预发客户   这个是给前端用的
  images2acc.wwc09.com  生产客户
- images2api.wwc09.com  生产程序
  */
+
