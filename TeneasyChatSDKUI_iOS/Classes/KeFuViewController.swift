@@ -325,9 +325,13 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
         let alertAction2 = UIAlertAction(title: "拍照", style: .default, handler: { [weak self] _ in
             self?.authorizeCamaro { state in
                 if state == .restricted || state == .denied {
+                    DispatchQueue.main.async {
                     self?.presentNoauth(isPhoto: false)
+                    }
                 } else {
+                    DispatchQueue.main.async {
                     self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .camera)
+                }
                 }
             }
         })

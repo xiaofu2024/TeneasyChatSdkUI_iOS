@@ -2,7 +2,7 @@
 //  BWKeFuChatEmojiView.swift
 //  ProgramIOS
 //
-//  Created by XiaoFu on 2021/8/19.
+//  Created by XiaoFu on 2022/02/17.
 //  表情视图
 
 import UIKit
