@@ -92,7 +92,7 @@ public class ChatLib {
         sessionTime += 1
         if sessionTime%5 == 0{//每隔8秒发送一个心跳
             beatTimes += 1
-            print("send beat")
+            print("send beat \( beatTimes)")
             sendHeartBeat()
         }
         

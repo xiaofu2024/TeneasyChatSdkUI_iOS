@@ -14,8 +14,9 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
-   //open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
-    open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+   //open var token = "CAEQARjcCSBXKKWGwMroMA.15wWZ5uafQ0TGRbs7od1ZMmpiZrsgjAo9wqMPBKWLUgwbBeK1M9FZ8Yku5A5CYlQWlAJcOMpWBMCVD3rOJ4iAA"//起信Token
+   open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+    var retryTimes = 0
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
     }
@@ -112,6 +113,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     
     @objc func quit() {
         lib.disConnect()
+        lib.delegate = nil
         self.navigationController?.popToRootViewController(animated: true)
     }
 
@@ -241,8 +243,10 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func connected(c: Gateway_SCHi) {
         print("work id\(c.workerID)")
         WWProgressHUD.dismiss()
-        if c.workerID == 0{//如果没有分配到客服
+        if c.workerID == 0 && retryTimes < 3{//如果没有分配到客服
             lib.callWebsocket() //重新连接
+            print("尝试重新连接")
+            retryTimes += 1
         }else{
             loadWorker(workerId: c.workerID)
         }
