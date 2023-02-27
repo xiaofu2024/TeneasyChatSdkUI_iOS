@@ -23,9 +23,7 @@ class ViewController: KeFuViewController  {
         }
     }
     
-    override func viewDidLoad() {
-initSubViews()
-    }
+
     
     @objc func buttonClick(){
         let vc = WKeFu()
@@ -34,4 +32,9 @@ initSubViews()
         navigationController?.present(vc, animated: true)
     }
 */
+    
+    override func viewDidLoad() {
+        super.token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+        super.viewDidLoad()
+    }
 }

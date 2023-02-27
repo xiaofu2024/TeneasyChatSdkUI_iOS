@@ -8,8 +8,6 @@
 import Foundation
 import HandyJSON
 
-let BaseUrl = "https://csapi.hfxg.xyz/v1"
-
 enum NetworkUtil {
     static func getWorker(workerId: Int32, done: @escaping ((_ success: Bool, _ data: WorkerModel?) -> Void)) {
         let task = ChatApi.queryWorker(workerId: workerId)
@@ -18,7 +16,9 @@ enum NetworkUtil {
         ChatProvider.request(ChatApi.queryWorker(workerId: workerId)) { result in
             switch result {
                 case .success(let response):
+                print(response)
                     let dic = try? response.mapJSON() as? [String: Any]
+                print(dic)
                     let result = BaseRequestResult<WorkerModel>.deserialize(from: dic)
 
                     if result?.code == 0 {

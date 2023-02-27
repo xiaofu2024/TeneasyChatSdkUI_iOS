@@ -177,6 +177,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         // 从网页端把chatId和token传进sdk, 测试chatId:2692944494602, 实际放0就好
         lib = ChatLib(chatId: 0,
                       token: self.token)
+        print("Token:" + self.token)
         lib.callWebsocket()
         lib.delegate = self
     }
@@ -241,7 +242,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     }
 
     public func connected(c: Gateway_SCHi) {
-        print("work id\(c.workerID)")
+        print("work id \(c.workerID)")
         WWProgressHUD.dismiss()
         if c.workerID == 0 && retryTimes < 3{//如果没有分配到客服
             lib.callWebsocket() //重新连接
@@ -255,7 +256,10 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     func loadWorker(workerId: Int32) {
         NetworkUtil.getWorker(workerId: workerId) { success, model in
             if (success ) {
-                self.headerTitle.text = model?.workerName ?? "--"
+                
+                if let workName = model?.workerName{
+                    self.headerTitle.text = workName
+                }
                 print("baseUrlImage:" + baseUrlImage)
                 if (model?.workerAvatar?.isEmpty == false && model?.workerAvatar != nil) {
                     let url = baseUrlImage + model!.workerAvatar!
@@ -393,7 +397,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     func upload(imgData: Data) {
         
         // Set Your URL
-        let api_url =  baseUrlApi +  "/v1/assets/upload/"
+        let api_url =  baseUrlImageApi +  "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
             return
         }
