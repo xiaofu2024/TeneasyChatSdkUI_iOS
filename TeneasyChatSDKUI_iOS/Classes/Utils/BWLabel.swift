@@ -8,7 +8,7 @@
 
 import UIKit
 open class BWLabel: UILabel {
-    var textInsets: UIEdgeInsets = .zero
+   open var textInsets: UIEdgeInsets = .zero
     open override func drawText(in rect: CGRect) {
            super.drawText(in: rect.insetBy(dx: textInsets.left, dy: textInsets.bottom))
        }
