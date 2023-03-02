@@ -7,12 +7,12 @@
 //
 
 import UIKit
-class BWLabel: UILabel {
+open class BWLabel: UILabel {
     var textInsets: UIEdgeInsets = .zero
-       override func drawText(in rect: CGRect) {
+    open override func drawText(in rect: CGRect) {
            super.drawText(in: rect.insetBy(dx: textInsets.left, dy: textInsets.bottom))
        }
-       override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+    open override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
            let insets = textInsets
            var rect = super.textRect(forBounds: bounds, limitedToNumberOfLines: numberOfLines)
            rect.size.width += (insets.left + insets.right)
