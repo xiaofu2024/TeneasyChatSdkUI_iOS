@@ -11,6 +11,7 @@ import Foundation
 let baseUrlImage = "https://sssacc.wwc09.com" //用于拼接图片地址
 let baseUrlImageApi = "https://csapi.xdev.stream"  //用于请求数据，上传图片
 let baseUrlApi = "https://csapi.hfxg.xyz/v1"    //用于大多数Api
+var XToken = ""
 
 //线上环境
 //let baseUrlImage = "https://images2acc.wwc09.com" //用于拼接图片地址

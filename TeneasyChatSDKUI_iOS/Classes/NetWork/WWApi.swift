@@ -44,6 +44,6 @@ extension ChatApi: TargetType {
     
     /// 公共请求头
     var headers: [String: String]? {
-        return ["X-Token": "CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", "Content-Type": "application/json"]
+        return ["X-Token": XToken, "Content-Type": "application/json"]
     }
 }

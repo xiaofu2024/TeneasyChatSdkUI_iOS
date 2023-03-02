@@ -14,8 +14,8 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
-   //open var token = "CAEQARjcCSBXKKWGwMroMA.15wWZ5uafQ0TGRbs7od1ZMmpiZrsgjAo9wqMPBKWLUgwbBeK1M9FZ8Yku5A5CYlQWlAJcOMpWBMCVD3rOJ4iAA"//起信Token
-   open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+   open var token = "CAEQARjeCSBXKLK3no7pMA.4ZFT0KP1_DaEtPcdVhSyL9Q4Aolk16-bCgT6P8tm-cMOUEl-m1ygdpeIXx9iDaZbTcxEcRqW0gr6v7cuUjY2Cg"//起信Token
+   //open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     var retryTimes = 0
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         print(msg.workerName)
@@ -254,6 +254,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     }
 
     func loadWorker(workerId: Int32) {
+        XToken = token
         NetworkUtil.getWorker(workerId: workerId) { success, model in
             if (success ) {
                 
