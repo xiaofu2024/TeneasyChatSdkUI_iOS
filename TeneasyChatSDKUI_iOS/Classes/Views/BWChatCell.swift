@@ -167,7 +167,7 @@ class BWChatRightCell: BWChatCell {
         self.imgView.snp.updateConstraints { make in
             make.left.equalToSuperview().offset(80)
         }
-        self.addSubview(self.loadingView)
+        self.contentView.addSubview(self.loadingView)
         self.loadingView.snp.makeConstraints { make in
             make.top.equalTo(self.timeLab.snp.bottom).offset(0)
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
@@ -177,15 +177,11 @@ class BWChatRightCell: BWChatCell {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.clickErrorIcon))
         //tapGesture.cancelsTouchesInView = false
         self.loadingView.addGestureRecognizer(tapGesture)
-        //self.loadingView.isUserInteractionEnabled =  true
-    }
-    
-    @objc func handleTapGesture(_ sender: UITapGestureRecognizer) {
-        print("ddd")
+        self.loadingView.isUserInteractionEnabled =  true
     }
 
-    
     @objc func clickErrorIcon() {
+        print("Resend tapped")
         self.resendBlock!(self.titleLab.text ?? "")
     }
     
