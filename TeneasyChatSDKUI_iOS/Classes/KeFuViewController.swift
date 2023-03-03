@@ -185,6 +185,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
         appendDataSource(msg: msg, isLeft: true)
+        
         scrollToBottom()
     }
 

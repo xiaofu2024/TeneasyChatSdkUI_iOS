@@ -6,7 +6,7 @@ import UIKit
 
 // https://swiftpackageregistry.com/daltoniam/Starscream
 // https://www.kodeco.com/861-websockets-on-ios-with-starscream
-public protocol teneasySDKDelegate {
+public protocol teneasySDKDelegate : AnyObject{
     // func receivedMsg(msg: String)
     func receivedMsg(msg: CommonMessage)
     func msgReceipt(msg: CommonMessage, payloadId: UInt64)
@@ -22,12 +22,13 @@ public protocol teneasySDKDelegate {
      }
  }*/
 
-public class ChatLib {
+open class ChatLib {
     public private(set) var text = "Teneasy Chat SDK 启动"
     var baseUrl = "wss://csapi.xdev.stream/v1/gateway/h5?token="
     var websocket: WebSocket?
     var isConnected = false
-    open var delegate: teneasySDKDelegate?
+    // weak var delegate: WebSocketDelegate?
+    public weak var delegate: teneasySDKDelegate?
     open var payloadId: UInt64? = 0
     public var sendingMsg: CommonMessage?
     var chatId: Int64? = 0
@@ -83,6 +84,7 @@ public class ChatLib {
     }
     
     func startTimer() {
+       stopTimer()
         myTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updataSecond), userInfo: nil, repeats: true)
         myTimer!.fire()
     }
@@ -92,7 +94,7 @@ public class ChatLib {
         sessionTime += 1
         if sessionTime%5 == 0{//每隔8秒发送一个心跳
             beatTimes += 1
-            print("send beat \( beatTimes)")
+            print("sending beat \( beatTimes)")
             sendHeartBeat()
         }
         
@@ -383,7 +385,9 @@ extension ChatLib: WebSocketDelegate {
             print("received ping: \(pingData)")
         case .error(let error):
             // self.delegate?.connected(c: false)
-            print("error \(error)")
+            print("socket error \(error)")
+            delegate?.systemMsg(msg: "Socket 出错")
+            failedToSend()
             isConnected = false
         case .viabilityChanged:
             print("viabilityChanged")

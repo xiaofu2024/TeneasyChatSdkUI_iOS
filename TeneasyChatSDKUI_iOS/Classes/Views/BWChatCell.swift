@@ -173,8 +173,17 @@ class BWChatRightCell: BWChatCell {
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
             make.width.height.equalTo(20)
         }
-        self.loadingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.clickErrorIcon)))
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.clickErrorIcon))
+        //tapGesture.cancelsTouchesInView = false
+        self.loadingView.addGestureRecognizer(tapGesture)
+        //self.loadingView.isUserInteractionEnabled =  true
     }
+    
+    @objc func handleTapGesture(_ sender: UITapGestureRecognizer) {
+        print("ddd")
+    }
+
     
     @objc func clickErrorIcon() {
         self.resendBlock!(self.titleLab.text ?? "")
@@ -182,7 +191,7 @@ class BWChatRightCell: BWChatCell {
     
     override func initTitle() {
         super.initTitle()
-        self.initLoadingForTitel()
+        self.initLoadingForTitle()
     }
 
     override func initImg(imgUrl: URL) {
@@ -190,7 +199,7 @@ class BWChatRightCell: BWChatCell {
         self.initLoadingForImage()
     }
     
-    func initLoadingForTitel() {
+    func initLoadingForTitle() {
         self.loadingView.snp.updateConstraints { make in
             make.right.equalTo(self.titleLab.snp.left).offset(-10)
         }
@@ -214,7 +223,7 @@ class BWChatRightCell: BWChatCell {
         } else if model?.sendStatus == .发送成功 {
             self.loadingView.isHidden = true
         } else if model?.sendStatus == .发送失败 {
-            self.loadingView.image = UIImage.svgInit("error")
+            self.loadingView.image = UIImage.svgInit("h5_shibai")
             self.loadingView.isHidden = false
         } else {
             self.loadingView.kf.setImage(with: provider)
