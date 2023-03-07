@@ -203,14 +203,16 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             } else {
                 datasouceArray[index!].sendStatus = .发送成功
                 datasouceArray[index!].message = msg
+                print(msg.msgID)
                 print("状态更新 -> 发送成功")
             }
             
             tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
         }
         
-        let arr = datasouceArray.filter{ modal in modal.message.msgID == 0}
+        let arr = datasouceArray.filter{ modal in modal.message.msgID == 0 && modal.isLeft == false}
         for p in arr{
+            print(p.message.msgID)
             p.sendStatus = .发送失败
             tableView.reloadData()
         }
@@ -294,6 +296,18 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datasouceArray.count
+    }
+    
+//    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//
+//    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let model = datasouceArray[indexPath.row]
+        if model.message.image.uri.isEmpty == false{
+            return 200.0
+        }
+        return 50.0
     }
 }
 

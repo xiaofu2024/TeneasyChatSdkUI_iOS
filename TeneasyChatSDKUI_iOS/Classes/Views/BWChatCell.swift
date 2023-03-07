@@ -53,9 +53,9 @@ class BWChatCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
                 
-        self.addSubview(self.timeLab)
-        self.addSubview(self.titleLab)
-        self.addSubview(self.imgView)
+        self.contentView.addSubview(self.timeLab)
+        self.contentView.addSubview(self.titleLab)
+        self.contentView.addSubview(self.imgView)
         self.imgView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.width.equalTo(kScreenWidth - 12 - 80)
@@ -85,7 +85,13 @@ class BWChatCell: UITableViewCell {
                 let atttext = BEmotionHelper.shared.attributedStringByText(text: self.model?.message.content.data ?? "", font: self.titleLab.font)
                 self.titleLab.attributedText = atttext
             } else {
-                self.titleLab.text = self.model?.message.content.data
+                if let content = self.model?.message.content.data{
+                    if !content.isEmpty{
+                        self.titleLab.text = content
+                        print("message text:" + (self.model?.message.content.data ?? ""))
+                    }
+                }
+               
             }
         }
     }
@@ -121,12 +127,12 @@ class BWChatLeftCell: BWChatCell {
             make.left.equalToSuperview().offset(12)
             make.top.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
-            make.height.equalTo(20)
+            //make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
-            make.top.equalTo(self.imgView.snp.bottom)
+            make.top.equalTo(self.timeLab.snp.bottom)
             make.left.equalToSuperview().offset(12)
-            make.bottom.equalToSuperview()
+            //make.bottom.equalToSuperview()
         }
         self.imgView.snp.updateConstraints { make in
             make.left.equalToSuperview().offset(12)
@@ -160,10 +166,11 @@ class BWChatRightCell: BWChatCell {
             make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
-            make.top.equalTo(self.imgView.snp.bottom)
+            make.top.equalTo(self.timeLab.snp.bottom)
             make.right.equalToSuperview().offset(-12)
-            make.bottom.equalToSuperview()
+            //make.bottom.equalToSuperview()
         }
+        
         self.imgView.snp.updateConstraints { make in
             make.left.equalToSuperview().offset(80)
         }
