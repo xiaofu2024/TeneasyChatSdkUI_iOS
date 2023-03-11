@@ -175,6 +175,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
     func initSDK() {
         // 从网页端把chatId和token传进sdk, 测试chatId:2692944494602, 实际放0就好
+        headerTitle.text = "连接客服中..."
         lib = ChatLib(chatId: 0,
                       token: self.token)
         print("Token:" + self.token)
