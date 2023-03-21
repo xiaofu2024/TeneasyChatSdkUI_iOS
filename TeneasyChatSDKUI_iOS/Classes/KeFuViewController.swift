@@ -265,15 +265,18 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
                 if let workName = model?.workerName{
                     self.headerTitle.text = workName
                 }
+                
                 print("baseUrlImage:" + baseUrlImage)
                 if (model?.workerAvatar?.isEmpty == false && model?.workerAvatar != nil) {
                     let url = baseUrlImage + model!.workerAvatar!
                     print("avatar:" + url)
                     self.headerImg.kf.setImage(with: URL.init(string: url))
                 }
-                let msg = self.lib.composeMessage(textMsg: "你好，我是客服" + (model?.workerName ?? "") )
-                self.appendDataSource(msg: msg, isLeft: true)
+            }else{
+                self.headerTitle.text = "起信客服"
             }
+            let msg = self.lib.composeMessage(textMsg: "你好，我是客服" + (model?.workerName ?? "") )
+            self.appendDataSource(msg: msg, isLeft: true)
         }
     }
 }
