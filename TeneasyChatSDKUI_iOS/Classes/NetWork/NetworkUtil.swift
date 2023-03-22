@@ -2,13 +2,14 @@
 //  NetUtil.swift
 //  TeneasyChatSDKUI_iOS
 //
-//  Created by darren chen on 2023/2/8.
+//  Created by Xiao Fu on 2023/2/8.
 //
 
 import Foundation
 import HandyJSON
 
 enum NetworkUtil {
+    //获取客服的姓名和头像
     static func getWorker(workerId: Int32, done: @escaping ((_ success: Bool, _ data: WorkerModel?) -> Void)) {
         let task = ChatApi.queryWorker(workerId: workerId)
         print("请求路径: \(task.baseURL)\(task.path)===\(task.method)")
