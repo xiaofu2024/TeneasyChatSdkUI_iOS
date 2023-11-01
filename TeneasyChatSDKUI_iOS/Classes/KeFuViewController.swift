@@ -372,7 +372,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     }
 
     func sendMsg(textMsg: String) {
-        lib.sendMessage(msg: textMsg)
+        lib.sendMessage(msg: textMsg, type: .Text)
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
@@ -382,7 +382,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
 
     func sendImage(url: String) {
         //lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
-        lib.sendMessageImage(url: url)
+        lib.sendMessage(msg: url, type: .Image)
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
