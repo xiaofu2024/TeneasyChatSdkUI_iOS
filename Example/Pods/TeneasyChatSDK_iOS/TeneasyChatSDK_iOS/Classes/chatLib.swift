@@ -8,10 +8,15 @@ import UIKit
 // https://www.kodeco.com/861-websockets-on-ios-with-starscream
 public protocol teneasySDKDelegate : AnyObject{
     // func receivedMsg(msg: String)
+    //收到消息
     func receivedMsg(msg: CommonMessage)
+    //消息回执
     func msgReceipt(msg: CommonMessage, payloadId: UInt64)
+    //系统消息，用于显示Tip
     func systemMsg(msg: String)
+    //连接状态
     func connected(c: Gateway_SCHi)
+    //客服更换回调
     func workChanged(msg: Gateway_SCWorkerChanged)
 }
 
