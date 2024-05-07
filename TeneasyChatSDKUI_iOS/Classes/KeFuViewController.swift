@@ -214,7 +214,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             headerTitle.text = "连接客服中..."
             let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
             //第一次cert必填，之后token必填
-            lib = ChatLib(userId: 1125324, cert: "", token: "", baseUrl: wssUrl, sign: "9zgd9YUc")
+        lib = ChatLib(userId: 1125324, cert: "", token: self.token, baseUrl: wssUrl, sign: "9zgd9YUc")
 
             lib.callWebsocket()
             lib.delegate = self
