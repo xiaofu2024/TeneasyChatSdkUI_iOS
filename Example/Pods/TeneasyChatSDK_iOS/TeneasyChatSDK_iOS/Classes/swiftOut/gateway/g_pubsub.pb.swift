@@ -28,6 +28,9 @@ public struct Gateway_PubSubMessage {
   /// 接收人clientId
   public var target: Int64 = 0
 
+  ///发送方id
+  public var id: UInt64 = 0
+
   public var msg: CommonMessage {
     get {return _msg ?? CommonMessage()}
     set {_msg = newValue}
@@ -56,7 +59,8 @@ extension Gateway_PubSubMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
   public static let protoMessageName: String = _protobuf_package + ".PubSubMessage"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "target"),
-    2: .same(proto: "msg"),
+    2: .same(proto: "id"),
+    3: .same(proto: "msg"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -66,7 +70,8 @@ extension Gateway_PubSubMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
-      case 2: try { try decoder.decodeSingularMessageField(value: &self._msg) }()
+      case 2: try { try decoder.decodeSingularUInt64Field(value: &self.id) }()
+      case 3: try { try decoder.decodeSingularMessageField(value: &self._msg) }()
       default: break
       }
     }
@@ -80,14 +85,18 @@ extension Gateway_PubSubMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     if self.target != 0 {
       try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 1)
     }
+    if self.id != 0 {
+      try visitor.visitSingularUInt64Field(value: self.id, fieldNumber: 2)
+    }
     try { if let v = self._msg {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
     } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: Gateway_PubSubMessage, rhs: Gateway_PubSubMessage) -> Bool {
     if lhs.target != rhs.target {return false}
+    if lhs.id != rhs.id {return false}
     if lhs._msg != rhs._msg {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true

@@ -14,10 +14,46 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
+    public func msgReceipt(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
+        print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
+        // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
+        print("------\(payloadId)")
+        let index = datasouceArray.firstIndex { model in
+            model.payLoadId == payloadId
+        }
+        if (index ?? -1) > -1{
+            if msg.msgID == 0 {
+                datasouceArray[index!].sendStatus = .发送失败
+                print("状态更新 -> 发送失败")
+            } else {
+                datasouceArray[index!].sendStatus = .发送成功
+                datasouceArray[index!].message = msg
+                print(msg.msgID)
+                print("状态更新 -> 发送成功")
+            }
+            
+            tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
+        }
+        
+        let arr = datasouceArray.filter{ modal in modal.message.msgID == 0 && modal.isLeft == false}
+        for p in arr{
+            print(p.message.msgID)
+            p.sendStatus = .发送失败
+            tableView.reloadData()
+        }
+        scrollToBottom()
+    }
+    
+    public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
+        print(result.Message)
+    }
+    
    open var token = "CAEQARjeCSBXKLK3no7pMA.4ZFT0KP1_DaEtPcdVhSyL9Q4Aolk16-bCgT6P8tm-cMOUEl-m1ygdpeIXx9iDaZbTcxEcRqW0gr6v7cuUjY2Cg"//起信Token
    //open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     var retryTimes = 0
+    var consultId: Int64 = 0
     public func workChanged(msg: Gateway_SCWorkerChanged) {
+        consultId = msg.consultID
         print(msg.workerName)
     }
 
@@ -95,7 +131,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         view.backgroundColor = kBgColor
         WWProgressHUD.showLoading("连接中...")
 
-        initSDK()
+        initSDK(baseUrl: "csapi.hfxg.xyz")
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
@@ -173,15 +209,16 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    func initSDK() {
-        // 从网页端把chatId和token传进sdk, 测试chatId:2692944494602, 实际放0就好
-        headerTitle.text = "连接客服中..."
-        lib = ChatLib(chatId: 0,
-                      token: self.token)
-        print("Token:" + self.token)
-        lib.callWebsocket()
-        lib.delegate = self
-    }
+    
+    func initSDK(baseUrl: String){
+            headerTitle.text = "连接客服中..."
+            let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
+            //第一次cert必填，之后token必填
+            lib = ChatLib(userId: 1125324, cert: "", token: "", baseUrl: wssUrl, sign: "9zgd9YUc")
+
+            lib.callWebsocket()
+            lib.delegate = self
+        }
 
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
@@ -190,35 +227,6 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         scrollToBottom()
     }
 
-    public func msgReceipt(msg: CommonMessage, payloadId: UInt64) {
-        print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
-        // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
-        print("------\(payloadId)")
-        let index = datasouceArray.firstIndex { model in
-            model.payLoadId == payloadId
-        }
-        if (index ?? -1) > -1{
-            if msg.msgID == 0 {
-                datasouceArray[index!].sendStatus = .发送失败
-                print("状态更新 -> 发送失败")
-            } else {
-                datasouceArray[index!].sendStatus = .发送成功
-                datasouceArray[index!].message = msg
-                print(msg.msgID)
-                print("状态更新 -> 发送成功")
-            }
-            
-            tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
-        }
-        
-        let arr = datasouceArray.filter{ modal in modal.message.msgID == 0 && modal.isLeft == false}
-        for p in arr{
-            print(p.message.msgID)
-            p.sendStatus = .发送失败
-            tableView.reloadData()
-        }
-        scrollToBottom()
-    }
     func scrollToBottom() {
         if (datasouceArray.count > 1) {
             tableView.scrollToRow(at: IndexPath.init(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
@@ -275,7 +283,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             }else{
                 self.headerTitle.text = "起信客服"
             }
-            let msg = self.lib.composeMessage(textMsg: "你好，我是客服" + (model?.workerName ?? "") )
+            let msg = self.lib.composeALocalMessage(textMsg: "你好，我是客服" + (model?.workerName ?? "") )
             self.appendDataSource(msg: msg, isLeft: true)
         }
     }
@@ -293,7 +301,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         cell.model = model
         cell.resendBlock = {[weak self] msg in
             self?.datasouceArray[indexPath.row].sendStatus = .发送中
-            self?.lib.resendMsg(msg: model.message, payloadId: Int(model.payLoadId))
+            self?.lib.resendMsg(msg: model.message, payloadId: model.payLoadId)
         }
         return cell
     }
@@ -372,21 +380,21 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     }
 
     func sendMsg(textMsg: String) {
-        lib.sendMessage(msg: textMsg, type: .Text)
+        lib.sendMessage(msg: textMsg, type: .msgText, consultId: self.consultId)
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
-            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId ?? 0)
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId )
         }
     }
 
     func sendImage(url: String) {
         //lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
-        lib.sendMessage(msg: url, type: .Image)
+        lib.sendMessage(msg: url, type: .msgImg, consultId: self.consultId)
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
-            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId ?? 0)
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId )
         }
     }
 

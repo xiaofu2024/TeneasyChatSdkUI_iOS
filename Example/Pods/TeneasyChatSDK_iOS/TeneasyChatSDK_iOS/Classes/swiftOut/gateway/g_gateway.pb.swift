@@ -20,15 +20,18 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-public enum Gateway_ChatChanged: SwiftProtobuf.Enum {
+public enum Gateway_WorkerChangedReason: SwiftProtobuf.Enum {
   public typealias RawValue = Int
   case unknown // = 0
 
-  /// 新的聊天会话
-  case add // = 1
+  /// 找不到分配的客服
+  case missAssignedWorker // = 1
 
-  /// 移除聊天会话
-  case del // = 2
+  /// 转接客服
+  case transferWorker // = 2
+
+  /// 删除客服引起的会话转移(转移上级)
+  case workerDeleted // = 3
   case UNRECOGNIZED(Int)
 
   public init() {
@@ -38,8 +41,9 @@ public enum Gateway_ChatChanged: SwiftProtobuf.Enum {
   public init?(rawValue: Int) {
     switch rawValue {
     case 0: self = .unknown
-    case 1: self = .add
-    case 2: self = .del
+    case 1: self = .missAssignedWorker
+    case 2: self = .transferWorker
+    case 3: self = .workerDeleted
     default: self = .UNRECOGNIZED(rawValue)
     }
   }
@@ -47,8 +51,9 @@ public enum Gateway_ChatChanged: SwiftProtobuf.Enum {
   public var rawValue: Int {
     switch self {
     case .unknown: return 0
-    case .add: return 1
-    case .del: return 2
+    case .missAssignedWorker: return 1
+    case .transferWorker: return 2
+    case .workerDeleted: return 3
     case .UNRECOGNIZED(let i): return i
     }
   }
@@ -57,12 +62,53 @@ public enum Gateway_ChatChanged: SwiftProtobuf.Enum {
 
 #if swift(>=4.2)
 
-extension Gateway_ChatChanged: CaseIterable {
+extension Gateway_WorkerChangedReason: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [Gateway_ChatChanged] = [
+  public static let allCases: [Gateway_WorkerChangedReason] = [
     .unknown,
-    .add,
-    .del,
+    .missAssignedWorker,
+    .transferWorker,
+    .workerDeleted,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
+public enum Gateway_KickReason: SwiftProtobuf.Enum {
+  public typealias RawValue = Int
+  case common // = 0
+  case permChanged // = 1
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .common
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .common
+    case 1: self = .permChanged
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .common: return 0
+    case .permChanged: return 1
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+}
+
+#if swift(>=4.2)
+
+extension Gateway_KickReason: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static let allCases: [Gateway_KickReason] = [
+    .common,
+    .permChanged,
   ]
 }
 
@@ -159,6 +205,9 @@ public struct Gateway_SCSendMessage {
   public var hasMsgTime: Bool {return self._msgTime != nil}
   /// Clears the value of `msgTime`. Subsequent reads from it will return its default value.
   public mutating func clearMsgTime() {self._msgTime = nil}
+
+  ///错误消息
+  public var errMsg: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -294,24 +343,37 @@ public struct Gateway_WorkerTransfer {
   fileprivate var _msg: CommonMessage? = nil
 }
 
-/// 新的聊天(客服用)
+/// 聊天会话发生改变:
+/// from: 触发 onDelSession(从组中移除会话), -1时无视
+/// to: 触发 onNewSession(向组中添加会话), -1时无视
 public struct Gateway_SCChatChanged {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var ty: Gateway_ChatChanged = .unknown
+  public var from: CommonChatState = .common
 
-  /// 因为何种原因 增加 删除
-  public var reason: CommonChatState = .common
+  public var to: CommonChatState = .common
 
   public var chatID: Int64 = 0
+
+  /// 只有to != -1(触发onNewSession)时, 会有值
+  public var chat: CommonChatItem {
+    get {return _chat ?? CommonChatItem()}
+    set {_chat = newValue}
+  }
+  /// Returns true if `chat` has been explicitly set.
+  public var hasChat: Bool {return self._chat != nil}
+  /// Clears the value of `chat`. Subsequent reads from it will return its default value.
+  public mutating func clearChat() {self._chat = nil}
 
   public var target: Int64 = 0
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
+
+  fileprivate var _chat: CommonChatItem? = nil
 }
 
 /// 用户上线
@@ -337,10 +399,66 @@ public struct Gateway_SCWorkerChanged {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  public var workerID: Int32 = 0
+
   public var workerName: String = String()
 
   public var workerAvatar: String = String()
 
+  public var target: Int64 = 0
+
+  public var reason: Gateway_WorkerChangedReason = .unknown
+
+  /// 咨询id
+  public var consultID: Int64 = 0
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+/// 内部用踢人
+public struct Gateway_SCKick {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var target: Int64 = 0
+
+  public var reason: Gateway_KickReason = .common
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+/// 模拟客服发消息
+/// 使用场景示例: 自动回复
+public struct Gateway_SCSimSendMessage {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var msgs: [CommonMessage] = []
+
+  public var worker: Int64 = 0
+
+  /// 用户的 client_id (chat_id)
+  public var target: Int64 = 0
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
+public struct Gateway_SCSimSendMessageToWorker {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var msgs: [CommonMessage] = []
+
+  /// 客服的 client_id
   public var target: Int64 = 0
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -349,7 +467,8 @@ public struct Gateway_SCWorkerChanged {
 }
 
 #if swift(>=5.5) && canImport(_Concurrency)
-extension Gateway_ChatChanged: @unchecked Sendable {}
+extension Gateway_WorkerChangedReason: @unchecked Sendable {}
+extension Gateway_KickReason: @unchecked Sendable {}
 extension Gateway_SCHi: @unchecked Sendable {}
 extension Gateway_CSForward: @unchecked Sendable {}
 extension Gateway_SCForward: @unchecked Sendable {}
@@ -365,17 +484,28 @@ extension Gateway_WorkerTransfer: @unchecked Sendable {}
 extension Gateway_SCChatChanged: @unchecked Sendable {}
 extension Gateway_SCUserConnectionChanged: @unchecked Sendable {}
 extension Gateway_SCWorkerChanged: @unchecked Sendable {}
+extension Gateway_SCKick: @unchecked Sendable {}
+extension Gateway_SCSimSendMessage: @unchecked Sendable {}
+extension Gateway_SCSimSendMessageToWorker: @unchecked Sendable {}
 #endif  // swift(>=5.5) && canImport(_Concurrency)
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "gateway"
 
-extension Gateway_ChatChanged: SwiftProtobuf._ProtoNameProviding {
+extension Gateway_WorkerChangedReason: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "CHAT_CHANGED_UNKNOWN"),
-    1: .same(proto: "CHAT_CHANGED_ADD"),
-    2: .same(proto: "CHAT_CHANGED_DEL"),
+    0: .same(proto: "WorkerChangedReasonUnknown"),
+    1: .same(proto: "WorkerChangedReasonMissAssignedWorker"),
+    2: .same(proto: "WorkerChangedReasonTransferWorker"),
+    3: .same(proto: "WorkerChangedReasonWorkerDeleted"),
+  ]
+}
+
+extension Gateway_KickReason: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "KickReasonCommon"),
+    1: .same(proto: "KickReasonPermChanged"),
   ]
 }
 
@@ -553,6 +683,7 @@ extension Gateway_SCSendMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     1: .standard(proto: "chat_id"),
     2: .standard(proto: "msg_id"),
     3: .standard(proto: "msg_time"),
+    4: .standard(proto: "err_msg"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -564,6 +695,7 @@ extension Gateway_SCSendMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       case 1: try { try decoder.decodeSingularInt64Field(value: &self.chatID) }()
       case 2: try { try decoder.decodeSingularInt64Field(value: &self.msgID) }()
       case 3: try { try decoder.decodeSingularMessageField(value: &self._msgTime) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self.errMsg) }()
       default: break
       }
     }
@@ -583,6 +715,9 @@ extension Gateway_SCSendMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     try { if let v = self._msgTime {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
     } }()
+    if !self.errMsg.isEmpty {
+      try visitor.visitSingularStringField(value: self.errMsg, fieldNumber: 4)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -590,6 +725,7 @@ extension Gateway_SCSendMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     if lhs.chatID != rhs.chatID {return false}
     if lhs.msgID != rhs.msgID {return false}
     if lhs._msgTime != rhs._msgTime {return false}
+    if lhs.errMsg != rhs.errMsg {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -872,10 +1008,11 @@ extension Gateway_WorkerTransfer: SwiftProtobuf.Message, SwiftProtobuf._MessageI
 extension Gateway_SCChatChanged: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".SCChatChanged"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "ty"),
-    2: .same(proto: "reason"),
+    1: .same(proto: "from"),
+    2: .same(proto: "to"),
     3: .standard(proto: "chat_id"),
-    4: .same(proto: "target"),
+    4: .same(proto: "chat"),
+    5: .same(proto: "target"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -884,35 +1021,44 @@ extension Gateway_SCChatChanged: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularEnumField(value: &self.ty) }()
-      case 2: try { try decoder.decodeSingularEnumField(value: &self.reason) }()
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.from) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.to) }()
       case 3: try { try decoder.decodeSingularInt64Field(value: &self.chatID) }()
-      case 4: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
+      case 4: try { try decoder.decodeSingularMessageField(value: &self._chat) }()
+      case 5: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.ty != .unknown {
-      try visitor.visitSingularEnumField(value: self.ty, fieldNumber: 1)
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if self.from != .common {
+      try visitor.visitSingularEnumField(value: self.from, fieldNumber: 1)
     }
-    if self.reason != .common {
-      try visitor.visitSingularEnumField(value: self.reason, fieldNumber: 2)
+    if self.to != .common {
+      try visitor.visitSingularEnumField(value: self.to, fieldNumber: 2)
     }
     if self.chatID != 0 {
       try visitor.visitSingularInt64Field(value: self.chatID, fieldNumber: 3)
     }
+    try { if let v = self._chat {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    } }()
     if self.target != 0 {
-      try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 4)
+      try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 5)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: Gateway_SCChatChanged, rhs: Gateway_SCChatChanged) -> Bool {
-    if lhs.ty != rhs.ty {return false}
-    if lhs.reason != rhs.reason {return false}
+    if lhs.from != rhs.from {return false}
+    if lhs.to != rhs.to {return false}
     if lhs.chatID != rhs.chatID {return false}
+    if lhs._chat != rhs._chat {return false}
     if lhs.target != rhs.target {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -966,8 +1112,108 @@ extension Gateway_SCUserConnectionChanged: SwiftProtobuf.Message, SwiftProtobuf.
 extension Gateway_SCWorkerChanged: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".SCWorkerChanged"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "worker_name"),
-    2: .standard(proto: "worker_avatar"),
+    1: .standard(proto: "worker_id"),
+    2: .standard(proto: "worker_name"),
+    3: .standard(proto: "worker_avatar"),
+    4: .same(proto: "target"),
+    5: .same(proto: "reason"),
+    6: .standard(proto: "consult_id"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.workerID) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.workerName) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.workerAvatar) }()
+      case 4: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
+      case 5: try { try decoder.decodeSingularEnumField(value: &self.reason) }()
+      case 6: try { try decoder.decodeSingularInt64Field(value: &self.consultID) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.workerID != 0 {
+      try visitor.visitSingularInt32Field(value: self.workerID, fieldNumber: 1)
+    }
+    if !self.workerName.isEmpty {
+      try visitor.visitSingularStringField(value: self.workerName, fieldNumber: 2)
+    }
+    if !self.workerAvatar.isEmpty {
+      try visitor.visitSingularStringField(value: self.workerAvatar, fieldNumber: 3)
+    }
+    if self.target != 0 {
+      try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 4)
+    }
+    if self.reason != .unknown {
+      try visitor.visitSingularEnumField(value: self.reason, fieldNumber: 5)
+    }
+    if self.consultID != 0 {
+      try visitor.visitSingularInt64Field(value: self.consultID, fieldNumber: 6)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Gateway_SCWorkerChanged, rhs: Gateway_SCWorkerChanged) -> Bool {
+    if lhs.workerID != rhs.workerID {return false}
+    if lhs.workerName != rhs.workerName {return false}
+    if lhs.workerAvatar != rhs.workerAvatar {return false}
+    if lhs.target != rhs.target {return false}
+    if lhs.reason != rhs.reason {return false}
+    if lhs.consultID != rhs.consultID {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Gateway_SCKick: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".SCKick"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "target"),
+    2: .same(proto: "reason"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.reason) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.target != 0 {
+      try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 1)
+    }
+    if self.reason != .common {
+      try visitor.visitSingularEnumField(value: self.reason, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Gateway_SCKick, rhs: Gateway_SCKick) -> Bool {
+    if lhs.target != rhs.target {return false}
+    if lhs.reason != rhs.reason {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Gateway_SCSimSendMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".SCSimSendMessage"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "msgs"),
+    2: .same(proto: "worker"),
     3: .same(proto: "target"),
   ]
 
@@ -977,8 +1223,8 @@ extension Gateway_SCWorkerChanged: SwiftProtobuf.Message, SwiftProtobuf._Message
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.workerName) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.workerAvatar) }()
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.msgs) }()
+      case 2: try { try decoder.decodeSingularInt64Field(value: &self.worker) }()
       case 3: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
       default: break
       }
@@ -986,11 +1232,11 @@ extension Gateway_SCWorkerChanged: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.workerName.isEmpty {
-      try visitor.visitSingularStringField(value: self.workerName, fieldNumber: 1)
+    if !self.msgs.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.msgs, fieldNumber: 1)
     }
-    if !self.workerAvatar.isEmpty {
-      try visitor.visitSingularStringField(value: self.workerAvatar, fieldNumber: 2)
+    if self.worker != 0 {
+      try visitor.visitSingularInt64Field(value: self.worker, fieldNumber: 2)
     }
     if self.target != 0 {
       try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 3)
@@ -998,9 +1244,47 @@ extension Gateway_SCWorkerChanged: SwiftProtobuf.Message, SwiftProtobuf._Message
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: Gateway_SCWorkerChanged, rhs: Gateway_SCWorkerChanged) -> Bool {
-    if lhs.workerName != rhs.workerName {return false}
-    if lhs.workerAvatar != rhs.workerAvatar {return false}
+  public static func ==(lhs: Gateway_SCSimSendMessage, rhs: Gateway_SCSimSendMessage) -> Bool {
+    if lhs.msgs != rhs.msgs {return false}
+    if lhs.worker != rhs.worker {return false}
+    if lhs.target != rhs.target {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Gateway_SCSimSendMessageToWorker: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".SCSimSendMessageToWorker"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "msgs"),
+    2: .same(proto: "target"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.msgs) }()
+      case 2: try { try decoder.decodeSingularInt64Field(value: &self.target) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.msgs.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.msgs, fieldNumber: 1)
+    }
+    if self.target != 0 {
+      try visitor.visitSingularInt64Field(value: self.target, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Gateway_SCSimSendMessageToWorker, rhs: Gateway_SCSimSendMessageToWorker) -> Bool {
+    if lhs.msgs != rhs.msgs {return false}
     if lhs.target != rhs.target {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true

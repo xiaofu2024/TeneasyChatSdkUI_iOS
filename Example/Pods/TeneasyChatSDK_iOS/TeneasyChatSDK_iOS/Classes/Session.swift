@@ -15,3 +15,8 @@ public struct Session{
     var WelcomeMsg = "你好，我是客服小福"
     var Connected = false
 }
+
+public struct Result{
+   public var Code = 0
+    public var Message = ""
+}

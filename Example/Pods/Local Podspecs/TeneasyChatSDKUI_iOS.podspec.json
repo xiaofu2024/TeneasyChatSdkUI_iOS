@@ -30,7 +30,7 @@
   "frameworks": "UIKit",
   "dependencies": {
     "TeneasyChatSDK_iOS": [
-      "~> 1.0.2"
+      "~> 1.2.8"
     ],
     "SnapKit": [
       "~> 5.0.1"

@@ -20,11 +20,73 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-public enum Api_Common_LinkType: SwiftProtobuf.Enum {
+public enum Api_Common_OperationsType: SwiftProtobuf.Enum {
+  public typealias RawValue = Int
+  case operationTypeUnknown // = 0
+  case operationTypeWindows // = 10
+  case operationTypeMacIntel // = 20
+  case operationTypeMacM // = 21
+  case operationTypeEnd // = 200
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .operationTypeUnknown
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .operationTypeUnknown
+    case 10: self = .operationTypeWindows
+    case 20: self = .operationTypeMacIntel
+    case 21: self = .operationTypeMacM
+    case 200: self = .operationTypeEnd
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .operationTypeUnknown: return 0
+    case .operationTypeWindows: return 10
+    case .operationTypeMacIntel: return 20
+    case .operationTypeMacM: return 21
+    case .operationTypeEnd: return 200
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+}
+
+#if swift(>=4.2)
+
+extension Api_Common_OperationsType: CaseIterable {
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static let allCases: [Api_Common_OperationsType] = [
+    .operationTypeUnknown,
+    .operationTypeWindows,
+    .operationTypeMacIntel,
+    .operationTypeMacM,
+    .operationTypeEnd,
+  ]
+}
+
+#endif  // swift(>=4.2)
+
+public enum Api_Common_ClientType: SwiftProtobuf.Enum {
   public typealias RawValue = Int
   case unknown // = 0
-  case h5 // = 1
-  case web // = 2
+  case workerBegin // = 1
+  case workerPc // = 2
+
+  /// 客服端在此加入新类型
+  case workerEnd // = 100
+  case userBegin // = 101
+  case userH5 // = 102
+  case userWeb // = 103
+  case userApp // = 104
+
+  /// 用户端在此加入新类型
+  case userEnd // = 200
   case UNRECOGNIZED(Int)
 
   public init() {
@@ -34,8 +96,14 @@ public enum Api_Common_LinkType: SwiftProtobuf.Enum {
   public init?(rawValue: Int) {
     switch rawValue {
     case 0: self = .unknown
-    case 1: self = .h5
-    case 2: self = .web
+    case 1: self = .workerBegin
+    case 2: self = .workerPc
+    case 100: self = .workerEnd
+    case 101: self = .userBegin
+    case 102: self = .userH5
+    case 103: self = .userWeb
+    case 104: self = .userApp
+    case 200: self = .userEnd
     default: self = .UNRECOGNIZED(rawValue)
     }
   }
@@ -43,8 +111,14 @@ public enum Api_Common_LinkType: SwiftProtobuf.Enum {
   public var rawValue: Int {
     switch self {
     case .unknown: return 0
-    case .h5: return 1
-    case .web: return 2
+    case .workerBegin: return 1
+    case .workerPc: return 2
+    case .workerEnd: return 100
+    case .userBegin: return 101
+    case .userH5: return 102
+    case .userWeb: return 103
+    case .userApp: return 104
+    case .userEnd: return 200
     case .UNRECOGNIZED(let i): return i
     }
   }
@@ -53,12 +127,18 @@ public enum Api_Common_LinkType: SwiftProtobuf.Enum {
 
 #if swift(>=4.2)
 
-extension Api_Common_LinkType: CaseIterable {
+extension Api_Common_ClientType: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [Api_Common_LinkType] = [
+  public static let allCases: [Api_Common_ClientType] = [
     .unknown,
-    .h5,
-    .web,
+    .workerBegin,
+    .workerPc,
+    .workerEnd,
+    .userBegin,
+    .userH5,
+    .userWeb,
+    .userApp,
+    .userEnd,
   ]
 }
 
@@ -145,13 +225,20 @@ public struct Api_Common_Consult {
   /// 接待客服
   public var workerNames: String = String()
 
+  /// 排序
+  public var priority: Int32 = 0
+
+  /// 显示
+  public var display: Int32 = 0
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
 }
 
 #if swift(>=5.5) && canImport(_Concurrency)
-extension Api_Common_LinkType: @unchecked Sendable {}
+extension Api_Common_OperationsType: @unchecked Sendable {}
+extension Api_Common_ClientType: @unchecked Sendable {}
 extension Api_Common_Entrance: @unchecked Sendable {}
 extension Api_Common_Consult: @unchecked Sendable {}
 #endif  // swift(>=5.5) && canImport(_Concurrency)
@@ -160,11 +247,27 @@ extension Api_Common_Consult: @unchecked Sendable {}
 
 fileprivate let _protobuf_package = "api.common"
 
-extension Api_Common_LinkType: SwiftProtobuf._ProtoNameProviding {
+extension Api_Common_OperationsType: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "LINK_TYPE_UNKNOWN"),
-    1: .same(proto: "LINK_TYPE_H5"),
-    2: .same(proto: "LINK_TYPE_WEB"),
+    0: .same(proto: "OPERATION_TYPE_UNKNOWN"),
+    10: .same(proto: "OPERATION_TYPE_WINDOWS"),
+    20: .same(proto: "OPERATION_TYPE_MAC_INTEL"),
+    21: .same(proto: "OPERATION_TYPE_MAC_M"),
+    200: .same(proto: "OPERATION_TYPE_END"),
+  ]
+}
+
+extension Api_Common_ClientType: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "CLIENT_TYPE_UNKNOWN"),
+    1: .same(proto: "CLIENT_TYPE_WORKER_BEGIN"),
+    2: .same(proto: "CLIENT_TYPE_WORKER_PC"),
+    100: .same(proto: "CLIENT_TYPE_WORKER_END"),
+    101: .same(proto: "CLIENT_TYPE_USER_BEGIN"),
+    102: .same(proto: "CLIENT_TYPE_USER_H5"),
+    103: .same(proto: "CLIENT_TYPE_USER_WEB"),
+    104: .same(proto: "CLIENT_TYPE_USER_APP"),
+    200: .same(proto: "CLIENT_TYPE_USER_END"),
   ]
 }
 
@@ -294,6 +397,8 @@ extension Api_Common_Consult: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
     5: .standard(proto: "worker_ids"),
     6: .standard(proto: "worker_group_names"),
     7: .standard(proto: "worker_names"),
+    8: .same(proto: "priority"),
+    9: .same(proto: "display"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -309,6 +414,8 @@ extension Api_Common_Consult: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
       case 5: try { try decoder.decodeRepeatedInt32Field(value: &self.workerIds) }()
       case 6: try { try decoder.decodeSingularStringField(value: &self.workerGroupNames) }()
       case 7: try { try decoder.decodeSingularStringField(value: &self.workerNames) }()
+      case 8: try { try decoder.decodeSingularInt32Field(value: &self.priority) }()
+      case 9: try { try decoder.decodeSingularInt32Field(value: &self.display) }()
       default: break
       }
     }
@@ -336,6 +443,12 @@ extension Api_Common_Consult: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
     if !self.workerNames.isEmpty {
       try visitor.visitSingularStringField(value: self.workerNames, fieldNumber: 7)
     }
+    if self.priority != 0 {
+      try visitor.visitSingularInt32Field(value: self.priority, fieldNumber: 8)
+    }
+    if self.display != 0 {
+      try visitor.visitSingularInt32Field(value: self.display, fieldNumber: 9)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -347,6 +460,8 @@ extension Api_Common_Consult: SwiftProtobuf.Message, SwiftProtobuf._MessageImple
     if lhs.workerIds != rhs.workerIds {return false}
     if lhs.workerGroupNames != rhs.workerGroupNames {return false}
     if lhs.workerNames != rhs.workerNames {return false}
+    if lhs.priority != rhs.priority {return false}
+    if lhs.display != rhs.display {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -41,6 +41,9 @@ public enum Api_AuthenticationRole: SwiftProtobuf.Enum {
 
   /// call from app admin role
   case authRoleAdmin // = 32
+
+  /// call from not trusted public source
+  case authRolePublic // = 64
   case UNRECOGNIZED(Int)
 
   public init() {
@@ -56,6 +59,7 @@ public enum Api_AuthenticationRole: SwiftProtobuf.Enum {
     case 8: self = .authRoleExternal
     case 16: self = .authRoleTenant
     case 32: self = .authRoleAdmin
+    case 64: self = .authRolePublic
     default: self = .UNRECOGNIZED(rawValue)
     }
   }
@@ -69,6 +73,7 @@ public enum Api_AuthenticationRole: SwiftProtobuf.Enum {
     case .authRoleExternal: return 8
     case .authRoleTenant: return 16
     case .authRoleAdmin: return 32
+    case .authRolePublic: return 64
     case .UNRECOGNIZED(let i): return i
     }
   }
@@ -79,7 +84,7 @@ public enum Api_AuthenticationRole: SwiftProtobuf.Enum {
 
 extension Api_AuthenticationRole: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [Api_AuthenticationRole] = [
+  public static let allCases: [Api_AuthenticationRole] = [
     .authRoleNone,
     .authRoleAccount,
     .authRoleDevice,
@@ -87,6 +92,7 @@ extension Api_AuthenticationRole: CaseIterable {
     .authRoleExternal,
     .authRoleTenant,
     .authRoleAdmin,
+    .authRolePublic,
   ]
 }
 
@@ -124,7 +130,7 @@ public enum Api_PayloadType: SwiftProtobuf.Enum {
 
 extension Api_PayloadType: CaseIterable {
   // The compiler won't synthesize support with the UNRECOGNIZED case.
-  public static var allCases: [Api_PayloadType] = [
+  public static let allCases: [Api_PayloadType] = [
     .jsonPayload,
     .binaryPayload,
   ]
@@ -967,6 +973,7 @@ extension Api_AuthenticationRole: SwiftProtobuf._ProtoNameProviding {
     8: .same(proto: "AUTH_ROLE_EXTERNAL"),
     16: .same(proto: "AUTH_ROLE_TENANT"),
     32: .same(proto: "AUTH_ROLE_ADMIN"),
+    64: .same(proto: "AUTH_ROLE_PUBLIC"),
   ]
 }
 
@@ -1358,7 +1365,15 @@ extension Api_MethodOptions: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     var _out: Api_Payload? = nil
     var _docs: [Api_ExternalDocumentation] = []
 
-    static let defaultInstance = _StorageClass()
+    #if swift(>=5.10)
+      // This property is used as the initial default value for new instances of the type.
+      // The type itself is protecting the reference to its storage via CoW semantics.
+      // This will force a copy to be made of this reference when the first mutation occurs;
+      // hence, it is safe to mark this as `nonisolated(unsafe)`.
+      static nonisolated(unsafe) let defaultInstance = _StorageClass()
+    #else
+      static let defaultInstance = _StorageClass()
+    #endif
 
     private init() {}
 
