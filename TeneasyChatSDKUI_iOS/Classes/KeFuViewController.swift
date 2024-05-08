@@ -21,7 +21,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let index = datasouceArray.firstIndex { model in
             model.payLoadId == payloadId
         }
-        if (index ?? -1) > -1{
+        if (index ?? -1) > -1 {
             if msg.msgID == 0 {
                 datasouceArray[index!].sendStatus = .发送失败
                 print("状态更新 -> 发送失败")
@@ -31,25 +31,25 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
                 print(msg.msgID)
                 print("状态更新 -> 发送成功")
             }
-            
-            tableView.reloadRows(at: [IndexPath.init(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
+
+            tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
         }
-        
-        let arr = datasouceArray.filter{ modal in modal.message.msgID == 0 && modal.isLeft == false}
-        for p in arr{
+
+        let arr = datasouceArray.filter { modal in modal.message.msgID == 0 && modal.isLeft == false }
+        for p in arr {
             print(p.message.msgID)
             p.sendStatus = .发送失败
             tableView.reloadData()
         }
         scrollToBottom()
     }
-    
+
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
         print(result.Message)
     }
-    
-   open var token = "CAEQARjeCSBXKLK3no7pMA.4ZFT0KP1_DaEtPcdVhSyL9Q4Aolk16-bCgT6P8tm-cMOUEl-m1ygdpeIXx9iDaZbTcxEcRqW0gr6v7cuUjY2Cg"//起信Token
-   //open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
+
+    open var token = "CAEQARjeCSBXKLK3no7pMA.4ZFT0KP1_DaEtPcdVhSyL9Q4Aolk16-bCgT6P8tm-cMOUEl-m1ygdpeIXx9iDaZbTcxEcRqW0gr6v7cuUjY2Cg" // 起信Token
+    // open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     var retryTimes = 0
     var consultId: Int64 = 0
     public func workChanged(msg: Gateway_SCWorkerChanged) {
@@ -68,26 +68,28 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         v.backgroundColor = .white
         return v
     }()
+
     lazy var systemInfoView: UIView = {
         let v = UIView(frame: CGRect.zero)
         v.backgroundColor = .clear
         return v
     }()
+
     lazy var timeLabel: UILabel = {
-        let label = UILabel.init(frame: CGRect.zero)
+        let label = UILabel(frame: CGRect.zero)
         label.textAlignment = .center
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
+
     lazy var systemMsgLabel: UILabel = {
-        let label = UILabel.init(frame: CGRect.zero)
+        let label = UILabel(frame: CGRect.zero)
         label.textAlignment = .center
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
-
 
     lazy var headerImg: UIImageView = {
         let img = UIImageView(frame: CGRect.zero)
@@ -134,23 +136,23 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         initSDK(baseUrl: "csapi.hfxg.xyz")
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        
-        let leftBarItem = UIBarButtonItem(title: "", style: .done, target: self, action:  nil)
-        self.navigationItem.leftBarButtonItem = leftBarItem
-        //self.navigationItem.setHidesBackButton(true, animated: false)
+
+        let leftBarItem = UIBarButtonItem(title: "", style: .done, target: self, action: nil)
+        navigationItem.leftBarButtonItem = leftBarItem
+        // self.navigationItem.setHidesBackButton(true, animated: false)
 //
-        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action:  #selector(quit))
-        self.navigationItem.rightBarButtonItem = rightBarItem
+        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
+        navigationItem.rightBarButtonItem = rightBarItem
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
 //        lib.disConnect()
     }
-    
+
     @objc func quit() {
         lib.disConnect()
         lib.delegate = nil
-        self.navigationController?.popToRootViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
 
     func initView() {
@@ -159,8 +161,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-kDeviceBottom)
         }
-        
-        self.view.addSubview(self.headerView)
+
+        view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.width.equalTo(kScreenWidth)
             make.height.equalTo(60)
@@ -173,7 +175,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.top.equalTo(self.headerView.snp.bottom)
             make.bottom.equalTo(toolBar.snp.top)
         }
-        
+
         headerView.addSubview(headerImg)
         headerImg.snp.makeConstraints { make in
             make.width.height.equalTo(50)
@@ -185,23 +187,23 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.centerY.equalTo(self.headerImg.snp.centerY)
             make.left.equalTo(self.headerImg.snp.right).offset(12)
         }
-        self.systemInfoView.addSubview(self.timeLabel)
-        self.systemInfoView.snp.makeConstraints { make in
+        systemInfoView.addSubview(timeLabel)
+        systemInfoView.snp.makeConstraints { make in
             make.height.equalTo(40)
         }
-        self.timeLabel.snp.makeConstraints { make in
+        timeLabel.snp.makeConstraints { make in
             make.width.equalTo(kScreenWidth)
             make.left.equalToSuperview()
             make.top.equalToSuperview().offset(6)
         }
-        self.systemInfoView.addSubview(self.systemMsgLabel)
-        self.systemMsgLabel.snp.makeConstraints { make in
+        systemInfoView.addSubview(systemMsgLabel)
+        systemMsgLabel.snp.makeConstraints { make in
             make.width.equalTo(kScreenWidth)
             make.left.equalToSuperview()
             make.top.equalTo(self.timeLabel.snp.bottom)
         }
         tableView.tableHeaderView = systemInfoView
-        
+
         toolBar.textView.placeholder = "请输入想咨询的问题"
     }
 
@@ -209,27 +211,26 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    
-    func initSDK(baseUrl: String){
-            headerTitle.text = "连接客服中..."
-            let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
-            //第一次cert必填，之后token必填
-        lib = ChatLib(userId: 1125324, cert: "", token: self.token, baseUrl: wssUrl, sign: "9zgd9YUc")
+    func initSDK(baseUrl: String) {
+        headerTitle.text = "连接客服中..."
+        let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
+        // 第一次cert必填，之后token必填
+        lib = ChatLib(userId: 1125324, cert: "", token: token, baseUrl: wssUrl, sign: "9zgd9YUc")
 
-            lib.callWebsocket()
-            lib.delegate = self
-        }
+        lib.callWebsocket()
+        lib.delegate = self
+    }
 
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg")
         appendDataSource(msg: msg, isLeft: true)
-        
+
         scrollToBottom()
     }
 
     func scrollToBottom() {
-        if (datasouceArray.count > 1) {
-            tableView.scrollToRow(at: IndexPath.init(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
+        if datasouceArray.count > 1 {
+            tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
         }
     }
 
@@ -248,19 +249,19 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func systemMsg(msg: String) {
         print("systemMsg")
         print(msg)
-        //self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
-        self.timeLabel.text = WTimeConvertUtil.displayLocalTime(from: Date())
-        self.systemMsgLabel.text = msg
+        // self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
+        timeLabel.text = WTimeConvertUtil.displayLocalTime(from: Date())
+        systemMsgLabel.text = msg
     }
 
     public func connected(c: Gateway_SCHi) {
         print("work id \(c.workerID)")
         WWProgressHUD.dismiss()
-        if c.workerID == 0 && retryTimes < 3{//如果没有分配到客服
-            lib.callWebsocket() //重新连接
+        if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
+            lib.callWebsocket() // 重新连接
             print("尝试重新连接")
             retryTimes += 1
-        }else{
+        } else {
             loadWorker(workerId: c.workerID)
         }
     }
@@ -268,22 +269,21 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     func loadWorker(workerId: Int32) {
         XToken = token
         NetworkUtil.getWorker(workerId: workerId) { success, model in
-            if (success ) {
-                
-                if let workName = model?.workerName{
+            if success {
+                if let workName = model?.workerName {
                     self.headerTitle.text = workName
                 }
-                
+
                 print("baseUrlImage:" + baseUrlImage)
-                if (model?.workerAvatar?.isEmpty == false && model?.workerAvatar != nil) {
+                if model?.workerAvatar?.isEmpty == false, model?.workerAvatar != nil {
                     let url = baseUrlImage + model!.workerAvatar!
                     print("avatar:" + url)
-                    self.headerImg.kf.setImage(with: URL.init(string: url))
+                    self.headerImg.kf.setImage(with: URL(string: url))
                 }
-            }else{
+            } else {
                 self.headerTitle.text = "起信客服"
             }
-            let msg = self.lib.composeALocalMessage(textMsg: "你好，我是客服" + (model?.workerName ?? "") )
+            let msg = self.lib.composeALocalMessage(textMsg: "你好，我是客服" + (model?.workerName ?? ""))
             self.appendDataSource(msg: msg, isLeft: true)
         }
     }
@@ -299,7 +299,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         }
         let cell = BWChatRightCell.cell(tableView: tableView)
         cell.model = model
-        cell.resendBlock = {[weak self] msg in
+        cell.resendBlock = { [weak self] _ in
             self?.datasouceArray[indexPath.row].sendStatus = .发送中
             self?.lib.resendMsg(msg: model.message, payloadId: model.payLoadId)
         }
@@ -309,14 +309,14 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datasouceArray.count
     }
-    
+
 //    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
 //
 //    }
-    
+
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let model = datasouceArray[indexPath.row]
-        if model.message.image.uri.isEmpty == false{
+        if model.message.image.uri.isEmpty == false {
             return 200.0
         }
         return 50.0
@@ -338,7 +338,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
         if btn.titleLabel?.text == "发送" {
             sendMsg(textMsg: toolBar.textView.normalText())
-            
+
         } else {
             // 选图片
             chooseImgFunc()
@@ -362,12 +362,12 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
             self?.authorizeCamaro { state in
                 if state == .restricted || state == .denied {
                     DispatchQueue.main.async {
-                    self?.presentNoauth(isPhoto: false)
+                        self?.presentNoauth(isPhoto: false)
                     }
                 } else {
                     DispatchQueue.main.async {
-                    self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .camera)
-                }
+                        self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .camera)
+                    }
                 }
             }
         })
@@ -380,21 +380,21 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     }
 
     func sendMsg(textMsg: String) {
-        lib.sendMessage(msg: textMsg, type: .msgText, consultId: self.consultId)
+        lib.sendMessage(msg: textMsg, type: .msgText, consultId: consultId)
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
-            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId )
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
         }
     }
 
     func sendImage(url: String) {
-        //lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
-        lib.sendMessage(msg: url, type: .msgImg, consultId: self.consultId)
+        // lib.sendMessageImage(url: "https://www.bing.com/th?id=OHR.SunriseCastle_ROW9509100997_1920x1080.jpg&rf=LaDigue_1920x1080.jpg")
+        lib.sendMessage(msg: url, type: .msgImg, consultId: consultId)
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
-            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId )
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
         }
     }
 
@@ -421,11 +421,10 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     @objc func toolBar(toolBar: BWKeFuChatToolBar, changed text: String, range: NSRange) -> Bool {
         return true
     }
-    
+
     func upload(imgData: Data) {
-        
         // Set Your URL
-        let api_url =  baseUrlImageApi +  "/v1/assets/upload/"
+        let api_url = baseUrlImageApi + "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
             return
         }
@@ -464,24 +463,23 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
                 print("Upload Progress: \(progress.fractionCompleted)")
             })
             .response(completionHandler: { data in
-                switch data.result{
-                case .success :
-                    
-                    if let filePath = data.data{
+                switch data.result {
+                case .success:
+
+                    if let filePath = data.data {
                         let path = String(data: filePath, encoding: String.Encoding.utf8)
                         let imgUrl = baseUrlImage + (path ?? "")
                         print(imgUrl)
                         self.sendImage(url: imgUrl)
-                    }else{
+                    } else {
                         print("图片上传失败：")
                     }
-                   
+
                 case .failure(let error):
                     print("图片上传失败：" + error.localizedDescription)
                 }
             })
     }
-
 }
 
 extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -508,10 +506,10 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
         guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
         let tt = imgData.count
         print("图片大小：\(tt)")
-        if tt > 2048000{
+        if tt > 2048000 {
             print("图片不能超过2M")
             let alertVC = UIAlertController(title: "提示", message: "图片不能超过2M", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { (_) in
+            let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { _ in
                 picker.dismiss(animated: true)
             })
             alertVC.addAction(cancelAction)
@@ -559,7 +557,6 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
     }
 
-   
     func getStrFromImage() -> String {
         let imageOrigin = chooseImg
         if let image = imageOrigin {
