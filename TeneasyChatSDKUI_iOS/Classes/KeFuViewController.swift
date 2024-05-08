@@ -143,6 +143,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 //
         let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
         navigationItem.rightBarButtonItem = rightBarItem
+        
+        
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
