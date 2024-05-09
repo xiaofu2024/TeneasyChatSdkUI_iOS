@@ -71,7 +71,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
     lazy var systemInfoView: UIView = {
         let v = UIView(frame: CGRect.zero)
-        v.backgroundColor = .clear
+        v.backgroundColor = .white
+        v.layer.cornerRadius = 8
+        v.layer.masksToBounds = true
         return v
     }()
 
@@ -123,6 +125,19 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         return view
     }()
 
+    lazy var questionView: BWQuestionView = {
+        let view = BWQuestionView()
+        return view
+    }()
+    lazy var entranceView: BWEntranceView = {
+        let view = BWEntranceView()
+        return view
+    }()
+    
+    var entranceViewHeight: Double = 0
+    var questionViewHeight: Double = 0
+    
+
     var datasouceArray: [ChatModel] = []
 
     var lib = ChatLib()
@@ -143,8 +158,12 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 //
         let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
         navigationItem.rightBarButtonItem = rightBarItem
-        
-        
+
+//        DispatchQueue.main.async {
+//            let dialog = BWQuestionDialog()
+//            dialog.modalPresentationStyle = .overCurrentContext
+//            self.present(dialog, animated: true, completion: nil)
+//        }
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
@@ -189,9 +208,13 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.centerY.equalTo(self.headerImg.snp.centerY)
             make.left.equalTo(self.headerImg.snp.right).offset(12)
         }
+        tableView.tableHeaderView = systemInfoView
+
         systemInfoView.addSubview(timeLabel)
         systemInfoView.snp.makeConstraints { make in
-            make.height.equalTo(40)
+            make.width.equalTo(kScreenWidth - 24)
+            make.leading.equalTo(12)
+            make.top.equalToSuperview().offset(12)
         }
         timeLabel.snp.makeConstraints { make in
             make.width.equalTo(kScreenWidth)
@@ -204,9 +227,39 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.left.equalToSuperview()
             make.top.equalTo(self.timeLabel.snp.bottom)
         }
-        tableView.tableHeaderView = systemInfoView
+        systemInfoView.addSubview(entranceView)
+        entranceView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.width.equalTo(kScreenWidth)
+            make.height.equalTo(30)
+            make.top.equalTo(systemMsgLabel.snp.bottom)
+        }
+        systemInfoView.addSubview(questionView)
+        questionView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.width.equalTo(kScreenWidth)
+            make.height.equalTo(0)
+            make.top.equalTo(entranceView.snp.bottom).offset(12)
+            make.bottom.equalToSuperview()
+        }
+        
+        entranceView.callBack = {[weak self] (dataCount: Int) in
+            self?.entranceViewHeight = dataCount == 0 ? 0.0:(Double(dataCount) * 44.0 + 20.0)
+            self?.entranceView.snp.updateConstraints { make in
+                make.height.equalTo(self?.entranceViewHeight ?? 0)
+            }
+        }
+        entranceView.cellClick = {[weak self] (consultID: Int32) in
+            self?.getAutoReplay(consultId: consultID)
+        }
+        questionView.heightCallback = {[weak self] (height: Double) in
+            self?.questionView.snp.updateConstraints({ make in
+                make.height.equalTo(height)
+            })
+        }
 
         toolBar.textView.placeholder = "请输入想咨询的问题"
+        
     }
 
     override open func didReceiveMemoryWarning() {
@@ -265,6 +318,20 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             retryTimes += 1
         } else {
             loadWorker(workerId: c.workerID)
+        }
+    }
+    
+    
+    func getAutoReplay(consultId: Int32) {
+        print(consultId);
+        XToken = "COYBEAEYCyDwASjC-N6t9TE.W0AyuCoZQmqOBrxBvh88pcvgKzxebPqrubASBGzWDNPZu4EhSfyPDTH_Smym9PUYUWNh00NvMAEisZO-mAErCw"
+        NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
+            if success {
+                if let autoReplyItem = model?.autoReplyItem {
+                    print("--------" + (autoReplyItem.name ?? ""))
+                    self.questionView.setup(model: model!)
+                }
+            }
         }
     }
 

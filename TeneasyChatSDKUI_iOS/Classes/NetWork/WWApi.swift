@@ -4,6 +4,9 @@ let ChatProvider = MoyaProvider<ChatApi>()
 
 enum ChatApi {
     case queryWorker(workerId: Int32 = 1)
+    case queryAutoReplay(consultId: Int32 = 0)
+    case queryEntrance
+    case assignWorker(consultId: Int32 = 0)
 }
 
 /// 实现TargetType协议
@@ -18,6 +21,12 @@ extension ChatApi: TargetType {
         switch self {
         case .queryWorker:
             return "/api/query-worker/"
+        case .queryAutoReplay:
+            return "/api/query-auto-reply"
+        case .queryEntrance:
+            return "/api/query-entrance"
+        case .assignWorker:
+            return "/api/assign-worker"
         }
     }
     
@@ -32,11 +41,13 @@ extension ChatApi: TargetType {
     }
     
     var task: Task {
-
         switch self {
         case .queryWorker(let id):
             return .requestParameters(parameters: ["workerId": id], encoding: JSONEncoding.default)
-                
+        case .queryAutoReplay(let id), .assignWorker(let id):
+            return .requestParameters(parameters: ["consultId": id], encoding: JSONEncoding.default)
+        case .queryEntrance:
+            return .requestParameters(parameters: [:], encoding: JSONEncoding.default)
         default:
             return .requestPlain
         }
