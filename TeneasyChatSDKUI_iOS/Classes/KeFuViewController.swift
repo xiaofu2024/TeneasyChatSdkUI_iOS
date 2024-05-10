@@ -71,9 +71,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
     lazy var systemInfoView: UIView = {
         let v = UIView(frame: CGRect.zero)
-        v.backgroundColor = .white
-        v.layer.cornerRadius = 8
-        v.layer.masksToBounds = true
+//        v.backgroundColor = .white
+//        v.layer.cornerRadius = 8
+//        v.layer.masksToBounds = true
         return v
     }()
 
@@ -127,10 +127,16 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
     lazy var questionView: BWQuestionView = {
         let view = BWQuestionView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
         return view
     }()
     lazy var entranceView: BWEntranceView = {
         let view = BWEntranceView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
         return view
     }()
     
@@ -244,7 +250,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         }
         
         entranceView.callBack = {[weak self] (dataCount: Int) in
-            self?.entranceViewHeight = dataCount == 0 ? 0.0:(Double(dataCount) * 44.0 + 20.0)
+            self?.entranceViewHeight = dataCount == 0 ? 0.0:(Double(dataCount) * 44.0 + 28.0)
             self?.entranceView.snp.updateConstraints { make in
                 make.height.equalTo(self?.entranceViewHeight ?? 0)
             }
@@ -256,6 +262,16 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             self?.questionView.snp.updateConstraints({ make in
                 make.height.equalTo(height)
             })
+            self?.systemInfoView.frame.size.height = (self?.entranceViewHeight ?? 0) + height + 30
+            self?.tableView.reloadData()
+        }
+        questionView.cellClick = {[weak self] (model: QA) in
+            self?.sendMsg(textMsg: model.question?.content?.data ?? "")
+            
+            let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
+            if (msg != nil) {
+                self?.appendDataSource(msg: msg!, isLeft: true)
+            }
         }
 
         toolBar.textView.placeholder = "请输入想咨询的问题"

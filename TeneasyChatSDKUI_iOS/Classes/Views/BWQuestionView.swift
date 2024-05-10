@@ -8,9 +8,11 @@
 import Foundation
 
 typealias BWQuestionViewHeightCallback = (Double) -> ()
+typealias BWQuestionViewCellClickCallback = (QA) -> ()
 
 class BWQuestionView: UIView {
     var heightCallback: BWQuestionViewHeightCallback?
+    var cellClick: BWQuestionViewCellClickCallback?
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         return label
@@ -40,13 +42,13 @@ class BWQuestionView: UIView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(12)
         }
 
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(8)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
@@ -76,6 +78,13 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         let cell = BWQuestionCell.cell(tableView: tableView)
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model: QA? = sectionList[indexPath.section].related?[indexPath.row]
+        if (model != nil) {
+            cellClick!(model!)
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -126,7 +135,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
                     expandRowHeight = expandRowHeight + Double(qa.related?.count ?? 0) * 44.0
                 }
             }
-            heightCallback!(20.0 + sectionHeight + expandRowHeight)
+            heightCallback!(32.0 + sectionHeight + expandRowHeight)
         }
     }
 }
