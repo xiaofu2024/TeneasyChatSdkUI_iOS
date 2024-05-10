@@ -11,7 +11,7 @@ class BWQuestionCell: UITableViewCell {
     
     lazy var titleLab: UILabel = {
         let lab = UILabel()
-        lab.font = UIFont.systemFont(ofSize: 13)
+        lab.font = UIFont.systemFont(ofSize: 15)
         lab.textColor = .black
         lab.lineBreakMode = .byTruncatingTail
         return lab
@@ -19,6 +19,7 @@ class BWQuestionCell: UITableViewCell {
     
     lazy var imgView: UIImageView = {
         let v = UIImageView()
+        v.image = UIImage.svgInit("arrow-right", size: CGSize.init(width: 20, height: 20))
         return v
     }()
     
@@ -45,7 +46,7 @@ class BWQuestionCell: UITableViewCell {
         }
         self.imgView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-12)
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(20)
             make.centerY.equalToSuperview()
         }
     }

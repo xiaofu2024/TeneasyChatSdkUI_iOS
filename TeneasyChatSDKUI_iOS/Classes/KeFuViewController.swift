@@ -45,7 +45,11 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     }
 
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
+        print("systemMsg")
         print(result.Message)
+        if (result.Message == "已取消连接") {
+            WWProgressHUD.dismiss()
+        }
     }
 
     open var token = "CAEQARjeCSBXKLK3no7pMA.4ZFT0KP1_DaEtPcdVhSyL9Q4Aolk16-bCgT6P8tm-cMOUEl-m1ygdpeIXx9iDaZbTcxEcRqW0gr6v7cuUjY2Cg" // 起信Token
@@ -71,9 +75,6 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
     lazy var systemInfoView: UIView = {
         let v = UIView(frame: CGRect.zero)
-//        v.backgroundColor = .white
-//        v.layer.cornerRadius = 8
-//        v.layer.masksToBounds = true
         return v
     }()
 
@@ -99,6 +100,12 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         img.layer.masksToBounds = true
         img.image = UIImage.svgInit("com_moren")
         return img
+    }()
+    lazy var headerClose: UIButton = {
+        let btn = UIButton(frame: CGRect.zero)
+        btn.setImage(UIImage.svgInit("close", size: CGSize.init(width: 20, height: 20)), for: UIControl.State.normal)
+        btn.addTarget(self, action: #selector(closeClick), for: UIControl.Event.touchUpInside)
+        return btn
     }()
 
     lazy var headerTitle: UILabel = {
@@ -132,15 +139,6 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         view.layer.masksToBounds = true
         return view
     }()
-    lazy var entranceView: BWEntranceView = {
-        let view = BWEntranceView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
-        return view
-    }()
-    
-    var entranceViewHeight: Double = 0
     var questionViewHeight: Double = 0
     
 
@@ -165,11 +163,10 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
         navigationItem.rightBarButtonItem = rightBarItem
 
-//        DispatchQueue.main.async {
-//            let dialog = BWQuestionDialog()
-//            dialog.modalPresentationStyle = .overCurrentContext
-//            self.present(dialog, animated: true, completion: nil)
-//        }
+        self.getAutoReplay(consultId: Int32(self.consultId))
+    }
+    @objc func closeClick() {
+        self.dismiss(animated: true)
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
@@ -214,6 +211,11 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.centerY.equalTo(self.headerImg.snp.centerY)
             make.left.equalTo(self.headerImg.snp.right).offset(12)
         }
+        headerView.addSubview(headerClose)
+        headerClose.snp.makeConstraints { make in
+            make.centerY.equalTo(self.headerImg.snp.centerY)
+            make.right.equalToSuperview().offset(-16)
+        }
         tableView.tableHeaderView = systemInfoView
 
         systemInfoView.addSubview(timeLabel)
@@ -233,36 +235,20 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.left.equalToSuperview()
             make.top.equalTo(self.timeLabel.snp.bottom)
         }
-        systemInfoView.addSubview(entranceView)
-        entranceView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.width.equalTo(kScreenWidth)
-            make.height.equalTo(30)
-            make.top.equalTo(systemMsgLabel.snp.bottom)
-        }
         systemInfoView.addSubview(questionView)
         questionView.snp.makeConstraints { make in
             make.left.equalToSuperview()
-            make.width.equalTo(kScreenWidth)
-            make.height.equalTo(0)
-            make.top.equalTo(entranceView.snp.bottom).offset(12)
+            make.width.equalTo(kScreenWidth-24)
+            make.height.equalTo(30)
+            make.top.equalTo(systemMsgLabel.snp.bottom)
             make.bottom.equalToSuperview()
         }
         
-        entranceView.callBack = {[weak self] (dataCount: Int) in
-            self?.entranceViewHeight = dataCount == 0 ? 0.0:(Double(dataCount) * 44.0 + 28.0)
-            self?.entranceView.snp.updateConstraints { make in
-                make.height.equalTo(self?.entranceViewHeight ?? 0)
-            }
-        }
-        entranceView.cellClick = {[weak self] (consultID: Int32) in
-            self?.getAutoReplay(consultId: consultID)
-        }
         questionView.heightCallback = {[weak self] (height: Double) in
             self?.questionView.snp.updateConstraints({ make in
                 make.height.equalTo(height)
             })
-            self?.systemInfoView.frame.size.height = (self?.entranceViewHeight ?? 0) + height + 30
+            self?.systemInfoView.frame.size.height = height + 30
             self?.tableView.reloadData()
         }
         questionView.cellClick = {[weak self] (model: QA) in

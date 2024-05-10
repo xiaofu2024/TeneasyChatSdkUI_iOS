@@ -16,6 +16,7 @@ class BWEntranceView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
 
@@ -26,6 +27,12 @@ class BWEntranceView: UIView {
         view.backgroundColor = .clear
         view.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 0.1))
         view.isScrollEnabled = false
+        return view
+    }()
+    
+    lazy var loading: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.hidesWhenStopped = true
         return view
     }()
 
@@ -42,6 +49,11 @@ class BWEntranceView: UIView {
     }
 
     func setupUI() {
+        self.addSubview(self.loading)
+        self.loading.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(30)
+        }
         self.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
@@ -60,12 +72,16 @@ class BWEntranceView: UIView {
     var entranceModel: EntranceModel?
 
     func getEntrance() {
+        self.loading.startAnimating()
         XToken = "COYBEAEYCyDwASjC-N6t9TE.W0AyuCoZQmqOBrxBvh88pcvgKzxebPqrubASBGzWDNPZu4EhSfyPDTH_Smym9PUYUWNh00NvMAEisZO-mAErCw"
         NetworkUtil.getEntrance { success, model in
+            self.loading.stopAnimating()
             if success {
                 self.titleLabel.text = model?.guide ?? ""
                 self.entranceModel = model
                 
+            } else {
+                self.titleLabel.text = "没有咨询类型"
             }
             self.callBack!(self.entranceModel?.consults?.count ?? 0)
             self.tableView.reloadData()

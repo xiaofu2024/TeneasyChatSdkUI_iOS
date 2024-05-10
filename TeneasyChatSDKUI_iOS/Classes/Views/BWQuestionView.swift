@@ -61,7 +61,6 @@ class BWQuestionView: UIView {
         sectionList = model.autoReplyItem?.qa ?? []
         titleLabel.text = model.autoReplyItem?.title
         updateTableViewHeight()
-        tableView.reloadData()
     }
 }
 
@@ -77,6 +76,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BWQuestionCell.cell(tableView: tableView)
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
+        cell.imgView.isHidden = true
         return cell
     }
     
@@ -122,7 +122,6 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         // 在这里处理点击事件，使用 section 参数
         sectionList[section].myExpanded = !sectionList[section].myExpanded
         updateTableViewHeight()
-        tableView.reloadData()
     }
     func updateTableViewHeight() {
         if (sectionList.count == 0) {
@@ -137,5 +136,6 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
             }
             heightCallback!(32.0 + sectionHeight + expandRowHeight)
         }
+        tableView.reloadData()
     }
 }

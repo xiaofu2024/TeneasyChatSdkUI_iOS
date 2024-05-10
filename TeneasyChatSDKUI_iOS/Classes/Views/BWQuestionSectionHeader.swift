@@ -22,7 +22,7 @@ class BWQuestionSectionHeader: UITableViewHeaderFooterView {
         }
         contentView.addSubview(imgView)
         imgView.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-30)
+            make.right.equalToSuperview().offset(-12)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(24)
         }
