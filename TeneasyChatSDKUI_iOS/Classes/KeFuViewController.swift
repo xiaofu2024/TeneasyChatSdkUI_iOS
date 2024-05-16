@@ -14,6 +14,10 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
+    public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
+       // <#code#>
+    }
+    
     public func msgReceipt(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
         print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
         // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
