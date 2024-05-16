@@ -38,4 +38,8 @@ open class QuestionViewController: UIViewController {
             self?.present(vc, animated: true)
         }
     }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+
+    }
 }

@@ -154,7 +154,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = kBgColor
-        WWProgressHUD.showLoading("连接中...")
+        
+        //
+        xToken = ""
 
         initSDK(baseUrl: domain)
         initView()
@@ -317,7 +319,6 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
     public func connected(c: Gateway_SCHi) {
         print("work id \(c.workerID)")
-        WWProgressHUD.dismiss()
         
         xToken = c.token
         if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
@@ -326,11 +327,14 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             retryTimes += 1
         } else {
            // loadWorker(workerId: c.workerID)
-            
+            WWProgressHUD.showLoading("连接中...")
+            print("assign work")
             NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
                 if success {
-                   
+                    print("assign work 成功")
+                    self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
                 }
+                WWProgressHUD.dismiss()
             }
         }
     }
@@ -349,8 +353,16 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 //        }
 //    }
 
+    
+    func updateWorker(workerName:String, avatar: String){
+        self.headerTitle.text = workerName
+        print("baseUrlImage:" + baseUrlImage)
+        let url = baseUrlImage + avatar
+        print("avatar:" + url)
+        self.headerImg.kf.setImage(with: URL(string: url))
+    }
 
-    func loadWorker(workerId: Int32) {
+   /* func loadWorker(workerId: Int32) {
 
         NetworkUtil.getWorker(workerId: workerId) { success, model in
             if success {
@@ -370,7 +382,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             let msg = self.lib.composeALocalMessage(textMsg: "你好，我是客服" + (model?.workerName ?? ""))
             self.appendDataSource(msg: msg, isLeft: true)
         }
-    }
+    }*/
 }
 
 extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {

@@ -86,6 +86,7 @@ open class ChatLib {
         let date = Date()
         let dt = Int(date.timeIntervalSince1970 * 1000)
         let urlStr = "\(baseUrl)cert=\(cert)&token=\(token)&userid=\(self.userId)&ty=\(Api_Common_ClientType.userApp.rawValue)&dt=\(dt)&sign=\(self.sign)&rd=\(rd)"
+        print(urlStr)
         guard let url = URL(string: urlStr) else { return }
         let request = URLRequest(url: url)
         // request.setValue("chat,superchat", forHTTPHeaderField: "Sec-WebSocket-Protocol")
