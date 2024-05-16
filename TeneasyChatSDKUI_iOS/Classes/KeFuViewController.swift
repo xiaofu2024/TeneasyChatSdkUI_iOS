@@ -14,6 +14,10 @@ import TeneasyChatSDK_iOS
 import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
+    public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
+        
+    }
+    
     public func msgReceipt(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
         print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
         // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
@@ -47,7 +51,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
         print("systemMsg")
         print(result.Message)
-        if (result.Message == "已取消连接") {
+        if result.Message == "已取消连接" {
             WWProgressHUD.dismiss()
         }
     }
@@ -101,9 +105,10 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         img.image = UIImage.svgInit("com_moren")
         return img
     }()
+
     lazy var headerClose: UIButton = {
         let btn = UIButton(frame: CGRect.zero)
-        btn.setImage(UIImage.svgInit("close", size: CGSize.init(width: 20, height: 20)), for: UIControl.State.normal)
+        btn.setImage(UIImage.svgInit("close", size: CGSize(width: 20, height: 20)), for: UIControl.State.normal)
         btn.addTarget(self, action: #selector(closeClick), for: UIControl.Event.touchUpInside)
         return btn
     }()
@@ -132,15 +137,14 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         return view
     }()
 
-    lazy var questionView: BWQuestionView = {
-        let view = BWQuestionView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
-        return view
-    }()
+//    lazy var questionView: BWQuestionView = {
+//        let view = BWQuestionView()
+//        view.backgroundColor = .white
+//        view.layer.cornerRadius = 8
+//        view.layer.masksToBounds = true
+//        return view
+//    }()
     var questionViewHeight: Double = 0
-    
 
     var datasouceArray: [ChatModel] = []
 
@@ -152,7 +156,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         view.backgroundColor = kBgColor
         WWProgressHUD.showLoading("连接中...")
 
-        initSDK(baseUrl: "csapi.hfxg.xyz")
+        initSDK(baseUrl: "wcsapi.qixin14.xyz")
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
@@ -163,10 +167,11 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
         navigationItem.rightBarButtonItem = rightBarItem
 
-        self.getAutoReplay(consultId: Int32(self.consultId))
+//        getAutoReplay(consultId: Int32(consultId))
     }
+
     @objc func closeClick() {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
@@ -235,33 +240,32 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.left.equalToSuperview()
             make.top.equalTo(self.timeLabel.snp.bottom)
         }
-        systemInfoView.addSubview(questionView)
-        questionView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.width.equalTo(kScreenWidth-24)
-            make.height.equalTo(30)
-            make.top.equalTo(systemMsgLabel.snp.bottom)
-            make.bottom.equalToSuperview()
-        }
-        
-        questionView.heightCallback = {[weak self] (height: Double) in
-            self?.questionView.snp.updateConstraints({ make in
-                make.height.equalTo(height)
-            })
-            self?.systemInfoView.frame.size.height = height + 30
-            self?.tableView.reloadData()
-        }
-        questionView.cellClick = {[weak self] (model: QA) in
-            self?.sendMsg(textMsg: model.question?.content?.data ?? "")
-            
-            let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
-            if (msg != nil) {
-                self?.appendDataSource(msg: msg!, isLeft: true)
-            }
-        }
+//        systemInfoView.addSubview(questionView)
+//        questionView.snp.makeConstraints { make in
+//            make.left.equalToSuperview()
+//            make.width.equalTo(kScreenWidth-24)
+//            make.height.equalTo(30)
+//            make.top.equalTo(systemMsgLabel.snp.bottom)
+//            make.bottom.equalToSuperview()
+//        }
+//
+//        questionView.heightCallback = {[weak self] (height: Double) in
+//            self?.questionView.snp.updateConstraints({ make in
+//                make.height.equalTo(height)
+//            })
+//            self?.systemInfoView.frame.size.height = height + 30
+//            self?.tableView.reloadData()
+//        }
+//        questionView.cellClick = {[weak self] (model: QA) in
+//            self?.sendMsg(textMsg: model.question?.content?.data ?? "")
+//
+//            let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
+//            if (msg != nil) {
+//                self?.appendDataSource(msg: msg!, isLeft: true)
+//            }
+//        }
 
         toolBar.textView.placeholder = "请输入想咨询的问题"
-        
     }
 
     override open func didReceiveMemoryWarning() {
@@ -322,20 +326,19 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             loadWorker(workerId: c.workerID)
         }
     }
-    
-    
-    func getAutoReplay(consultId: Int32) {
-        print(consultId);
-        XToken = "COYBEAEYCyDwASjC-N6t9TE.W0AyuCoZQmqOBrxBvh88pcvgKzxebPqrubASBGzWDNPZu4EhSfyPDTH_Smym9PUYUWNh00NvMAEisZO-mAErCw"
-        NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
-            if success {
-                if let autoReplyItem = model?.autoReplyItem {
-                    print("--------" + (autoReplyItem.name ?? ""))
-                    self.questionView.setup(model: model!)
-                }
-            }
-        }
-    }
+
+//    func getAutoReplay(consultId: Int32) {
+//        print(consultId)
+//        XToken = "COYBEAEYCyDwASjC-N6t9TE.W0AyuCoZQmqOBrxBvh88pcvgKzxebPqrubASBGzWDNPZu4EhSfyPDTH_Smym9PUYUWNh00NvMAEisZO-mAErCw"
+//        NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
+//            if success {
+//                if let autoReplyItem = model?.autoReplyItem {
+//                    print("--------" + (autoReplyItem.name ?? ""))
+//                    self.questionView.setup(model: model!)
+//                }
+//            }
+//        }
+//    }
 
     func loadWorker(workerId: Int32) {
         XToken = token
@@ -364,6 +367,23 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = datasouceArray[indexPath.row]
         if model.isLeft {
+            // 什么时机显示cell，待定
+            if indexPath.row == 2 {
+                let cell = BWChatQuestionCell.cell(tableView: tableView)
+                cell.heightBlock = { [weak self] (height: Double) in
+                    self?.questionViewHeight = height + 30
+                    self?.tableView.reloadData()
+                }
+                cell.clickBlock = { [weak self] (model: QA) in
+                    self?.sendMsg(textMsg: model.question?.content?.data ?? "")
+
+                    let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
+                    if msg != nil {
+                        self?.appendDataSource(msg: msg!, isLeft: true)
+                    }
+                }
+                return cell
+            }
             let cell = BWChatLeftCell.cell(tableView: tableView)
             cell.model = model
             return cell
@@ -387,6 +407,9 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let model = datasouceArray[indexPath.row]
+        if model.isLeft && indexPath.row == 2 {
+            return questionViewHeight
+        }
         if model.message.image.uri.isEmpty == false {
             return 200.0
         }
