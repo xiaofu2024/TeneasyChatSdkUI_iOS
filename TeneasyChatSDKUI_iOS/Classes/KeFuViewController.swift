@@ -152,7 +152,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         view.backgroundColor = kBgColor
         WWProgressHUD.showLoading("连接中...")
 
-        initSDK(baseUrl: "csapi.hfxg.xyz")
+        initSDK(baseUrl: "wcsapi.qixin14.xyz")
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
