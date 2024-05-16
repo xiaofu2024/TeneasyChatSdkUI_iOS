@@ -73,6 +73,7 @@ class BWEntranceView: UIView {
 
     func getEntrance() {
         self.loading.startAnimating()
+        //getEntrance 使用cert
         XToken = "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ"
         NetworkUtil.getEntrance { success, model in
             self.loading.stopAnimating()
@@ -107,7 +108,7 @@ extension BWEntranceView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let list = self.entranceModel?.consults ?? []
         let id = list[indexPath.row].consultId ?? 0
-        XToken = "COYBEAEYCyDwASjC-N6t9TE.W0AyuCoZQmqOBrxBvh88pcvgKzxebPqrubASBGzWDNPZu4EhSfyPDTH_Smym9PUYUWNh00NvMAEisZO-mAErCw"
+        XToken = "COYBEAEYDCDyASjG0rz49zE.XnQmbW6OI0nfxF14AsqNYWN3KktYifRwm2z4SpQUnbwOL9t3e4k8CRnaHxxyWVOVgxMCDbCpjpEhNMILC84-CA"
         NetworkUtil.assignWorker(consultId: id) { [weak self]success, model in
             if success {
                 self?.cellClick!(id)

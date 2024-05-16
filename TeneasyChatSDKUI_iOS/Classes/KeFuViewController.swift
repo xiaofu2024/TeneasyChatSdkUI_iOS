@@ -15,7 +15,7 @@ import UIKit
 
 open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
-        
+
     }
     
     public func msgReceipt(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
@@ -56,7 +56,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         }
     }
 
-    open var token = "CAEQARjeCSBXKLK3no7pMA.4ZFT0KP1_DaEtPcdVhSyL9Q4Aolk16-bCgT6P8tm-cMOUEl-m1ygdpeIXx9iDaZbTcxEcRqW0gr6v7cuUjY2Cg" // 起信Token
+    open var token = "" // 起信Token
     // open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     var retryTimes = 0
     var consultId: Int64 = 0
@@ -276,7 +276,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         headerTitle.text = "连接客服中..."
         let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
         // 第一次cert必填，之后token必填
-        lib = ChatLib(userId: 1125324, cert: "", token: token, baseUrl: wssUrl, sign: "9zgd9YUc")
+        lib = ChatLib(userId: 1125324, cert: "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ", token: token, baseUrl: wssUrl, sign: "9zgd9YUc")
 
         lib.callWebsocket()
         lib.delegate = self
@@ -318,6 +318,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func connected(c: Gateway_SCHi) {
         print("work id \(c.workerID)")
         WWProgressHUD.dismiss()
+        
+        token = c.token
         if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
             lib.callWebsocket() // 重新连接
             print("尝试重新连接")
@@ -326,6 +328,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             loadWorker(workerId: c.workerID)
         }
     }
+
 
 //    func getAutoReplay(consultId: Int32) {
 //        print(consultId)
@@ -339,6 +342,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 //            }
 //        }
 //    }
+
 
     func loadWorker(workerId: Int32) {
         XToken = token
@@ -368,8 +372,10 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         let model = datasouceArray[indexPath.row]
         if model.isLeft {
             // 什么时机显示cell，待定
-            if indexPath.row == 2 {
+            if indexPath.row == 0 {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
+                cell.model = model
+                cell.consultId = Int32(self.consultId)
                 cell.heightBlock = { [weak self] (height: Double) in
                     self?.questionViewHeight = height + 30
                     self?.tableView.reloadData()
@@ -407,7 +413,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let model = datasouceArray[indexPath.row]
-        if model.isLeft && indexPath.row == 2 {
+        if model.isLeft && indexPath.row == 0 {
             return questionViewHeight
         }
         if model.message.image.uri.isEmpty == false {
@@ -533,7 +539,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
         urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
         urlRequest.httpBody = imgData
 
-        urlRequest.addValue("CCcQARgKIBwotaa8vuAw.TM241ffJsCLGVTPSv-G65MuEKXuOcPqUKzpVtiDoAnOCORwC0AbAQoATJ1z_tZaWDil9iz2dE4q5TyIwNcIVCQ", forHTTPHeaderField: "X-Token")
+        urlRequest.addValue(token, forHTTPHeaderField: "X-Token")
 
         // Set Your Parameter
         let parameterDict = NSMutableDictionary()

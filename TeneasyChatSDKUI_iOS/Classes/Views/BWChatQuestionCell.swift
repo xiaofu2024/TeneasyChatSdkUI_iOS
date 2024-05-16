@@ -21,6 +21,13 @@ class BWChatQuestionCell: UITableViewCell {
         view.layer.masksToBounds = true
         return view
     }()
+    lazy var timeLab: UILabel = {
+        let lab = UILabel()
+        lab.font = UIFont.systemFont(ofSize: 13)
+        lab.textColor = .black
+        lab.lineBreakMode = .byTruncatingTail
+        return lab
+    }()
     
     static func cell(tableView: UITableView) -> Self {
         let cellId = "\(Self.self)"
@@ -44,7 +51,7 @@ class BWChatQuestionCell: UITableViewCell {
     
     func getAutoReplay(consultId: Int32) {
         print(consultId)
-        XToken = "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ"
+        XToken = "COYBEAEYDCDyASjG0rz49zE.XnQmbW6OI0nfxF14AsqNYWN3KktYifRwm2z4SpQUnbwOL9t3e4k8CRnaHxxyWVOVgxMCDbCpjpEhNMILC84-CA"
         NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
             if success {
                 self.question = model
@@ -56,18 +63,31 @@ class BWChatQuestionCell: UITableViewCell {
         }
     }
     
+    var model: ChatModel? {
+        didSet {
+            if let mTime = model?.message.msgTime {
+                self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
+            }
+        }
+    }
+    
     override required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .clear
-                
+        self.contentView.addSubview(self.timeLab)
+        self.timeLab.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-12)
+        }
         contentView.addSubview(questionView)
         
         questionView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
+            make.left.equalToSuperview().offset(12)
             make.width.equalTo(kScreenWidth - 24)
             make.height.equalTo(30)
-            make.top.equalToSuperview()
+            make.top.equalTo(timeLab.snp.bottom)
         }
         
         questionView.heightCallback = { [weak self] (height: Double) in
