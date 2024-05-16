@@ -51,7 +51,7 @@ class BWChatQuestionCell: UITableViewCell {
     
     func getAutoReplay(consultId: Int32) {
         print(consultId)
-        XToken = "COYBEAEYDCDyASjG0rz49zE.XnQmbW6OI0nfxF14AsqNYWN3KktYifRwm2z4SpQUnbwOL9t3e4k8CRnaHxxyWVOVgxMCDbCpjpEhNMILC84-CA"
+       
         NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
             if success {
                 self.question = model

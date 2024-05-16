@@ -56,7 +56,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         }
     }
 
-    open var token = "" // 起信Token
+    //open var token = "" // 起信Token
     // open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
     var retryTimes = 0
     var consultId: Int64 = 0
@@ -156,7 +156,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         view.backgroundColor = kBgColor
         WWProgressHUD.showLoading("连接中...")
 
-        initSDK(baseUrl: "wcsapi.qixin14.xyz")
+        initSDK(baseUrl: domain)
         initView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(node:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
@@ -266,6 +266,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 //        }
 
         toolBar.textView.placeholder = "请输入想咨询的问题"
+        headerTitle.text = "连接客服中..."
     }
 
     override open func didReceiveMemoryWarning() {
@@ -273,10 +274,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     }
 
     func initSDK(baseUrl: String) {
-        headerTitle.text = "连接客服中..."
         let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
         // 第一次cert必填，之后token必填
-        lib = ChatLib(userId: 1125324, cert: "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ", token: token, baseUrl: wssUrl, sign: "9zgd9YUc")
+        lib = ChatLib(userId: 1125324, cert: cert, token: xToken, baseUrl: wssUrl, sign: "9zgd9YUc")
 
         lib.callWebsocket()
         lib.delegate = self
@@ -319,13 +319,19 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         print("work id \(c.workerID)")
         WWProgressHUD.dismiss()
         
-        token = c.token
+        xToken = c.token
         if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
             lib.callWebsocket() // 重新连接
             print("尝试重新连接")
             retryTimes += 1
         } else {
-            loadWorker(workerId: c.workerID)
+           // loadWorker(workerId: c.workerID)
+            
+            NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
+                if success {
+                   
+                }
+            }
         }
     }
 
@@ -345,7 +351,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
 
 
     func loadWorker(workerId: Int32) {
-        XToken = token
+
         NetworkUtil.getWorker(workerId: workerId) { success, model in
             if success {
                 if let workName = model?.workerName {
@@ -524,7 +530,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
 
     func upload(imgData: Data) {
         // Set Your URL
-        let api_url = baseUrlImageApi + "/v1/assets/upload/"
+        let api_url = baseUrlImage + "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
             return
         }
@@ -539,7 +545,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
         urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
         urlRequest.httpBody = imgData
 
-        urlRequest.addValue(token, forHTTPHeaderField: "X-Token")
+        urlRequest.addValue(xToken, forHTTPHeaderField: "X-Token")
 
         // Set Your Parameter
         let parameterDict = NSMutableDictionary()

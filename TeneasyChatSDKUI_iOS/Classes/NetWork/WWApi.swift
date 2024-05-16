@@ -20,13 +20,13 @@ extension ChatApi: TargetType {
     var path: String {
         switch self {
         case .queryWorker:
-            return "/api/query-worker/"
+            return "/v1/api/query-worker/"
         case .queryAutoReplay:
-            return "/api/query-auto-reply"
+            return "/v1/api/query-auto-reply"
         case .queryEntrance:
-            return "/api/query-entrance"
+            return "/v1/api/query-entrance"
         case .assignWorker:
-            return "/api/assign-worker"
+            return "/v1/api/assign-worker"
         }
     }
     
@@ -55,6 +55,6 @@ extension ChatApi: TargetType {
     
     /// 公共请求头
     var headers: [String: String]? {
-        return ["X-Token": XToken, "Content-Type": "application/json"]
+        return ["X-Token": xToken, "Content-Type": "application/json"]
     }
 }
