@@ -19,6 +19,14 @@ open class QuestionViewController: UIViewController {
         return view
     }()
     
+    lazy var settingBtn: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("setting", for: UIControl.State.normal)
+        btn.setTitleColor(.blue, for: UIControl.State.normal)
+        btn.addTarget(self, action: #selector(settingClick), for: UIControl.Event.touchUpInside)
+        return btn
+    }()
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .groupTableViewBackground
@@ -37,6 +45,16 @@ open class QuestionViewController: UIViewController {
             vc.modalPresentationStyle = .fullScreen
             self?.present(vc, animated: true)
         }
+        
+        view.addSubview(self.settingBtn)
+        self.settingBtn.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-90)
+            make.right.equalToSuperview().offset(-20)
+        }
+    }
+    @objc func settingClick() {
+        let vc = BWSettingViewController()
+        self.present(vc, animated: true)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
