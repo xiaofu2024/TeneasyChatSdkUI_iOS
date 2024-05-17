@@ -15,8 +15,8 @@ let PARAM_LINES = "LINES"
 //这几个是需要在设置里面配置
 var lines = "https://csapi.xdev.stream,https://wcsapi.qixin14.xyz,https://wcsapi.qixin14.xyz"
 var cert = "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ"
-var merchantId = 230
-var userId = 1125324
+var merchantId: Int = 230
+var userId: Int = 1125324
 
 //动态生成
 var CONSULT_ID: Int32 = 1

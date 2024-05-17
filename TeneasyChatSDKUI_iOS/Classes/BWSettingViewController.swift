@@ -4,11 +4,10 @@
 //
 //  Created by Xiao Fu on 2024/5/17.
 //
-import UIKit
 import SnapKit
+import UIKit
 
 class BWSettingViewController: UIViewController {
-    
     private let linesTextField = UITextField()
     private let certTextField = UITextField()
     private let merchantIdTextField = UITextField()
@@ -25,7 +24,9 @@ class BWSettingViewController: UIViewController {
         
         let labels = ["lines", "cert", "merchantId", "userId"]
         let textFields = [linesTextField, certTextField, merchantIdTextField, userIdTextField]
-        
+                
+        var previousView: UIView?
+                
         for (index, labelName) in labels.enumerated() {
             let label = UILabel()
             label.text = labelName
@@ -36,17 +37,23 @@ class BWSettingViewController: UIViewController {
             view.addSubview(textField)
             
             label.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(100 + index * 60)
+                if let previousView = previousView {
+                    make.top.equalTo(previousView.snp.bottom).offset(20)
+                } else {
+                    make.top.equalToSuperview().offset(100)
+                }
                 make.left.equalToSuperview().offset(20)
-                make.width.equalTo(100)
+                make.right.equalToSuperview().offset(-20)
             }
             
             textField.snp.makeConstraints { make in
-                make.centerY.equalTo(label)
-                make.left.equalTo(label.snp.right).offset(10)
-                make.right.equalToSuperview().offset(-20)
+                make.top.equalTo(label.snp.bottom).offset(5)
+                make.left.equalTo(label)
+                make.right.equalTo(label)
                 make.height.equalTo(40)
             }
+            
+            previousView = textField
         }
         
         submitButton.setTitle("确定", for: .normal)
@@ -59,23 +66,36 @@ class BWSettingViewController: UIViewController {
             make.width.equalTo(100)
             make.height.equalTo(50)
         }
+        
+        loadUserDefaults()
+    }
+
+    private func loadUserDefaults() {
+        let a_lines = UserDefaults.standard.string(forKey: PARAM_LINES) ?? ""
+        let a_cert = UserDefaults.standard.string(forKey: PARAM_CERT) ?? ""
+        let a_merchantId = UserDefaults.standard.integer(forKey: PARAM_MERCHANT_ID)
+        let a_userId = UserDefaults.standard.integer(forKey: PARAM_USER_ID)
+            
+        linesTextField.text = a_lines.isEmpty ? lines:a_lines
+        certTextField.text = a_cert.isEmpty ? cert:a_cert
+        merchantIdTextField.text = "\(a_merchantId > 0 ? a_merchantId:merchantId)"
+        userIdTextField.text = "\(a_userId > 0 ? a_userId:userId)"
     }
     
     @objc private func submitButtonTapped() {
         let lines = linesTextField.text ?? ""
         let cert = certTextField.text ?? ""
-        let merchantId = merchantIdTextField.text ?? ""
-        let userId = userIdTextField.text ?? ""
+        let merchantId = Int(merchantIdTextField.text ?? "0")
+        let userId = Int(userIdTextField.text ?? "0")
         
         UserDefaults.standard.set(lines, forKey: PARAM_LINES)
         UserDefaults.standard.set(cert, forKey: PARAM_CERT)
         UserDefaults.standard.set(merchantId, forKey: PARAM_MERCHANT_ID)
         UserDefaults.standard.set(userId, forKey: PARAM_USER_ID)
         
-        self.dismiss(animated: true)
+        dismiss(animated: true)
 //        let alert = UIAlertController(title: "保存成功", message: "您的信息已保存。", preferredStyle: .alert)
 //        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
 //        present(alert, animated: true, completion: nil)
     }
 }
-
