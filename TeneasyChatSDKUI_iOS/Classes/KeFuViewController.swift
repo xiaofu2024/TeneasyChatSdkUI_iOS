@@ -361,6 +361,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let url = baseUrlImage + avatar
         print("avatar:" + url)
         self.headerImg.kf.setImage(with: URL(string: url))
+        
+        var greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
+        appendDataSource(msg: greetingMsg, isLeft: true)
     }
 
    /* func loadWorker(workerId: Int32) {
@@ -391,7 +394,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         let model = datasouceArray[indexPath.row]
         if model.isLeft {
             // 什么时机显示cell，待定
-            if indexPath.row == 0 {
+            /*if indexPath.row == 0 {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
                 cell.model = model
                 cell.consultId = Int32(self.consultId)
@@ -408,7 +411,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
                 return cell
-            }
+            }*/
             let cell = BWChatLeftCell.cell(tableView: tableView)
             cell.model = model
             return cell
