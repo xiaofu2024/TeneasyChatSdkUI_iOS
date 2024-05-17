@@ -320,6 +320,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func connected(c: Gateway_SCHi) {
         print("work id \(c.workerID)")
         
+        ///to do: save it to userdefault
         xToken = c.token
         if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
             lib.callWebsocket() // 重新连接
@@ -542,7 +543,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
 
     func upload(imgData: Data) {
         // Set Your URL
-        let api_url = baseUrlImage + "/v1/assets/upload/"
+        let api_url = baseUrlApi + "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
             return
         }
@@ -586,7 +587,8 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
 
                     if let filePath = data.data {
                         let path = String(data: filePath, encoding: String.Encoding.utf8)
-                        let imgUrl = baseUrlImage + (path ?? "")
+                        //let imgUrl = baseUrlImage + (path ?? "")
+                        let imgUrl = (path ?? "")
                         print(imgUrl)
                         self.sendImage(url: imgUrl)
                     } else {

@@ -71,7 +71,7 @@ class BWChatCell: UITableViewCell {
                 self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
             }
             if self.model?.message.image.uri.isEmpty == false {
-                let imgUrl = URL(string: model?.message.image.uri ?? "")
+                let imgUrl = URL(string: "\(baseUrlImage)\(model?.message.image.uri ?? "")")
                 print(imgUrl?.absoluteString ?? "")
                 if imgUrl != nil {
                     self.initImg(imgUrl: imgUrl!)
