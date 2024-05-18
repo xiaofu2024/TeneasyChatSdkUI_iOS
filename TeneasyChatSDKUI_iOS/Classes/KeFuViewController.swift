@@ -393,8 +393,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = datasouceArray[indexPath.row]
         if model.isLeft {
-            // 什么时机显示cell，待定
-            /*if indexPath.row == 0 {
+            if model.cellType == CellType.TYPE_QA {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
                 cell.model = model
                 cell.consultId = Int32(self.consultId)
@@ -411,7 +410,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
                 return cell
-            }*/
+            }
             let cell = BWChatLeftCell.cell(tableView: tableView)
             cell.model = model
             return cell
@@ -435,7 +434,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let model = datasouceArray[indexPath.row]
-        if model.isLeft && indexPath.row == 0 {
+        if model.cellType == CellType.TYPE_QA {
             return questionViewHeight
         }
         if model.message.image.uri.isEmpty == false {
