@@ -154,9 +154,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = kBgColor
-        
-        //
-        xToken = ""
+
+        xToken = UserDefaults.standard.string(forKey: PARAM_XTOKEN) ?? ""
 
         initSDK(baseUrl: domain)
         initView()
@@ -322,6 +321,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         
         ///to do: save it to userdefault
         xToken = c.token
+        UserDefaults.standard.set(c.token, forKey: PARAM_XTOKEN)
         if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
             lib.callWebsocket() // 重新连接
             print("尝试重新连接")
@@ -362,7 +362,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         print("avatar:" + url)
         self.headerImg.kf.setImage(with: URL(string: url))
         
-        var greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
+        let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
         appendDataSource(msg: greetingMsg, isLeft: true)
     }
 

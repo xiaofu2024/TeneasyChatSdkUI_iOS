@@ -8,10 +8,10 @@ import SnapKit
 import UIKit
 
 class BWSettingViewController: UIViewController {
-    private let linesTextField = UITextField()
-    private let certTextField = UITextField()
-    private let merchantIdTextField = UITextField()
-    private let userIdTextField = UITextField()
+    private let linesTextField = UITextView()
+    private let certTextField = UITextView()
+    private let merchantIdTextField = UITextView()
+    private let userIdTextField = UITextView()
     private let submitButton = UIButton(type: .system)
     
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class BWSettingViewController: UIViewController {
             view.addSubview(label)
             
             let textField = textFields[index]
-            textField.borderStyle = .roundedRect
+            //textField.borderStyle = .roundedRect
             view.addSubview(textField)
             
             label.snp.makeConstraints { make in
@@ -46,11 +46,13 @@ class BWSettingViewController: UIViewController {
                 make.right.equalToSuperview().offset(-20)
             }
             
+            textField.backgroundColor = UIColor.cyan
+            
             textField.snp.makeConstraints { make in
                 make.top.equalTo(label.snp.bottom).offset(5)
                 make.left.equalTo(label)
                 make.right.equalTo(label)
-                make.height.equalTo(40)
+                make.height.equalTo(50)
             }
             
             previousView = textField

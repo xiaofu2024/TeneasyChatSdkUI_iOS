@@ -47,7 +47,7 @@ open class ChatLib {
     private var sessionTime: Int = 0
     //var chooseImg: UIImage?
     private var beatTimes = 0
-    private var maxSessionMinutes = 90000000//相当于不设置会话时间 //90
+    private var maxSessionMinutes = 90000000//相当于不设置会话超时时间 //90
     var workId: Int32 = 5
     private var replyMsgId: Int64 = 0
     private var userId: Int32 = 0
@@ -124,9 +124,9 @@ open class ChatLib {
     
     @objc func updataSecond() {
         sessionTime += 1
-        if sessionTime % 30 == 0{//每隔8秒发送一个心跳
+        if sessionTime % 30 == 0{//每隔30秒发送一个心跳
             beatTimes += 1
-            print("sending beat \( beatTimes) \(Date())")
+            print("心跳第 \(beatTimes) 次 \(Date())")
             sendHeartBeat()
         }
         
@@ -138,7 +138,6 @@ open class ChatLib {
     func stopTimer() {
         beatTimes = 0
         sessionTime = 0
-        sendingMsg = nil
         if myTimer != nil {
             myTimer!.invalidate() // 销毁timer
             myTimer = nil
@@ -306,7 +305,7 @@ open class ChatLib {
         //payload_id != 0的时候，可能是重发，重发不需要+1
         if (sendingMsg?.msgOp == .msgOpPost && payload_Id == 0){
             payloadId += 1
-            print("payloadID:" + String(payloadId))
+            print("payloadID + 1:" + String(payloadId))
             msgList[payloadId] = msg
         }
         
@@ -334,7 +333,6 @@ open class ChatLib {
     }
     
     private func send(binaryData: Data) {
-        var result = Result()
         if websocket == nil || !isConnected{
             print("断开了")
             if sessionTime > maxSessionMinutes * 60 {
@@ -361,7 +359,7 @@ open class ChatLib {
         }
     }
     
-    public func disConnect(code: Int = 1006) {
+    public func disConnect(code: Int = 1006, msg: String = "已断开通信") {
         stopTimer()
         if let socket = websocket {
             socket.disconnect()
@@ -373,6 +371,8 @@ open class ChatLib {
         result.Code = code
         result.Message = "已断开通信"
         delegate?.systemMsg(result: result)
+        isConnected = false
+        sendingMsg = nil
         print("通信SDK 断开连接")
     }
     
@@ -403,7 +403,6 @@ extension ChatLib: WebSocketDelegate {
     }
 
     public func didReceive(event: WebSocketEvent, client: WebSocket) {
-        var result = Result()
         switch event {
 
         case .connected:
@@ -422,23 +421,30 @@ extension ChatLib: WebSocketDelegate {
         case .text(let text):
             print("received text: \(text)")
         case .binary(let data):
+            /*
+            walter, [17 May 2024 at 3:32:00 PM (17 May 2024 at 3:32:23 PM)]:
+    ...HeartBeatFlag         = 0x0
+    KickFlag              = 0x1
+    InvalidTokenFlag      = 0x2
+    PermChangedFlag       = 0x3
+    EntranceNotExistsFlag = 0x4
+
+    如果这个字节的值是 0 ，表示心跳...
+             */
             if data.count == 1 {
-                //print("在别处登录了 A")
-                if let d = String(data: data, encoding: .utf8) {
-                    // Attempt to convert the data to a UTF-8 string, and if successful, execute the block inside the 'if' statement.
-     
-                    if d.contains("2") {
-                        // Check if the string contains the character "2".
-                        result.Code = 1000
-                        result.Message = "无效的Token"
-                        delegate?.systemMsg(result: result) // Delegate a system message if the condition is true.
-                        disConnect()
-                        //print(d.description) // Print the resulting string.
-                        isConnected = false // Set the 'isConnected' variable to false.
-                    } else {
-                        print("收到心跳回执")
+                    if let d = String(data: data, encoding: .utf8) {
+                        if d.contains("\u{00}") {
+                            print("收到心跳回执0\n")
+                        } else if d.contains("\u{02}") {
+                            disConnect(code: 1000, msg: "无效的Token\n")
+                            print("收到1字节回执\(d) 无效的Token\n")
+                        } else if d.contains("\u{01}") {
+                            disConnect(code: 1003, msg: "在别处登录了\n")
+                            print("收到1字节回执\(d) 在别处登录了\n")
+                        } else {
+                            print("收到1字节回执\(d)\n")
+                        }
                     }
-                }
             } else {
                 guard let payLoad = try? Gateway_Payload(serializedData: data) else { return }
                 let msgData = payLoad.data
@@ -463,12 +469,13 @@ extension ChatLib: WebSocketDelegate {
                         //print("chatID:" + String(msg.id))
                         delegate?.connected(c: msg)
                         
-                        if let  s = sendingMsg{
-                            print("重新发送")
-                            resendMsg(msg: s, payloadId: self.payloadId)
+                        if sendingMsg != nil{
+                            print("自动重发未发出的最后一个消息\(self.payloadId)")
+                            resendMsg(msg: sendingMsg!, payloadId: self.payloadId)
+                        }else{
+                            //不是重发，使用新id
+                            payloadId = payLoad.id
                         }
-                        
-                        payloadId = payLoad.id
                         print("初始payloadId:" + String(payloadId))
                         print(msg)
                     }
