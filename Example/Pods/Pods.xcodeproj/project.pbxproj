@@ -806,6 +806,7 @@
 		DC8F15122BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15112BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift */; };
 		DC8F15142BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15132BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift */; };
 		DC8F15162BFB7B6200A11BE8 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15152BFB7B6200A11BE8 /* QuestionViewController.swift */; };
+		DC8F15182BFB7D0F00A11BE8 /* KeFuViewController_ChatSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15172BFB7D0F00A11BE8 /* KeFuViewController_ChatSDK.swift */; };
 		DCD0C33A2B50811D53CF68F021284B47 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E31F44086845A3316CC13573664E7 /* DispatchQueue+Alamofire.swift */; };
 		DD58A00EACBEE274C381B491519C6B8C /* RedirectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A842EB94A1C0F987530747C0CC1E4D2 /* RedirectHandler.swift */; };
 		DD5A0862F01B8EE9589CC86C25CB9F85 /* SVGMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = DA640958EC0486B818A8C12A7A7F7B69 /* SVGMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2073,6 +2074,7 @@
 		DC8F15112BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeFuViewController_ChatToolBar.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController_ChatToolBar.swift; sourceTree = "<group>"; };
 		DC8F15132BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeFuViewController_ImagePicker.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController_ImagePicker.swift; sourceTree = "<group>"; };
 		DC8F15152BFB7B6200A11BE8 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestionViewController.swift; path = TeneasyChatSDKUI_iOS/Classes/QuestionViewController.swift; sourceTree = "<group>"; };
+		DC8F15172BFB7D0F00A11BE8 /* KeFuViewController_ChatSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeFuViewController_ChatSDK.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController_ChatSDK.swift; sourceTree = "<group>"; };
 		DCD8DB63F4EEB232524F6EE3DC5E9266 /* ConstraintDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDSL.swift; path = Source/ConstraintDSL.swift; sourceTree = "<group>"; };
 		DDBC548700001E5B85A9DA593877DFEA /* CustomJSONCodable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CustomJSONCodable.swift; path = Sources/SwiftProtobuf/CustomJSONCodable.swift; sourceTree = "<group>"; };
 		DDBE06D903FDB49E7BD97B43DB67FAD4 /* Element.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Element.m; path = "Source/DOM classes/Core DOM/Element.m"; sourceTree = "<group>"; };
@@ -2386,6 +2388,7 @@
 				89D16ACE1EC48FD7BFD808D2222258D6 /* Constant.swift */,
 				D88BEAF32D52CC4D253EB6458117A525 /* emoticon */,
 				CE7A98B2AB849F9CD6C4EC7C7117E087 /* KeFuViewController.swift */,
+				DC8F15172BFB7D0F00A11BE8 /* KeFuViewController_ChatSDK.swift */,
 				DC8F15132BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift */,
 				DC8F15112BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift */,
 				DC8F150D2BFB518200A11BE8 /* KeFuViewController_TableView.swift */,
@@ -5322,6 +5325,7 @@
 				563585E0E4CBF011323E80DAFB9DC0EA /* BaseRequestResult.swift in Sources */,
 				5525F79831E8AD97A6BC4C281CC4B3E7 /* BEmotion.swift in Sources */,
 				D2B1EAC5E44D89CE74C5F0593E6F2B35 /* BEmotionHelper.swift in Sources */,
+				DC8F15182BFB7D0F00A11BE8 /* KeFuViewController_ChatSDK.swift in Sources */,
 				1C5737EFB4E42001493B6001D162E16C /* BundleUtil.swift in Sources */,
 				BD15B04C43FC922D2C65149918371322 /* BWChatCell.swift in Sources */,
 				DC8F15162BFB7B6200A11BE8 /* QuestionViewController.swift in Sources */,
