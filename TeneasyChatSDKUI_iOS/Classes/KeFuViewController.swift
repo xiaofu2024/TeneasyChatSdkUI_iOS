@@ -305,12 +305,48 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
                  self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
                  
                  NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
-                     print(data.)
+                     //print(data)
                      //构建本地消息
                  }
              }
              WWProgressHUD.dismiss()
          }
+    }
+    
+    private func buildHistory(){
+        
+       // let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
+
+        
+        
+        
+       /* var qaList = ArrayList<MessageItem>()
+                      for (item in this.reversed()) {
+                          // sender如果=chatid就是 用户 发的，反之是 客服 或者系统发的
+                          var isLeft = true
+                          if (item.sender == item.chatId){
+                              isLeft = false
+                          }
+                          if(item.msgFmt == "MSG_TEXT") {
+                              val qaItem =  viewModel.composeTextMsg(item, isLeft)
+                              qaList.add(qaItem)
+                          }else if(item.msgFmt == "MSG_IMG") {
+                              val qaItem = viewModel.composeImgMsg(item, isLeft)
+                              qaList.add(qaItem)
+                          }
+                      }
+                      var qaItem = MessageItem()
+                      qaItem.isQA = true
+                      qaList.add(qaItem)
+                      //viewModel.addAllMsgItem(qaList)
+
+                      //添加一个空白的，确保列表滚动到最后能看到所有内容
+                       qaItem = MessageItem()
+                      qaItem.isLastLine = true
+                      qaList.add(qaItem)
+
+                      viewModel.addAllMsgItem(qaList)
+        */
     }
 
 
@@ -338,141 +374,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
         appendDataSource(msg: greetingMsg, isLeft: true)
     }
-
-   /* func loadWorker(workerId: Int32) {
-
-        NetworkUtil.getWorker(workerId: workerId) { success, model in
-            if success {
-                if let workName = model?.workerName {
-                    self.headerTitle.text = workName
-                }
-
-                print("baseUrlImage:" + baseUrlImage)
-                if model?.workerAvatar?.isEmpty == false, model?.workerAvatar != nil {
-                    let url = baseUrlImage + model!.workerAvatar!
-                    print("avatar:" + url)
-                    self.headerImg.kf.setImage(with: URL(string: url))
-                }
-            } else {
-                self.headerTitle.text = "起信客服"
-            }
-            let msg = self.lib.composeALocalMessage(textMsg: "你好，我是客服" + (model?.workerName ?? ""))
-            self.appendDataSource(msg: msg, isLeft: true)
-        }
-    }*/
-}
-
-extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = datasouceArray[indexPath.row]
-        if model.isLeft {
-            if model.cellType == CellType.TYPE_QA {
-                let cell = BWChatQuestionCell.cell(tableView: tableView)
-                cell.model = model
-                cell.consultId = Int32(self.consultId)
-                cell.heightBlock = { [weak self] (height: Double) in
-                    self?.questionViewHeight = height + 30
-                    self?.tableView.reloadData()
-                }
-                cell.clickBlock = { [weak self] (model: QA) in
-                    self?.sendMsg(textMsg: model.question?.content?.data ?? "")
-
-                    let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
-                    if msg != nil {
-                        self?.appendDataSource(msg: msg!, isLeft: true)
-                    }
-                }
-                return cell
-            }
-            let cell = BWChatLeftCell.cell(tableView: tableView)
-            cell.model = model
-            return cell
-        }
-        let cell = BWChatRightCell.cell(tableView: tableView)
-        cell.model = model
-        cell.resendBlock = { [weak self] _ in
-            self?.datasouceArray[indexPath.row].sendStatus = .发送中
-            self?.lib.resendMsg(msg: model.message, payloadId: model.payLoadId)
-        }
-        return cell
-    }
-
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return datasouceArray.count
-    }
-
-//    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//
-//    }
-
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let model = datasouceArray[indexPath.row]
-        if model.cellType == CellType.TYPE_QA {
-            return questionViewHeight
-        }
-        if model.message.image.uri.isEmpty == false {
-            return 200.0
-        }
-        return 50.0
-    }
-}
-
-extension KeFuViewController: BWKeFuChatToolBarDelegate {
-    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedVoice btn: UIButton) {}
-
-    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedMenu btn: UIButton) {}
-
-    /// 表情
-    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedEmoji btn: UIButton) {}
-
-    /// 录音
-    func toolBar(toolBar: BWKeFuChatToolBar, sendVoice gesture: UILongPressGestureRecognizer) {}
-
-    /// 点击发送或者图片
-    func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
-        if btn.titleLabel?.text == "发送" {
-            sendMsg(textMsg: toolBar.textView.normalText())
-
-        } else {
-            // 选图片
-            chooseImgFunc()
-        }
-        self.toolBar.resetStatus()
-    }
-
-    func chooseImgFunc() {
-        let alertVC = UIAlertController(title: "选择图片", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        let alertAction1 = UIAlertAction(title: "从相册选择", style: .default, handler: { [weak self] _ in
-            self?.authorize { state in
-                if state == .restricted || state == .denied {
-                    self?.presentNoauth(isPhoto: true)
-                } else {
-                    self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .photoLibrary)
-                }
-            }
-        })
-        alertVC.addAction(alertAction1)
-        let alertAction2 = UIAlertAction(title: "拍照", style: .default, handler: { [weak self] _ in
-            self?.authorizeCamaro { state in
-                if state == .restricted || state == .denied {
-                    DispatchQueue.main.async {
-                        self?.presentNoauth(isPhoto: false)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        self?.presentImagePicker(controller: self?.imagePickerController ?? UIImagePickerController(), source: .camera)
-                    }
-                }
-            }
-        })
-        alertVC.addAction(alertAction2)
-        let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { _ in
-
-        })
-        alertVC.addAction(cancelAction)
-        present(alertVC, animated: true, completion: nil)
-    }
-
+    
+    
     func sendMsg(textMsg: String) {
         lib.sendMessage(msg: textMsg, type: .msgText, consultId: consultId)
         if let cMsg = lib.sendingMsg {
@@ -492,54 +395,31 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
         }
     }
 
-    func toolBar(toolBar: BWKeFuChatToolBar, menuView: BWKeFuChatMenuView, collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath, model: BEmotion) {
-        print(model.displayName)
-    }
-
-    func toolBar(toolBar: BWKeFuChatToolBar, didBeginEditing textView: UITextView) {}
-
-    func toolBar(toolBar: BWKeFuChatToolBar, didChanged textView: UITextView) {}
-
-    func toolBar(toolBar: BWKeFuChatToolBar, didEndEditing textView: UITextView) {}
-
-    /// 发送文字
-    func toolBar(toolBar: BWKeFuChatToolBar, sendText context: String) {
-        sendMsg(textMsg: context)
-        self.toolBar.resetStatus()
-    }
-
-    @objc func toolBar(toolBar: BWKeFuChatToolBar, delete text: String, range: NSRange) -> Bool {
-        return true
-    }
-
-    @objc func toolBar(toolBar: BWKeFuChatToolBar, changed text: String, range: NSRange) -> Bool {
-        return true
-    }
-
+    
     func upload(imgData: Data) {
         // Set Your URL
         let api_url = baseUrlApi + "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
             return
         }
-
+        
         var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
         urlRequest.httpMethod = "POST"
         // urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         let boundary = "Boundary-\(UUID().uuidString)"
         let contentType = "multipart/form-data; " + boundary
-
+        
         urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("multipart/form-data", forHTTPHeaderField: "Accept")
         urlRequest.httpBody = imgData
-
+        
         urlRequest.addValue(xToken, forHTTPHeaderField: "X-Token")
-
+        
         // Set Your Parameter
         let parameterDict = NSMutableDictionary()
         parameterDict.setValue(1, forKey: "type")
         // parameterDict.setValue("phot.png", forKey: "myFile")
-
+        
         // Now Execute
         AF.upload(multipartFormData: { multiPart in
             for (key, value) in parameterDict {
@@ -552,118 +432,32 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
             }
             multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
         }, with: urlRequest)
-            .uploadProgress(queue: .main, closure: { progress in
-                // Current upload progress of file
-                print("Upload Progress: \(progress.fractionCompleted)")
-            })
-            .response(completionHandler: { data in
-                switch data.result {
-                case .success:
-
-                    if let filePath = data.data {
-                        let path = String(data: filePath, encoding: String.Encoding.utf8)
-                        //let imgUrl = baseUrlImage + (path ?? "")
-                        let imgUrl = (path ?? "")
-                        print(imgUrl)
-                        self.sendImage(url: imgUrl)
-                    } else {
-                        print("图片上传失败：")
-                    }
-
-                case .failure(let error):
-                    print("图片上传失败：" + error.localizedDescription)
+        .uploadProgress(queue: .main, closure: { progress in
+            // Current upload progress of file
+            print("Upload Progress: \(progress.fractionCompleted)")
+        })
+        .response(completionHandler: { data in
+            switch data.result {
+            case .success:
+                
+                if let filePath = data.data {
+                    let path = String(data: filePath, encoding: String.Encoding.utf8)
+                    //let imgUrl = baseUrlImage + (path ?? "")
+                    let imgUrl = (path ?? "")
+                    print(imgUrl)
+                    self.sendImage(url: imgUrl)
+                } else {
+                    print("图片上传失败：")
                 }
-            })
+                
+            case .failure(let error):
+                print("图片上传失败：" + error.localizedDescription)
+            }
+        })
+        
     }
 }
 
-extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func presentNoauth(isPhoto: Bool) {
-        let vc = WWNoAuthorizeVC()
-        vc.modalPresentationStyle = .fullScreen
-        vc.isPhoto = isPhoto
-        present(vc, animated: false)
-    }
-
-    func presentImagePicker(controller: UIImagePickerController, source: UIImagePickerController.SourceType) {
-        controller.delegate = self
-        controller.sourceType = source
-        controller.allowsEditing = false
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true)
-    }
-
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            return imagePickerControllerDidCancel(picker)
-        }
-        chooseImg = image
-        guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
-        let tt = imgData.count
-        print("图片大小：\(tt)")
-        if tt > 2048000 {
-            print("图片不能超过2M")
-            let alertVC = UIAlertController(title: "提示", message: "图片不能超过2M", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { _ in
-                picker.dismiss(animated: true)
-            })
-            alertVC.addAction(cancelAction)
-            picker.present(alertVC, animated: true, completion: nil)
-            return
-        }
-        upload(imgData: imgData)
-        picker.dismiss(animated: false) {}
-    }
-
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true) {}
-    }
-
-    // 用户是否开启权限
-    func authorize(authorizeClouse: @escaping (PHAuthorizationStatus) -> ()) {
-        let status = PHPhotoLibrary.authorizationStatus()
-        if status == .authorized {
-            authorizeClouse(status)
-        } else if status == .notDetermined { // 未授权，请求授权
-            PHPhotoLibrary.requestAuthorization { state in
-                DispatchQueue.main.async {
-                    authorizeClouse(state)
-                }
-            }
-        } else {
-            authorizeClouse(status)
-        }
-    }
-
-    // 用户是否开启相机权限
-    func authorizeCamaro(authorizeClouse: @escaping (AVAuthorizationStatus) -> ()) {
-        let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
-
-        if status == .authorized {
-            authorizeClouse(status)
-        } else if status == .notDetermined {
-            AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { granted in
-                if granted { // 允许
-                    authorizeClouse(.authorized)
-                }
-            })
-        } else {
-            authorizeClouse(status)
-        }
-    }
-
-    func getStrFromImage() -> String {
-        let imageOrigin = chooseImg
-        if let image = imageOrigin {
-            let dataTmp = image.jpegData(compressionQuality: 0.1)
-            if let data = dataTmp {
-                let imageStrTT = data.base64EncodedString()
-                return imageStrTT
-            }
-        }
-        return ""
-    }
-}
 
 // MARK: - ----------------监听键盘高度变化
 

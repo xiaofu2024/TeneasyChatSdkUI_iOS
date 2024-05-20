@@ -81,7 +81,7 @@ class BWSettingViewController: UIViewController {
         linesTextField.text = a_lines.isEmpty ? lines:a_lines
         certTextField.text = a_cert.isEmpty ? cert:a_cert
         merchantIdTextField.text = "\(a_merchantId > 0 ? a_merchantId:merchantId)"
-        userIdTextField.text = "\(a_userId > 0 ? a_userId:userId)"
+        userIdTextField.text = "\(a_userId > 0 ? Int32(a_userId):userId)"
     }
     
     @objc private func submitButtonTapped() {
