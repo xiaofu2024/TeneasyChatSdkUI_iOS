@@ -51,8 +51,9 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
         print("systemMsg")
         print(result.Message)
-        if result.Message == "已取消连接" {
-            WWProgressHUD.dismiss()
+        if result.Code == 1002 || result.Code == 1010{
+            WWProgressHUD.showInfoMsg(result.Message)
+            navigationController?.popToRootViewController(animated: true)
         }
     }
 
@@ -241,30 +242,6 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
             make.left.equalToSuperview()
             make.top.equalTo(self.timeLabel.snp.bottom)
         }
-//        systemInfoView.addSubview(questionView)
-//        questionView.snp.makeConstraints { make in
-//            make.left.equalToSuperview()
-//            make.width.equalTo(kScreenWidth-24)
-//            make.height.equalTo(30)
-//            make.top.equalTo(systemMsgLabel.snp.bottom)
-//            make.bottom.equalToSuperview()
-//        }
-//
-//        questionView.heightCallback = {[weak self] (height: Double) in
-//            self?.questionView.snp.updateConstraints({ make in
-//                make.height.equalTo(height)
-//            })
-//            self?.systemInfoView.frame.size.height = height + 30
-//            self?.tableView.reloadData()
-//        }
-//        questionView.cellClick = {[weak self] (model: QA) in
-//            self?.sendMsg(textMsg: model.question?.content?.data ?? "")
-//
-//            let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
-//            if (msg != nil) {
-//                self?.appendDataSource(msg: msg!, isLeft: true)
-//            }
-//        }
 
         toolBar.textView.placeholder = "请输入想咨询的问题"
         headerTitle.text = "连接客服中..."
@@ -277,7 +254,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     func initSDK(baseUrl: String) {
         let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
         // 第一次cert必填，之后token必填
-        lib = ChatLib(userId: 1125324, cert: cert, token: xToken, baseUrl: wssUrl, sign: "9zgd9YUc")
+        lib = ChatLib(userId: userId, cert: cert, token: xToken, baseUrl: wssUrl, sign: "9zgd9YUc")
 
         lib.callWebsocket()
         lib.delegate = self
@@ -308,7 +285,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         tableView.reloadData()
     }
 
-    public func systemMsg(msg: String) {
+    public func showTipMsg(msg: String) {
         print("systemMsg")
         print(msg)
         // self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
@@ -317,27 +294,23 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     }
 
     public func connected(c: Gateway_SCHi) {
-        print("work id \(c.workerID)")
-        
-        ///to do: save it to userdefault
         xToken = c.token
         UserDefaults.standard.set(c.token, forKey: PARAM_XTOKEN)
-        if c.workerID == 0, retryTimes < 3 { // 如果没有分配到客服
-            lib.callWebsocket() // 重新连接
-            print("尝试重新连接")
-            retryTimes += 1
-        } else {
-           // loadWorker(workerId: c.workerID)
-            WWProgressHUD.showLoading("连接中...")
-            print("assign work")
-            NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
-                if success {
-                    print("assign work 成功")
-                    self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
-                }
-                WWProgressHUD.dismiss()
-            }
-        }
+        // loadWorker(workerId: c.workerID)
+         WWProgressHUD.showLoading("连接中...")
+         print("assign work")
+         NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
+             if success {
+                 print("assign work 成功")
+                 self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
+                 
+                 NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
+                     print(data.)
+                     //构建本地消息
+                 }
+             }
+             WWProgressHUD.dismiss()
+         }
     }
 
 

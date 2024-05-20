@@ -10,11 +10,44 @@ import HandyJSON
 
 enum NetworkUtil {
     // 获取客服的姓名和头像
-    static func getWorker(workerId: Int32, done: @escaping ((_ success: Bool, _ data: WorkerModel?) -> Void)) {
+    /*static func getWorker(workerId: Int32, done: @escaping ((_ success: Bool, _ data: WorkerModel?) -> Void)) {
         let task = ChatApi.queryWorker(workerId: workerId)
         print("请求路径: \(task.baseURL)\(task.path)===\(task.method)")
         print("请求header: \(String(describing: task.headers))")
         ChatProvider.request(ChatApi.queryWorker(workerId: workerId)) { result in
+            switch result {
+                case .success(let response):
+                    print(response)
+                    let dic = try? response.mapJSON() as? [String: Any]
+                    print(dic)
+                    let result = BaseRequestResult<WorkerModel>.deserialize(from: dic)
+
+                    if result?.code == 0 {
+                        done(true, result?.data)
+                    } else {
+                        done(false, nil)
+                    }
+                case .failure(let error):
+                    print(error)
+                    done(false, nil)
+            }
+        }
+    }*/
+    
+    /*
+     {
+         "chatId":"0",
+       "count": 50,
+       "consultId": 1
+     }
+     */
+    
+    //获取聊天记录
+    static func getHistory(consultId: Int32, done: @escaping ((_ success: Bool, _ data: WorkerModel?) -> Void)) {
+        let task = ChatApi.queryHistory(consultId: consultId, chatId: 0, count: 50)
+        print("请求路径: \(task.baseURL)\(task.path)===\(task.method)")
+        print("请求header: \(String(describing: task.headers))")
+        ChatProvider.request(task) { result in
             switch result {
                 case .success(let response):
                     print(response)
