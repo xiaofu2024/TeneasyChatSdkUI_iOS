@@ -801,11 +801,11 @@
 		DBB44B90DB3137083260662AEDD418A2 /* emoticon_126.png in Resources */ = {isa = PBXBuildFile; fileRef = DBF690B24975109271EA97462923B279 /* emoticon_126.png */; };
 		DBC47B5C09C1B3718F0EF14108A564D6 /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBF73C15ADAD0C29A60478856906CB /* MathUtils.swift */; };
 		DBD8CAC6D6C91267F648D551A1895896 /* Google_Protobuf_Any+Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F50E83EDA847EC50B7FAD61315728DA /* Google_Protobuf_Any+Registry.swift */; };
-		DC8F150A2BFB1AD500A11BE8 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15092BFB1AD500A11BE8 /* QuestionViewController.swift */; };
 		DC8F150C2BFB472400A11BE8 /* HistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F150B2BFB472400A11BE8 /* HistoryModel.swift */; };
 		DC8F150E2BFB518200A11BE8 /* KeFuViewController_TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F150D2BFB518200A11BE8 /* KeFuViewController_TableView.swift */; };
 		DC8F15122BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15112BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift */; };
 		DC8F15142BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15132BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift */; };
+		DC8F15162BFB7B6200A11BE8 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8F15152BFB7B6200A11BE8 /* QuestionViewController.swift */; };
 		DCD0C33A2B50811D53CF68F021284B47 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E31F44086845A3316CC13573664E7 /* DispatchQueue+Alamofire.swift */; };
 		DD58A00EACBEE274C381B491519C6B8C /* RedirectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A842EB94A1C0F987530747C0CC1E4D2 /* RedirectHandler.swift */; };
 		DD5A0862F01B8EE9589CC86C25CB9F85 /* SVGMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = DA640958EC0486B818A8C12A7A7F7B69 /* SVGMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2068,11 +2068,11 @@
 		DC333E095E1F9684B5A26285F9C78F43 /* IQUIView+IQKeyboardToolbar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "IQUIView+IQKeyboardToolbar.swift"; path = "IQKeyboardManagerSwift/IQToolbar/IQUIView+IQKeyboardToolbar.swift"; sourceTree = "<group>"; };
 		DC5510E0E9199B4B07832C7231CAEF00 /* emoticon_87.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = emoticon_87.png; sourceTree = "<group>"; };
 		DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TeneasyChatSDKUI_iOS; path = TeneasyChatSDKUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC8F15092BFB1AD500A11BE8 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestionViewController.swift; path = ../../../ConsultantType/QuestionViewController.swift; sourceTree = "<group>"; };
 		DC8F150B2BFB472400A11BE8 /* HistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModel.swift; sourceTree = "<group>"; };
 		DC8F150D2BFB518200A11BE8 /* KeFuViewController_TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeFuViewController_TableView.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController_TableView.swift; sourceTree = "<group>"; };
 		DC8F15112BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeFuViewController_ChatToolBar.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController_ChatToolBar.swift; sourceTree = "<group>"; };
 		DC8F15132BFB524A00A11BE8 /* KeFuViewController_ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeFuViewController_ImagePicker.swift; path = TeneasyChatSDKUI_iOS/Classes/KeFuViewController_ImagePicker.swift; sourceTree = "<group>"; };
+		DC8F15152BFB7B6200A11BE8 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestionViewController.swift; path = TeneasyChatSDKUI_iOS/Classes/QuestionViewController.swift; sourceTree = "<group>"; };
 		DCD8DB63F4EEB232524F6EE3DC5E9266 /* ConstraintDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDSL.swift; path = Source/ConstraintDSL.swift; sourceTree = "<group>"; };
 		DDBC548700001E5B85A9DA593877DFEA /* CustomJSONCodable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CustomJSONCodable.swift; path = Sources/SwiftProtobuf/CustomJSONCodable.swift; sourceTree = "<group>"; };
 		DDBE06D903FDB49E7BD97B43DB67FAD4 /* Element.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Element.m; path = "Source/DOM classes/Core DOM/Element.m"; sourceTree = "<group>"; };
@@ -2382,6 +2382,7 @@
 			isa = PBXGroup;
 			children = (
 				0BE86C4B7CF7C966C8B34304E29804F2 /* BWSettingViewController.swift */,
+				DC8F15152BFB7B6200A11BE8 /* QuestionViewController.swift */,
 				89D16ACE1EC48FD7BFD808D2222258D6 /* Constant.swift */,
 				D88BEAF32D52CC4D253EB6458117A525 /* emoticon */,
 				CE7A98B2AB849F9CD6C4EC7C7117E087 /* KeFuViewController.swift */,
@@ -2478,7 +2479,6 @@
 		201AE1203FE1223005CE5D959B0AE774 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				DC8F15092BFB1AD500A11BE8 /* QuestionViewController.swift */,
 				0B2E74226C7AA4DA72486424CE7D9E79 /* WWNoAuthorizeVC.swift */,
 			);
 			name = Controller;
@@ -5324,6 +5324,7 @@
 				D2B1EAC5E44D89CE74C5F0593E6F2B35 /* BEmotionHelper.swift in Sources */,
 				1C5737EFB4E42001493B6001D162E16C /* BundleUtil.swift in Sources */,
 				BD15B04C43FC922D2C65149918371322 /* BWChatCell.swift in Sources */,
+				DC8F15162BFB7B6200A11BE8 /* QuestionViewController.swift in Sources */,
 				FA8D0EA1E011D20E3C5BB4BE4AA1727E /* BWChatQuestionCell.swift in Sources */,
 				74EF5CA8A081D0448D35594D8DE556E9 /* BWEntranceView.swift in Sources */,
 				6C83986315CC38EFC384DCE76BC4B1CE /* BWKeFuChatEmojiCell.swift in Sources */,
@@ -5343,7 +5344,6 @@
 				DC8F150C2BFB472400A11BE8 /* HistoryModel.swift in Sources */,
 				7B00CEDD15C19AA91E7941828FE5FE1D /* Constant.swift in Sources */,
 				C3C08A7BC2AB458EB9A37E6568FE4371 /* ConstConfig.swift in Sources */,
-				DC8F150A2BFB1AD500A11BE8 /* QuestionViewController.swift in Sources */,
 				E08633D3835D2ED836A48DCE26CB7D96 /* EntranceModel.swift in Sources */,
 				DC8F15122BFB51E800A11BE8 /* KeFuViewController_ChatToolBar.swift in Sources */,
 				0063C1598EAF2946ED8EE4D6623F9B58 /* KeFuViewController.swift in Sources */,
