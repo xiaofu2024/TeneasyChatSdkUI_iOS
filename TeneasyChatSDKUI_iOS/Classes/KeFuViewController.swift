@@ -229,12 +229,32 @@ open class KeFuViewController: UIViewController{
     }
 
     
-    private func buildHistory(){
+    func buildHistory(history: HistoryModel){
         
        // let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
 
+        guard let historyList = history.list?.reversed() else { return } //获取自动回复后return
         
-        
+
+            for item in historyList {
+                // Process each item here
+                // You can modify item if needed
+                var isLeft = true
+                if (item.sender == item.chatId){
+                    isLeft = false
+                }
+                
+                let chatModel = ChatModel()
+                chatModel.isLeft = isLeft
+                chatModel.sendStatus = .发送成功
+                if item.msgFmt == "MSG_TEXT"{
+                    chatModel.message = composeALocalTxtMessage(textMsg: item.content?.data ?? "no txt")
+                }else if item.msgFmt == "MSG_IMG"{
+                    chatModel.message = composeALocalImgMessage(url: item.image?.uri ?? "")
+                }
+                datasouceArray.append(chatModel)
+            }
+        tableView.reloadData()
         
        /* var qaList = ArrayList<MessageItem>()
                       for (item in this.reversed()) {
@@ -372,12 +392,7 @@ open class KeFuViewController: UIViewController{
         })
         
     }
-}
 
-
-// MARK: - ----------------监听键盘高度变化
-
-extension KeFuViewController {
     @objc func keyboardWillChangeFrame(node: Notification) {
         // 1.获取动画执行的时间
         let duration = node.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval

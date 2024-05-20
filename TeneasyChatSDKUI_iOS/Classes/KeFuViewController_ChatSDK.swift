@@ -91,10 +91,48 @@ extension KeFuViewController: teneasySDKDelegate {
                  NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
                      //print(data)
                      //构建本地消息
+                     self?.buildHistory(history:  data ?? HistoryModel())
                  }
              }
              WWProgressHUD.dismiss()
          }
     }
     
+    //产生一个本地文本消息
+    func composeALocalTxtMessage(textMsg: String) -> CommonMessage {
+        // 第一层
+        var content = CommonMessageContent()
+        content.data = textMsg
+        
+        // 第二层, 消息主题
+        var msg = CommonMessage()
+        msg.content = content
+        msg.sender = 0
+        msg.chatID = 0
+        msg.payload = .content(content)
+        msg.worker = 0
+        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        
+        return msg
+    }
+    
+    //产生一个本地图片消息
+    func composeALocalImgMessage(url: String) -> CommonMessage {
+        // 第一层
+        var content = CommonMessageImage()
+        content.uri = url
+        
+        // 第二层, 消息主题
+        var msg = CommonMessage()
+        msg.consultID = self.consultId
+        msg.image = content
+        msg.sender = 0
+
+        msg.chatID = 0
+        msg.payload = .image(content)
+        msg.worker = 0
+        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        
+        return msg
+    }
 }
