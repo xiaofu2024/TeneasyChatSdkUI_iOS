@@ -3,7 +3,7 @@ import Moya
 let ChatProvider = MoyaProvider<ChatApi>()
 
 enum ChatApi {
-    case queryWorker(workerId: Int32 = 1)
+    case queryHistory(consultId: Int32 = 1, chatId: Int32 = 0, count: Int32 = 50)
     case queryAutoReplay(consultId: Int32 = 0)
     case queryEntrance
     case assignWorker(consultId: Int32 = 0)
@@ -19,8 +19,8 @@ extension ChatApi: TargetType {
     /// 请求路径
     var path: String {
         switch self {
-        case .queryWorker:
-            return "/v1/api/query-worker/"
+        case .queryHistory:
+            return "/v1/api/message/sync"
         case .queryAutoReplay:
             return "/v1/api/query-auto-reply"
         case .queryEntrance:
@@ -42,8 +42,15 @@ extension ChatApi: TargetType {
     
     var task: Task {
         switch self {
-        case .queryWorker(let id):
-            return .requestParameters(parameters: ["workerId": id], encoding: JSONEncoding.default)
+            /*
+             {
+                 "chatId":"0",
+               "count": 50,
+               "consultId": 1
+             }
+             */
+        case .queryHistory(let consultId, let chatId, let count):
+            return .requestParameters(parameters: ["consultId": consultId, "chatId":chatId, "count": count], encoding: JSONEncoding.default)
         case .queryAutoReplay(let id), .assignWorker(let id):
             return .requestParameters(parameters: ["consultId": id], encoding: JSONEncoding.default)
         case .queryEntrance:
