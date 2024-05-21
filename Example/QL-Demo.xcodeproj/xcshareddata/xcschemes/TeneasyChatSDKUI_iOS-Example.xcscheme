@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-               BuildableName = "TeneasyChatSDKUI_iOS_Example.app"
-               BlueprintName = "TeneasyChatSDKUI_iOS_Example"
-               ReferencedContainer = "container:TeneasyChatSDKUI_iOS.xcodeproj">
+               BuildableName = "QL-Demo_Example.app"
+               BlueprintName = "QL-Demo_Example"
+               ReferencedContainer = "container:QL-Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "TeneasyChatSDKUI_iOS_Tests.xctest"
-               BlueprintName = "TeneasyChatSDKUI_iOS_Tests"
-               ReferencedContainer = "container:TeneasyChatSDKUI_iOS.xcodeproj">
+               BuildableName = "QL-Demo_Tests.xctest"
+               BlueprintName = "QL-Demo_Tests"
+               ReferencedContainer = "container:QL-Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -40,37 +40,33 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+            BuildableName = "QL-Demo_Example.app"
+            BlueprintName = "QL-Demo_Example"
+            ReferencedContainer = "container:QL-Demo.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "TeneasyChatSDKUI_iOS_Tests.xctest"
-               BlueprintName = "TeneasyChatSDKUI_iOS_Tests"
-               ReferencedContainer = "container:TeneasyChatSDKUI_iOS.xcodeproj">
+               BuildableName = "QL-Demo_Tests.xctest"
+               BlueprintName = "QL-Demo_Tests"
+               ReferencedContainer = "container:QL-Demo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "TeneasyChatSDKUI_iOS_Example.app"
-            BlueprintName = "TeneasyChatSDKUI_iOS_Example"
-            ReferencedContainer = "container:TeneasyChatSDKUI_iOS.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -82,13 +78,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "TeneasyChatSDKUI_iOS_Example.app"
-            BlueprintName = "TeneasyChatSDKUI_iOS_Example"
-            ReferencedContainer = "container:TeneasyChatSDKUI_iOS.xcodeproj">
+            BuildableName = "QL-Demo_Example.app"
+            BlueprintName = "QL-Demo_Example"
+            ReferencedContainer = "container:QL-Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -101,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "TeneasyChatSDKUI_iOS_Example.app"
-            BlueprintName = "TeneasyChatSDKUI_iOS_Example"
-            ReferencedContainer = "container:TeneasyChatSDKUI_iOS.xcodeproj">
+            BuildableName = "QL-Demo_Example.app"
+            BlueprintName = "QL-Demo_Example"
+            ReferencedContainer = "container:QL-Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
