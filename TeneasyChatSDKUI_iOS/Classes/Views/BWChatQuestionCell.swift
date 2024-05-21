@@ -42,17 +42,17 @@ class BWChatQuestionCell: UITableViewCell {
     var consultId: Int32? {
         didSet {
             if consultId != nil && self.question == nil {
-                getAutoReplay(consultId: consultId!)
+                getAutoReplay(consultId: consultId!, workId: workerId)
             }
         }
     }
     
     var question: QuestionModel?
     
-    func getAutoReplay(consultId: Int32) {
+    func getAutoReplay(consultId: Int32, workId: Int32) {
         print(consultId)
        
-        NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
+        NetworkUtil.getAutoReplay(consultId: consultId, workerId: workId) { success, model in
             if success {
                 self.question = model
                 if let autoReplyItem = model?.autoReplyItem {

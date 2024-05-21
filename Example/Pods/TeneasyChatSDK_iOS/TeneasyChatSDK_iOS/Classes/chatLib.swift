@@ -112,7 +112,10 @@ open class ChatLib {
     }
     
     deinit {
-        disConnect()
+        print("deinit")
+        if websocket != nil{
+            disConnect()
+        }
     }
     
     func startTimer() {
@@ -345,6 +348,7 @@ open class ChatLib {
             if sessionTime > maxSessionMinutes * 60 {
                 disConnect(code: 1000)
             } else {
+                print("开始发送")
                 websocket?.write(data: binaryData, completion: ({
                     print("msg sent")
                 }))
@@ -366,7 +370,7 @@ open class ChatLib {
             socket.delegate = nil
             websocket = nil
         }
-        
+
         var result = Result()
         result.Code = code
         result.Message = "已断开通信"
@@ -375,28 +379,9 @@ open class ChatLib {
         sendingMsg = nil
         print("通信SDK 断开连接")
     }
-    
-   /*private func serilizeSample() {
-        var info = CommonPhoneNumber()
-        info.countryCode = 65
-        info.nationalNumber = 99999
-        
-        // Serialize to binary protobuf format:
-        let binaryData: Data = try! info.serializedData()
-
-        // Deserialize a received Data object from `binaryData`
-        let decodedInfo = try? CommonPhoneNumber(serializedData: binaryData)
-
-        // Serialize to JSON format as a Data object
-        let jsonData: Data = try! info.jsonUTF8Data()
-
-        // Deserialize from JSON format from `jsonData`
-        let receivedFromJSON = try! CommonPhoneNumber(jsonUTF8Data: jsonData)
-    }*/
 }
 
 // MARK: - WebSocketDelegate
-
 extension ChatLib: WebSocketDelegate {
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("got some text: \(text)")
@@ -407,6 +392,9 @@ extension ChatLib: WebSocketDelegate {
 
         case .connected:
             // print("connected" + headers.description)
+            if self.websocket !== client {
+                return
+            }
             var result = Result()
             result.Code = 0
             result.Message = "已连接上"
@@ -414,6 +402,9 @@ extension ChatLib: WebSocketDelegate {
             
             isConnected = true
         case .disconnected(let reason, let closeCode):
+            if self.websocket !== client {
+                return
+            }
             print("disconnected \(reason) \(closeCode)")
             isConnected = false
             disConnect()
@@ -431,15 +422,21 @@ extension ChatLib: WebSocketDelegate {
 
     如果这个字节的值是 0 ，表示心跳...
              */
+            if self.websocket !== client {
+                return
+            }
             if data.count == 1 {
                     if let d = String(data: data, encoding: .utf8) {
                         if d.contains("\u{00}") {
                             print("收到心跳回执0\n")
-                        } else if d.contains("\u{02}") {
-                            disConnect(code: 1000, msg: "无效的Token\n")
-                            print("收到1字节回执\(d) 无效的Token\n")
+                        }  else if d.contains("\u{03}") {
+                            //disConnect(code: 1003, msg: "无效的Token\n")
+                            print("收到1字节回执\(d) PermChangedFlag 0x3\n")
+                        }else if d.contains("\u{02}") {
+                            disConnect(code: 1002, msg: "无效的Token\n")
+                            print("收到1字节回执\(d) 无效的Token 0x2\n")
                         } else if d.contains("\u{01}") {
-                            disConnect(code: 1003, msg: "在别处登录了\n")
+                            disConnect(code: 1010, msg: "在别处登录了\n")
                             print("收到1字节回执\(d) 在别处登录了\n")
                         } else {
                             print("收到1字节回执\(d)\n")
@@ -565,6 +562,9 @@ extension ChatLib: WebSocketDelegate {
         case .error(let error):
             // self.delegate?.connected(c: false)
             print("socket error \(String(describing: error))")
+            if self.websocket !== client {
+                return
+            }
             disConnect()
             failedToSend()
             isConnected = false
@@ -573,6 +573,9 @@ extension ChatLib: WebSocketDelegate {
         case .reconnectSuggested:
             print("reconnectSuggested")
         case .cancelled:
+            if self.websocket !== client {
+                return
+            }
             disConnect(code: 1007)
             failedToSend()
             print("cancelled")
