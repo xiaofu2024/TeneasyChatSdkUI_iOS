@@ -52,12 +52,12 @@ extension KeFuViewController: teneasySDKDelegate {
             tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
         }
 
-        let arr = datasouceArray.filter { modal in modal.message.msgID == 0 && modal.isLeft == false }
+        /*let arr = datasouceArray.filter { modal in modal.message.msgID == 0 && modal.isLeft == false }
         for p in arr {
             print(p.message.msgID)
             p.sendStatus = .发送失败
             tableView.reloadData()
-        }
+        }*/
         scrollToBottom()
     }
 
@@ -88,10 +88,15 @@ extension KeFuViewController: teneasySDKDelegate {
                  print("assign work 成功")
                  self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
                  
-                 NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
-                     //print(data)
-                     //构建本地消息
-                     self?.buildHistory(history:  data ?? HistoryModel())
+                  if let f = self?.firstLoad{
+                      if f == false{
+                          self?.firstLoad = true
+                          NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
+                              //print(data)
+                              //构建本地消息
+                              self?.buildHistory(history:  data ?? HistoryModel())
+                          }
+                      }
                  }
              }
              WWProgressHUD.dismiss()
