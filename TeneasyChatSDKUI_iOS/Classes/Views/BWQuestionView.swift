@@ -61,6 +61,8 @@ class BWQuestionView: UIView {
 
     func setup(model: QuestionModel) {
         sectionList = model.autoReplyItem?.qa ?? []
+        print(sectionList)
+        
         titleLabel.text = model.autoReplyItem?.title
         updateTableViewHeight()
     }
@@ -77,7 +79,10 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BWQuestionCell.cell(tableView: tableView)
+        
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
+        
+        print(cell.titleLab.text)
         cell.titleLab.textColor = UIColor.brown
         cell.titleLab.font = UIFont.systemFont(ofSize: 14)
         cell.imgView.isHidden = true
@@ -93,6 +98,8 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "BWQuestionSectionHeader") as! BWQuestionSectionHeader
+        
+        print(sectionList[section].question?.content?.data ?? "")
         // 设置组头视图的内容
         headerView.titleLabel.text = sectionList[section].question?.content?.data ?? ""
         headerView.titleLabel.textColor = UIColor.purple
@@ -102,6 +109,11 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         } else {
             headerView.imgView.image = UIImage.svgInit("arrowdown")
         }
+        
+        /*
+         var tvTitle = holder?.get<TextView>(R.id.tv_Title)
+                 tvTitle?.text = (position + 1).toString() + ", " + bean.question.content.data
+         */
         headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headerViewTapped(sender:))))
         headerView.tag = section
         return headerView
