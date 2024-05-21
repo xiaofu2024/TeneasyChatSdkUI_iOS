@@ -52,7 +52,7 @@ class BWChatQuestionCell: UITableViewCell {
     func getAutoReplay(consultId: Int32, workId: Int32) {
         print(consultId)
        //自动回复
-        NetworkUtil.getAutoReplay(consultId: consultId, workerId: workId) { success, model in
+        NetworkUtil.getAutoReplay(consultId: consultId, wId: workId) { success, model in
             if success {
                 self.question = model
                 if let autoReplyItem = model?.autoReplyItem {

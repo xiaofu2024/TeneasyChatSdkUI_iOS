@@ -82,12 +82,12 @@ extension KeFuViewController: teneasySDKDelegate {
         UserDefaults.standard.set(c.token, forKey: PARAM_XTOKEN)
         // loadWorker(workerId: c.workerID)
          WWProgressHUD.showLoading("连接中...")
-         print("assign work")
+         print("token:\(xToken)assign work")
          NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
              if success {
-                 print("assign work 成功")
+                 print("assign work 成功：\(model?.workerId ?? 0)")
                  self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
-                 
+                 workerId = model?.workerId ?? 2
                   if let f = self?.firstLoad{
                       if f == false{
                           self?.firstLoad = true

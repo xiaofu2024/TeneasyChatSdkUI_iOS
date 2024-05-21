@@ -35,7 +35,7 @@ open class QuestionViewController: UIViewController {
             make.left.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
             make.top.equalToSuperview().offset(12 + kDeviceTop)
-            make.bottom.equalToSuperview().offset(-12 - kDeviceBottom)
+            make.bottom.equalToSuperview().offset(-52 - kDeviceBottom)
         }
         entranceView.callBack = {[weak self] (dataCount: Int) in
         }
@@ -48,7 +48,7 @@ open class QuestionViewController: UIViewController {
         
         view.addSubview(self.settingBtn)
         self.settingBtn.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-90)
+            make.bottom.equalToSuperview().offset(-40)
             make.right.equalToSuperview().offset(-20)
         }
     }

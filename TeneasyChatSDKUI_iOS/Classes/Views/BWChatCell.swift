@@ -77,7 +77,7 @@ class BWChatCell: UITableViewCell {
     var model: ChatModel? {
         didSet {
             // 现在SDK并没有把时间传回来，所以暂时不用这样转换
-            if let mTime = model?.message.msgTime {
+            if let msg = model?.message,  let mTime = model?.message.msgTime {
                 self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
             }
             if self.model?.message.image.uri.isEmpty == false {
