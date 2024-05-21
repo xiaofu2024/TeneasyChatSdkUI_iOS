@@ -16,7 +16,8 @@ class BWEntranceView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor.purple
         return label
     }()
 
@@ -62,7 +63,7 @@ class BWEntranceView: UIView {
 
         self.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
             make.bottom.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()

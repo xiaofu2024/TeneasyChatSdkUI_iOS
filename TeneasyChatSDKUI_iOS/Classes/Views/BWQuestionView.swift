@@ -15,7 +15,7 @@ class BWQuestionView: UIView {
     var cellClick: BWQuestionViewCellClickCallback?
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.lightText
+        label.textColor = UIColor.lightGray
         return label
     }()
 
@@ -77,6 +77,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BWQuestionCell.cell(tableView: tableView)
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
+        cell.titleLab.textColor = UIColor.purple
         cell.imgView.isHidden = true
         return cell
     }
@@ -92,7 +93,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "BWQuestionSectionHeader") as! BWQuestionSectionHeader
         // 设置组头视图的内容
         headerView.titleLabel.text = sectionList[section].question?.content?.data ?? ""
-        headerView.titleLabel.textColor = UIColor.blue
+        headerView.titleLabel.textColor = UIColor.purple
         if sectionList[section].myExpanded == true {
             headerView.imgView.image = UIImage.svgInit("arrowup")
         } else {
