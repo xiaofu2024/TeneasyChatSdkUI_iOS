@@ -13,7 +13,7 @@ typealias BWChatQuestionCellQuestionClickCallBack = (QA) -> ()
 
 class BWChatQuestionCell: UITableViewCell {
     var heightBlock: BWChatQuestionCellHeightCallBack?
-    var clickBlock: BWChatQuestionCellQuestionClickCallBack?
+    var qaClickBlock: BWChatQuestionCellQuestionClickCallBack?
     lazy var questionView: BWQuestionView = {
         let view = BWQuestionView()
         view.backgroundColor = .white
@@ -97,8 +97,8 @@ class BWChatQuestionCell: UITableViewCell {
             }
             self?.heightBlock!(height)
         }
-        questionView.cellClick = { [weak self] (model: QA) in
-            self?.clickBlock!(model)
+        questionView.qaCellClick = { [weak self] (model: QA) in
+            self?.qaClickBlock!(model)
         }
     }
     

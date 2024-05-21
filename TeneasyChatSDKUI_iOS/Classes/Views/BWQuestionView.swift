@@ -12,7 +12,7 @@ typealias BWQuestionViewCellClickCallback = (QA) -> ()
 
 class BWQuestionView: UIView {
     var heightCallback: BWQuestionViewHeightCallback?
-    var cellClick: BWQuestionViewCellClickCallback?
+    var qaCellClick: BWQuestionViewCellClickCallback?
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
@@ -44,6 +44,7 @@ class BWQuestionView: UIView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-5)
             make.top.equalToSuperview().offset(12)
         }
 
@@ -92,7 +93,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model: QA? = sectionList[indexPath.section].related?[indexPath.row]
         if (model != nil) {
-            cellClick!(model!)
+            qaCellClick!(model!)
         }
     }
 
@@ -104,11 +105,11 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         headerView.titleLabel.text = sectionList[section].question?.content?.data ?? ""
         headerView.titleLabel.textColor = UIColor.purple
         headerView.titleLabel.font = UIFont.systemFont(ofSize: 15)
-        if sectionList[section].myExpanded == true {
-            headerView.imgView.image = UIImage.svgInit("arrowup")
-        } else {
-            headerView.imgView.image = UIImage.svgInit("arrowdown")
-        }
+//        if sectionList[section].myExpanded == true {
+//            headerView.imgView.image = UIImage.svgInit("arrowup")
+//        } else {
+//            headerView.imgView.image = UIImage.svgInit("arrowdown")
+//        }
         
         /*
          var tvTitle = holder?.get<TextView>(R.id.tv_Title)
@@ -138,8 +139,12 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
     @objc func headerViewTapped(sender: UITapGestureRecognizer) {
         guard let section = sender.view?.tag else { return }
         // 在这里处理点击事件，使用 section 参数
-        sectionList[section].myExpanded = !sectionList[section].myExpanded
-        updateTableViewHeight()
+        if (sectionList[section].related == nil || sectionList[section].related!.isEmpty){
+            qaCellClick!(sectionList[section])
+        }else{
+            sectionList[section].myExpanded = !sectionList[section].myExpanded
+            updateTableViewHeight()
+        }
     }
     func updateTableViewHeight() {
         if (sectionList.count == 0) {
@@ -152,7 +157,9 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
                     expandRowHeight = expandRowHeight + Double(qa.related?.count ?? 0) * 44.0
                 }
             }
-            heightCallback!(32.0 + sectionHeight + expandRowHeight)
+            
+            print("QA Cell Height:\(60.0 + sectionHeight + expandRowHeight)")
+            heightCallback!(60.0 + sectionHeight + expandRowHeight)
         }
         tableView.reloadData()
     }

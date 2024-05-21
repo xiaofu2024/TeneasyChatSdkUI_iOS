@@ -230,13 +230,14 @@ open class KeFuViewController: UIViewController{
         }
     }
 
-    func appendDataSource(msg: CommonMessage, isLeft: Bool, payLoadId: UInt64 = 0) {
+    func appendDataSource(msg: CommonMessage, isLeft: Bool, payLoadId: UInt64 = 0, status: MessageSendState = .发送中, cellType: CellType = .TYPE_Text) {
         let model = ChatModel()
         model.isLeft = isLeft
+        model.cellType = cellType
         model.message = msg
         model.payLoadId = payLoadId
         if !isLeft {
-            model.sendStatus = .发送中
+            model.sendStatus = status
         }
         datasouceArray.append(model)
         tableView.reloadData()

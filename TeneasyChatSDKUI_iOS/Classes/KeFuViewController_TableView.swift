@@ -9,15 +9,32 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.consultId = Int32(self.consultId)
                 cell.heightBlock = { [weak self] (height: Double) in
                     self?.questionViewHeight = height + 130
+                    print("questionViewHeight:\(height + 130)")
                     self?.tableView.reloadData()
                 }
-                cell.clickBlock = { [weak self] (model: QA) in
-                    self?.sendMsg(textMsg: model.question?.content?.data ?? "")
-
-                    let msg = self?.lib.composeALocalMessage(textMsg: model.content ?? "")
-                    if msg != nil {
-                        self?.appendDataSource(msg: msg!, isLeft: true)
+                cell.qaClickBlock = { [weak self] (model: QA) in
+                    
+                    let questionTxt = model.question?.content?.data ?? ""
+                    let txtAnswer =  model.content ?? ""
+                    let multipAnswer = model.answer ?? []
+                    let q =  self?.composeALocalTxtMessage(textMsg: questionTxt)
+                    self?.appendDataSource(msg: q!, isLeft: false, status: .发送成功)
+                    
+                    if (!txtAnswer.isEmpty){
+                        let a = self?.composeALocalTxtMessage(textMsg: txtAnswer)
+                        self?.appendDataSource(msg: a!, isLeft: true, status: .发送成功)
                     }
+                    
+                    for answer in multipAnswer{
+                        if answer.image != nil{
+                            let a = self?.composeALocalImgMessage(url: answer.image?.uri ?? "")
+                            self?.appendDataSource(msg: a!, isLeft: true, status: .发送成功, cellType: .TYPE_Image)
+                        }else if answer.content != nil{
+                            let a = self?.composeALocalTxtMessage(textMsg: answer.content?.data ?? "empty")
+                            self?.appendDataSource(msg: a!, isLeft: true, status: .发送成功)
+                        }
+                    }
+                    tableView.reloadData()
                 }
                 return cell
             }

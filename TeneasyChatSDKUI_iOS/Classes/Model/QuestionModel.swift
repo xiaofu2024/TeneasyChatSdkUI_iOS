@@ -36,7 +36,7 @@ class QA: HandyJSON {
     var id: Int?
     var question: Question?
     var content: String?
-    var answer: [Any?]?
+    var answer: [Question]?
     var related: [QA]?
     var myExpanded: Bool = false
 
@@ -57,6 +57,7 @@ class Question: HandyJSON {
     var msgFmt: String?
     var consultId: String?
     var content: Content?
+    var image: imgUri?
 
     required init() {}
 }
