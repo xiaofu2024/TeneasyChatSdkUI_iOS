@@ -20,7 +20,7 @@ enum MessageSendState: String { case 发送中="0", 发送成功="1", 发送失�
  */
 enum CellType: String { case TYPE_Text="0", TYPE_Image="1", TYPE_Tip="2", TYPE_QA="3", TYPE_LastLine="4" }
 class ChatModel {
-    var message: CommonMessage!
+    var message: CommonMessage?
     var isLeft: Bool=false
     var sendStatus: MessageSendState = .发送中
     var payLoadId: UInt64=0

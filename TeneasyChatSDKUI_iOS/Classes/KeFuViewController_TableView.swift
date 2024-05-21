@@ -34,7 +34,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         cell.model = model
         cell.resendBlock = { [weak self] _ in
             self?.datasouceArray[indexPath.row].sendStatus = .发送中
-            self?.lib.resendMsg(msg: model.message, payloadId: model.payLoadId)
+            self?.lib.resendMsg(msg: model.message!, payloadId: model.payLoadId)
         }
         cell.longGestCallBack = {[weak self] gesure in
             if gesure.state == .began {
@@ -57,7 +57,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         if model.cellType == CellType.TYPE_QA {
             return questionViewHeight
         }
-        if model.message.image.uri.isEmpty == false {
+        if model.message?.image.uri.isEmpty == false {
             return 200.0
         }
         return 50.0
@@ -66,10 +66,10 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
 extension KeFuViewController {
     func showMenu(_ guesture: UILongPressGestureRecognizer, model: ChatModel?, indexPath: IndexPath) {
         toolBar.resetStatus()
-        if popMenu != nil {
+        if popMenu != nil || model?.message == nil{
             popMenu?.dismiss()
         }
-        let msgText = model?.message.content.data ?? ""
+        let msgText = model?.message?.content.data ?? ""
 
         var dataSouce = [(icon: "chatHuifu", title: "回复"),
                          (icon: "chatCopy", title: "复制")]

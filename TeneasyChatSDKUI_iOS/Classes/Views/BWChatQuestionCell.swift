@@ -65,9 +65,10 @@ class BWChatQuestionCell: UITableViewCell {
     
     var model: ChatModel? {
         didSet {
-            if let mTime = model?.message.msgTime {
-                self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
-            }
+            
+            guard let msg = model?.message else { return }
+           
+            self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date)
         }
     }
     

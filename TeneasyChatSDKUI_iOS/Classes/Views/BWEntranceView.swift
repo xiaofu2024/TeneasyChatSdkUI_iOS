@@ -64,7 +64,8 @@ class BWEntranceView: UIView {
         self.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
-            make.bottom.equalToSuperview()
+            //make.bottom.equalToSuperview()
+            make.height.equalTo(kScreenHeight - 150)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }

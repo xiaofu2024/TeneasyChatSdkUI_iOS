@@ -76,33 +76,32 @@ class BWChatCell: UITableViewCell {
     
     var model: ChatModel? {
         didSet {
+            
+           guard let msg = model?.message else {
+                return;
+            }
             // 现在SDK并没有把时间传回来，所以暂时不用这样转换
-            if let msg = model?.message,  let mTime = model?.message.msgTime {
-                self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: mTime.date)
-            }
-            if self.model?.message.image.uri.isEmpty == false {
-                let imgUrl = URL(string: "\(baseUrlImage)\(model?.message.image.uri ?? "")")
-                print(imgUrl?.absoluteString ?? "")
-                if imgUrl != nil {
-                    self.initImg(imgUrl: imgUrl!)
-                } else {
-                    self.initTitle()
-                }
-            } else {
-                self.initTitle()
-            }
-            if self.model?.message.content.data.contains("[emoticon_") == true {
-                let atttext = BEmotionHelper.shared.attributedStringByText(text: self.model?.message.content.data ?? "", font: self.titleLab.font)
-                self.titleLab.attributedText = atttext
-            } else {
-                if let content = self.model?.message.content.data{
-                    if !content.isEmpty{
-                        self.titleLab.text = content
-                        print("message text:" + (self.model?.message.content.data ?? ""))
-                    }
-                }
-               
-            }
+         
+            self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date)
+       
+           if msg.image.uri.isEmpty == false {
+               let imgUrl = URL(string: "\(baseUrlImage)\(msg.image.uri)")
+               print(imgUrl?.absoluteString ?? "")
+               if imgUrl != nil {
+                   self.initImg(imgUrl: imgUrl!)
+               } else {
+                   self.initTitle()
+               }
+           } else {
+               self.initTitle()
+           }
+           if msg.content.data.contains("[emoticon_") == true {
+               let atttext = BEmotionHelper.shared.attributedStringByText(text: msg.content.data, font: self.titleLab.font)
+               self.titleLab.attributedText = atttext
+           } else {
+               self.titleLab.text = msg.content.data
+               print("message text:" + (msg.content.data))
+           }
         }
     }
     
