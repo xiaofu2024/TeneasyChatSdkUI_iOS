@@ -101,6 +101,7 @@ open class KeFuViewController: UIViewController{
     var consultId: Int64 = 0
     var lib = ChatLib()
     var chooseImg: UIImage?
+    internal var firstLoad = false
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -235,7 +236,6 @@ open class KeFuViewController: UIViewController{
 
         guard let historyList = history.list?.reversed() else { return } //获取自动回复后return
         
-
             for item in historyList {
                 // Process each item here
                 // You can modify item if needed
@@ -254,6 +254,15 @@ open class KeFuViewController: UIViewController{
                 }
                 datasouceArray.append(chatModel)
             }
+        
+        let chatModel = ChatModel()
+        chatModel.isLeft = true
+        chatModel.message = composeALocalTxtMessage(textMsg:  "no txt")
+        chatModel.sendStatus = .发送成功
+        chatModel.cellType = .TYPE_QA
+        datasouceArray.append(chatModel)
+        
+
         tableView.reloadData()
     }
 
