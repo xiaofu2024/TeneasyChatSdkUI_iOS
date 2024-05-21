@@ -95,6 +95,8 @@ class WChatReplyBar: WBaseView {
     override func initBindModel() {}
     
     func updateUI(with chatModel:ChatModel) {
+        titleLabel.text = "回复 "
+        contentLabel.text = chatModel.message.content.data 
 //        NIMKitInfoFetchOption *option = [[NIMKitInfoFetchOption alloc] init];
 //        option.session = session;
 //        return [[NIMKit sharedKit] infoByUser:uid option:option].showName;

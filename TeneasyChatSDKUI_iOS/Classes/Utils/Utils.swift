@@ -60,6 +60,9 @@ extension String {
     func textHeight(fontSize: CGFloat, width: CGFloat) -> CGFloat {
         return self.boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: .usesLineFragmentOrigin, attributes: [.font: UIFont.systemFont(ofSize: fontSize)], context: nil).size.height + 5
     }
+    func textWidth(fontSize: CGFloat, width: CGFloat) -> CGFloat {
+        return self.boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: .usesLineFragmentOrigin, attributes: [.font: UIFont.systemFont(ofSize: fontSize)], context: nil).size.width
+    }
 }
 
 extension UIButton {

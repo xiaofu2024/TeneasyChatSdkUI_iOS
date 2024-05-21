@@ -115,8 +115,8 @@ enum NetworkUtil {
         }
     }
 
-    static func getAutoReplay(consultId: Int32, done: @escaping ((_ success: Bool, _ data: QuestionModel?) -> Void)) {
-        let task = ChatApi.queryAutoReplay(consultId: consultId)
+    static func getAutoReplay(consultId: Int32, workerId: Int32, done: @escaping ((_ success: Bool, _ data: QuestionModel?) -> Void)) {
+        let task = ChatApi.queryAutoReplay(consultId: consultId, workerId: workerId)
         print("请求路径: \(task.baseURL)\(task.path)===\(task.method)")
         print("请求header: \(String(describing: task.headers))")
         ChatProvider.request(task) { result in

@@ -276,34 +276,6 @@ open class KeFuViewController: UIViewController{
                 datasouceArray.append(chatModel)
             }
         tableView.reloadData()
-        
-       /* var qaList = ArrayList<MessageItem>()
-                      for (item in this.reversed()) {
-                          // sender如果=chatid就是 用户 发的，反之是 客服 或者系统发的
-                          var isLeft = true
-                          if (item.sender == item.chatId){
-                              isLeft = false
-                          }
-                          if(item.msgFmt == "MSG_TEXT") {
-                              val qaItem =  viewModel.composeTextMsg(item, isLeft)
-                              qaList.add(qaItem)
-                          }else if(item.msgFmt == "MSG_IMG") {
-                              val qaItem = viewModel.composeImgMsg(item, isLeft)
-                              qaList.add(qaItem)
-                          }
-                      }
-                      var qaItem = MessageItem()
-                      qaItem.isQA = true
-                      qaList.add(qaItem)
-                      //viewModel.addAllMsgItem(qaList)
-
-                      //添加一个空白的，确保列表滚动到最后能看到所有内容
-                       qaItem = MessageItem()
-                      qaItem.isLastLine = true
-                      qaList.add(qaItem)
-
-                      viewModel.addAllMsgItem(qaList)
-        */
     }
 
 

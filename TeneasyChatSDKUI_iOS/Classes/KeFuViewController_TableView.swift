@@ -84,17 +84,27 @@ extension KeFuViewController {
         let pointView = guesture.view
         let space = 0.0
         let point_superview = guesture.location(in: pointView)
-        var popMenuW = 300.0
+        var popMenuW = 120.0
         var pointY: CGFloat = 0
-        pointY = point.y + msgText.textHeight(fontSize: 15, width: kScreenWidth - 100) - point_superview.y
+        let textWidth = msgText.textWidth(fontSize: 15, width: kScreenWidth - 100)
+        pointY = point.y + msgText.textHeight(fontSize: 15, width: kScreenWidth - 100) - point_superview.y + 30
         point.y = pointY
-        point.x = 60 + 30
-        popMenu = SwiftPopMenu(menuWidth: popMenuW, arrow: point, datas: popData, configures: parameters, upDown: 1)
+        var upDown = 1
+        if (model?.isLeft ?? true) {
+            point.x = 60 + 30
+        } else {
+            point.x = kScreenWidth - 100
+            if (textWidth < 100) {
+                upDown = 2 // 无箭头
+            }
+        }
+        
+        popMenu = SwiftPopMenu(menuWidth: popMenuW, arrow: point, datas: popData, configures: parameters, upDown: upDown)
         popMenu?.didSelectMenuBlock = { [weak self] (_: Int, name) in
             switch name {
             case "回复":
                 self?.toolBar.textView.becomeFirstResponder()
-//                self?.replyBar.updateUI(with: model!)
+                self?.replyBar.updateUI(with: model!)
                 if self?.replyBar.superview == nil {
                     self?.view.addSubview(self!.replyBar)
                     self?.view.bringSubviewToFront(self!.toolBar)

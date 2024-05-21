@@ -17,88 +17,84 @@
 
 import UIKit
 
-protocol SwiftPopMenuDelegate :NSObjectProtocol{
-    func swiftPopMenuDidSelectIndex(index:Int)
+protocol SwiftPopMenuDelegate: NSObjectProtocol {
+    func swiftPopMenuDidSelectIndex(index: Int)
 }
 
-
 public enum SwiftPopMenuConfigure {
-    case PopMenuTextFont(UIFont)            //菜单文字字体
-    case PopMenuTextColor(UIColor)          //菜单文字颜色
-    case PopMenuBackgroudColor(UIColor)     //菜单背景色
-    case popMenuCornorRadius(CGFloat)            //菜单圆角
-    case popMenuItemHeight(CGFloat)          //菜单行高度
-    case popMenuSplitLineColor(UIColor)     //菜单分割线颜色
-    case popMenuIconLeftMargin(CGFloat)          //icon左间距
-    case popMenuMargin(CGFloat)              //菜单与屏幕边距
-    case popMenuAlpha(CGFloat)              //菜单背景透明度
-    case popMenuIsIconRight(Bool)           //icon在右 文字在做
-    case popMenuNoPoint(Bool)               //不要三角
+    case PopMenuTextFont(UIFont) // 菜单文字字体
+    case PopMenuTextColor(UIColor) // 菜单文字颜色
+    case PopMenuBackgroudColor(UIColor) // 菜单背景色
+    case popMenuCornorRadius(CGFloat) // 菜单圆角
+    case popMenuItemHeight(CGFloat) // 菜单行高度
+    case popMenuSplitLineColor(UIColor) // 菜单分割线颜色
+    case popMenuIconLeftMargin(CGFloat) // icon左间距
+    case popMenuMargin(CGFloat) // 菜单与屏幕边距
+    case popMenuAlpha(CGFloat) // 菜单背景透明度
+    case popMenuIsIconRight(Bool) // icon在右 文字在做
+    case popMenuNoPoint(Bool) // 不要三角
 }
 
 public class SwiftPopMenu: UIView {
+    // delegate
+    weak var delegate: SwiftPopMenuDelegate?
+    // block
+    public var didSelectMenuBlock: ((_ index: Int, _ name: String) -> Void)?
     
-    //delegate
-    weak var delegate : SwiftPopMenuDelegate?
-    //block
-    public var didSelectMenuBlock:((_ index:Int,_ name:String)->Void)?
+    let KScrW: CGFloat = UIScreen.main.bounds.size.width
+    let KScrH: CGFloat = UIScreen.main.bounds.size.height
     
-    let KScrW:CGFloat = UIScreen.main.bounds.size.width
-    let KScrH:CGFloat = UIScreen.main.bounds.size.height
+    // ／*  -----------------------  外部参数 通过configure设置 ---------------------------- *／
+    // 区域外背景透明度
+    private var popMenuOutAlpha: CGFloat = 0.01
+    // 背景色
+    private var popMenuBgColor: UIColor = .init(red: 76/255.0, green: 76/255.0, blue: 76/255.0, alpha: 1)
+    // 圆角弧度
+    private var popMenuCornorRadius: CGFloat = 6
+    // 文字颜色
+    private var popMenuTextColor: UIColor = .white
+    // 字体大小等
+    private var popMenuTextFont: UIFont = UIFont.systemFont(ofSize: 13)
+    // 菜单高度
+    private var popMenuItemHeight: CGFloat = 64
+    // 菜单分割线颜色
+    private var popMenuSplitLineColor: UIColor = .init(red: 222/255.0, green: 222/255.0, blue: 222/255.0, alpha: 0.5)
+    // icon左间距 右也如此
+    private var popMenuIconLeftMargin: CGFloat = 0.0
+    // 菜单与屏幕边距
+    private var popMenuMargin: CGFloat = 20
+    // icon在右
+    private var isIconRight: Bool = false
+    /// 没指向
+    private var isNoPoint: Bool = false
+    /// 箭头在上再下
+    private var updown: Int = 1
+    // ／*  -----------------------  外部参数 over------------------------------------------ *／
     
-    //／*  -----------------------  外部参数 通过configure设置 ---------------------------- *／
-    //区域外背景透明度
-    private var popMenuOutAlpha:CGFloat = 0.01
-    //背景色
-    private var popMenuBgColor:UIColor = UIColor.init(red: 76/255.0, green: 76/255.0, blue: 76/255.0, alpha: 1)
-    //圆角弧度
-    private var popMenuCornorRadius:CGFloat = 6
-    //文字颜色
-    private var popMenuTextColor:UIColor = UIColor.white
-    //字体大小等
-    private var popMenuTextFont:UIFont = UIFont.systemFont(ofSize: 13)
-    //菜单高度
-    private var popMenuItemHeight:CGFloat = 64
-    //菜单分割线颜色
-    private var popMenuSplitLineColor:UIColor = UIColor(red: 222/255.0, green: 222/255.0, blue: 222/255.0, alpha: 0.5)
-    //icon左间距 右也如此
-    private var popMenuIconLeftMargin:CGFloat = 0.0
-    //菜单与屏幕边距
-    private var popMenuMargin:CGFloat = 20
-    //icon在右
-    private var isIconRight:Bool = false
-    ///没指向
-    private var isNoPoint:Bool = false
-    ///箭头在上再下
-    private var updown : Int = 1
-    //／*  -----------------------  外部参数 over------------------------------------------ *／
+    private var arrowPoint: CGPoint = .zero // 小箭头位置
+    private var arrowViewWidth: CGFloat = 15 // 三角箭头宽
+    private var arrowViewHeight: CGFloat = 10 // 三角箭头高
+    private var popData: [(icon: String, title: String)]! // 数据源
     
-    private var arrowPoint : CGPoint = CGPoint.zero         //小箭头位置
-    private var arrowViewWidth : CGFloat = 15               //三角箭头宽
-    private var arrowViewHeight : CGFloat = 10               //三角箭头高
-    private var popData:[(icon:String,title:String)]!       //数据源
+    static let cellID: String = "SwiftPopMenuCellID"
+    private var myFrame: CGRect! // tableview  frame
+    private var arrowView: UIView!
     
-    static let cellID:String = "SwiftPopMenuCellID"
-    private var myFrame:CGRect!     //tableview  frame
-    private var arrowView : UIView! = nil
+    var collecttionView: UICollectionView!
     
-    var collecttionView:UICollectionView! = nil
-    
-
-    
- ///   初始化菜单
- ///
- /// - Parameters:
- ///   - menuWidth: 菜单宽度
- ///   - arrow: 箭头位置是popmenu相对整个屏幕的位置
- ///   - datas: 数据源，icon允许传空，数据源没数据，不会显示菜单
- ///   - configure: 配置信息，可不传
-    init(menuWidth:CGFloat,arrow:CGPoint,datas:[(icon:String,title:String)],configures:[SwiftPopMenuConfigure] = [],upDown:Int) {
+    ///   初始化菜单
+    ///
+    /// - Parameters:
+    ///   - menuWidth: 菜单宽度
+    ///   - arrow: 箭头位置是popmenu相对整个屏幕的位置
+    ///   - datas: 数据源，icon允许传空，数据源没数据，不会显示菜单
+    ///   - configure: 配置信息，可不传
+    init(menuWidth: CGFloat, arrow: CGPoint, datas: [(icon: String, title: String)], configures: [SwiftPopMenuConfigure] = [], upDown: Int) {
         super.init(frame: UIScreen.main.bounds)
-        self.frame = UIScreen.main.bounds
-        //读取配置
-        configures.forEach { (config) in
-            switch (config){
+        frame = UIScreen.main.bounds
+        // 读取配置
+        configures.forEach { config in
+            switch config {
                 case let .PopMenuTextFont(value):
                     popMenuTextFont = value
                 case let .PopMenuTextColor(value):
@@ -119,12 +115,12 @@ public class SwiftPopMenu: UIView {
                     popMenuOutAlpha = value
                 case let .popMenuIsIconRight(value):
                     isIconRight = value
-            case .popMenuNoPoint(_):
-                if upDown == 2 {
-                    isNoPoint = true
-                }else{
-                    isNoPoint = false
-                }
+                case .popMenuNoPoint:
+                    if upDown == 2 {
+                        isNoPoint = true
+                    } else {
+                        isNoPoint = false
+                    }
                     
                 default:
                     break
@@ -132,53 +128,51 @@ public class SwiftPopMenu: UIView {
         }
         updown = upDown
         popData = datas
-        //设置myFrame size  ,original会在后面计算
+        // 设置myFrame size  ,original会在后面计算
         var num = 0
         if popData.count > 10 {
             num = 3
-        }else if popData.count > 5 {
+        } else if popData.count > 5 {
             num = 2
-        }else{
+        } else {
             num = 1
         }
-        myFrame = CGRect(x: 0, y: 0, width: menuWidth, height: popMenuItemHeight*CGFloat(num) + (isNoPoint ?10.0 :0.0))
+        myFrame = CGRect(x: 0, y: 0, width: menuWidth, height: popMenuItemHeight * CGFloat(num)+(isNoPoint ?10.0 : 0.0))
 //        myFrame.size.height = min(KScrH/2, myFrame.height)
 //        myFrame.size.width = min(KScrW-popMenuMargin*2, myFrame.width)
         
-        //设置肩头，与屏幕间隔10
+        // 设置肩头，与屏幕间隔10
         arrowPoint = arrow
         arrowPoint.x = max(popMenuMargin, min(arrowPoint.x, KScrW-popMenuMargin))
-    
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    @available(*, unavailable)
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     func initViews() {
-        self.backgroundColor = UIColor.black.withAlphaComponent(popMenuOutAlpha)
+        backgroundColor = UIColor.black.withAlphaComponent(popMenuOutAlpha)
         myFrame.origin = arrowPoint
         let arrowPs = getArrowPoints()
         myFrame.origin = arrowPs.3
-        //箭头
-        if !isNoPoint{
-        let isarrowUP = arrowPs.4
-        arrowView=UIView(frame: CGRect(x: myFrame.origin.x, y: isarrowUP ? myFrame.origin.y-arrowViewHeight : myFrame.origin.y+myFrame.height, width: myFrame.width, height: arrowViewHeight))
-        let layer=CAShapeLayer()
-        let path=UIBezierPath()
-        path.move(to: arrowPs.0)
-        path.addLine(to: arrowPs.1)
-        path.addLine(to: arrowPs.2)
-        layer.path=path.cgPath
-        layer.fillColor = popMenuBgColor.cgColor
-        arrowView.layer.addSublayer(layer)
-        self.addSubview(arrowView)
+        // 箭头
+        if !isNoPoint {
+            let isarrowUP = arrowPs.4
+            arrowView = UIView(frame: CGRect(x: myFrame.origin.x, y: isarrowUP ? myFrame.origin.y-arrowViewHeight : myFrame.origin.y+myFrame.height, width: myFrame.width, height: arrowViewHeight))
+            let layer = CAShapeLayer()
+            let path = UIBezierPath()
+            path.move(to: arrowPs.0)
+            path.addLine(to: arrowPs.1)
+            path.addLine(to: arrowPs.2)
+            layer.path = path.cgPath
+            layer.fillColor = popMenuBgColor.cgColor
+            arrowView.layer.addSublayer(layer)
+            addSubview(arrowView)
         }
         
         let layout = UICollectionViewFlowLayout()
-        collecttionView = UICollectionView(frame: CGRect(x: myFrame.origin.x,y: myFrame.origin.y,width: myFrame.width,height: myFrame.height), collectionViewLayout: layout)
+        collecttionView = UICollectionView(frame: CGRect(x: myFrame.origin.x, y: myFrame.origin.y, width: myFrame.width, height: myFrame.height), collectionViewLayout: layout)
         // view.isScrollEnabled = false
         collecttionView.register(SwiftPopMenuCell.self, forCellWithReuseIdentifier: "SwiftPopMenuCell")
         collecttionView.backgroundColor = popMenuBgColor
@@ -194,85 +188,79 @@ public class SwiftPopMenu: UIView {
         }
     }
    
-    
     /// 计算箭头位置
     ///
     /// - Returns: (三角箭头顶，三角箭头左，三角箭头右，tableview 原点，是否箭头朝上)
-    func getArrowPoints() -> (CGPoint,CGPoint,CGPoint,CGPoint,Bool) {
+    func getArrowPoints() -> (CGPoint, CGPoint, CGPoint, CGPoint, Bool) {
         if arrowPoint.x <= popMenuMargin {
             arrowPoint.x = popMenuMargin
         }
-        if arrowPoint.x >= KScrW - popMenuMargin{
-            arrowPoint.x = KScrW - popMenuMargin
+        if arrowPoint.x >= KScrW-popMenuMargin {
+            arrowPoint.x = KScrW-popMenuMargin
         }
         var originalPoint = CGPoint.zero
         
-        //箭头中间距离左边距离
-        var arrowMargin:CGFloat = popMenuMargin
-        if arrowPoint.x < KScrW/2{
-            if (arrowPoint.x > myFrame.width/2) {
+        // 箭头中间距离左边距离
+        var arrowMargin: CGFloat = popMenuMargin
+        if arrowPoint.x < KScrW/2 {
+            if arrowPoint.x > myFrame.width/2 {
                 arrowMargin = myFrame.width/2
-                originalPoint = CGPoint(x: arrowPoint.x - myFrame.width/2, y: arrowPoint.y+arrowViewHeight)
-            }else{
+                originalPoint = CGPoint(x: arrowPoint.x-myFrame.width/2, y: arrowPoint.y+arrowViewHeight)
+            } else {
                 arrowMargin = arrowPoint.x-popMenuMargin
                 originalPoint = CGPoint(x: popMenuMargin, y: arrowPoint.y+arrowViewHeight)
             }
 //
-        }else{
+        } else {
 //
-            if (KScrW-arrowPoint.x) < myFrame.width/2{
-                arrowMargin = (myFrame.width - KScrW + arrowPoint.x )
+            if (KScrW-arrowPoint.x) < myFrame.width/2 {
+                arrowMargin = (myFrame.width-KScrW+arrowPoint.x)
                 originalPoint = CGPoint(x: KScrW-popMenuMargin-myFrame.width, y: arrowPoint.y+arrowViewHeight)
 //
 //
-            }else{
+            } else {
                 arrowMargin = myFrame.width/2
                 originalPoint = CGPoint(x: arrowPoint.x-myFrame.width/2, y: arrowPoint.y+arrowViewHeight)
             }
         }
         
-        //箭头朝上
-        if updown == 1{
+        // 箭头朝上
+        if updown == 1 {
+            return (CGPoint(x: arrowMargin, y: 0), CGPoint(x: arrowMargin-arrowViewWidth/2, y: arrowViewHeight), CGPoint(x: arrowMargin+arrowViewWidth/2, y: arrowViewHeight), originalPoint, true)
             
-            return (CGPoint(x: arrowMargin, y: 0),CGPoint(x: arrowMargin-arrowViewWidth/2, y: arrowViewHeight),CGPoint(x: arrowMargin+arrowViewWidth/2, y: arrowViewHeight),originalPoint,true)
-            
-        }else if updown == 0{//箭头朝下
+        } else if updown == 0 { // 箭头朝下
 //            originalPoint.y = arrowPoint.y-myFrame.height-arrowViewHeight-20
             
-            return (CGPoint(x: arrowMargin, y: arrowViewHeight),CGPoint(x: arrowMargin-arrowViewWidth/2, y: 0),CGPoint(x: arrowMargin+arrowViewWidth/2, y: 0),originalPoint,false)
-        }else
-        {
-            return (CGPoint(x: arrowMargin, y: arrowViewHeight),CGPoint(x: arrowMargin-arrowViewWidth/2, y: 0),CGPoint(x: arrowMargin+arrowViewWidth/2, y: 0),originalPoint,false)
+            return (CGPoint(x: arrowMargin, y: arrowViewHeight), CGPoint(x: arrowMargin-arrowViewWidth/2, y: 0), CGPoint(x: arrowMargin+arrowViewWidth/2, y: 0), originalPoint, false)
+        } else {
+            return (CGPoint(x: arrowMargin, y: arrowViewHeight), CGPoint(x: arrowMargin-arrowViewWidth/2, y: 0), CGPoint(x: arrowMargin+arrowViewWidth/2, y: 0), originalPoint, false)
         }
-        
     }
-    
 }
 
-
-
 // MARK: - 页面显示、隐藏
-extension SwiftPopMenu{
-    
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.first?.view != collecttionView{
+
+public extension SwiftPopMenu {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if touches.first?.view != collecttionView {
             dismiss()
         }
     }
     
-    public func show() {
-        if popData.isEmpty{
+    func show() {
+        if popData.isEmpty {
             return
         }
         initViews()
         UIApplication.shared.keyWindow?.addSubview(self)
     }
     
-    public func dismiss() {
-        self.removeFromSuperview()
+    func dismiss() {
+        removeFromSuperview()
     }
-    static func defaultConfig() -> [SwiftPopMenuConfigure]{
-        var config:[SwiftPopMenuConfigure]
+
+    internal static func defaultConfig() -> [SwiftPopMenuConfigure] {
+        var config: [SwiftPopMenuConfigure]
         config = [
             .PopMenuTextColor(.white),
             .popMenuItemHeight(64),
@@ -283,12 +271,11 @@ extension SwiftPopMenu{
         ]
         return config
     }
-
 }
 
 // MARK: - UITableViewDataSource,UITableViewDelegate
-extension SwiftPopMenu : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    
+
+extension SwiftPopMenu: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 //    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return 1
 //    }
@@ -297,13 +284,13 @@ extension SwiftPopMenu : UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if popData.count>indexPath.row {
+        if popData.count > indexPath.row {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SwiftPopMenuCell", for: indexPath) as! SwiftPopMenuCell
             let model = popData[indexPath.row]
-            if indexPath.row == popData.count - 1 {
+            if indexPath.row == popData.count-1 {
                 cell.fill(iconName: model.icon, title: model.title, islast: true)
-            }else{
-                 cell.fill(iconName: model.icon, title: model.title)
+            } else {
+                cell.fill(iconName: model.icon, title: model.title)
             }
             return cell
         }
@@ -314,13 +301,14 @@ extension SwiftPopMenu : UICollectionViewDelegate, UICollectionViewDataSource, U
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 60, height: 64)
     }
+
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if self.delegate != nil{
-            self.delegate?.swiftPopMenuDidSelectIndex(index: indexPath.row)
+        if delegate != nil {
+            delegate?.swiftPopMenuDidSelectIndex(index: indexPath.row)
         }
         let model = popData[indexPath.row]
         if didSelectMenuBlock != nil {
-            didSelectMenuBlock!(indexPath.row,model.title)
+            didSelectMenuBlock!(indexPath.row, model.title)
         }
         dismiss()
     }
@@ -328,36 +316,36 @@ extension SwiftPopMenu : UICollectionViewDelegate, UICollectionViewDataSource, U
 
 /// UITableViewCell
 class SwiftPopMenuCell: UICollectionViewCell {
-    var iconImage:UIImageView!
-    var lblTitle:UILabel!
+    var iconImage: UIImageView!
+    var lblTitle: UILabel!
     
-    override init(frame: CGRect)  {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
         
         iconImage = UIImageView()
-        self.contentView.addSubview(iconImage)
+        contentView.addSubview(iconImage)
         
         lblTitle = UILabel()
         lblTitle.textColor = .white
         lblTitle.font = UIFont.systemFont(ofSize: 13)
         lblTitle.textAlignment = .center
-        self.contentView.addSubview(lblTitle)
+        contentView.addSubview(lblTitle)
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func fill(iconName:String,title:String,islast:Bool = false) {
+    func fill(iconName: String, title: String, islast: Bool = false) {
         iconImage.image = UIImage.svgInit(iconName)
         lblTitle.text = title
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.iconImage.frame = CGRect(x: 21, y: 13, width: 20, height: 20)
-        self.lblTitle.frame = CGRect(x: 1, y: 35, width: 59, height: 20)
+        iconImage.frame = CGRect(x: 21, y: 13, width: 20, height: 20)
+        lblTitle.frame = CGRect(x: 1, y: 35, width: 59, height: 20)
     }
 }
-

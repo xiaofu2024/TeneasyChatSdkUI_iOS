@@ -24,6 +24,6 @@ var xToken = ""
 var domain = "wcsapi.qixin14.xyz"  //domain
 var baseUrlApi = "https://" + domain  //用于请求数据，上传图片
 var baseUrlImage = "https://sssacc.wwc09.com" //用于拼接图片地址
-var workerId = 2
+var workerId: Int32 = 2
 
 let PARAM_XTOKEN = "HTTPTOKEN"

@@ -4,7 +4,7 @@ let ChatProvider = MoyaProvider<ChatApi>()
 
 enum ChatApi {
     case queryHistory(consultId: Int32 = 1, chatId: Int32 = 0, count: Int32 = 50)
-    case queryAutoReplay(consultId: Int32 = 0)
+    case queryAutoReplay(consultId: Int32 = 0, workerId: Int32 = 0)
     case queryEntrance
     case assignWorker(consultId: Int32 = 0)
 }
@@ -51,7 +51,9 @@ extension ChatApi: TargetType {
              */
         case .queryHistory(let consultId, let chatId, let count):
             return .requestParameters(parameters: ["consultId": consultId, "chatId":chatId, "count": count], encoding: JSONEncoding.default)
-        case .queryAutoReplay(let id), .assignWorker(let id):
+        case .queryAutoReplay(let consultId, let workerId):
+            return .requestParameters(parameters: ["consultId": consultId, "workerId":workerId], encoding: JSONEncoding.default)
+        case.assignWorker(let id):
             return .requestParameters(parameters: ["consultId": id], encoding: JSONEncoding.default)
         case .queryEntrance:
             return .requestParameters(parameters: [:], encoding: JSONEncoding.default)
