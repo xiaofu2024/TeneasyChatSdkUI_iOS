@@ -13,10 +13,18 @@ let PARAM_MERCHANT_ID = "MERCHANT_ID"
 let PARAM_LINES = "LINES"
 
 //这几个是需要在设置里面配置
-var lines = "https://csapi.xdev.stream,https://wcsapi.qixin14.xyz,https://wcsapi.qixin14.xyz"
+/*var lines = "https://csapi.xdev.stream,https://wcsapi.qixin14.xyz,https://wcsapi.qixin14.xyz"
 var cert = "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ"
 var merchantId: Int = 230
 var userId: Int32 = 1125324
+ */
+
+
+ var lines = "https://csapi.xdev.stream,https://wcsapi.qixin14.xyz,https://wcsapi.qixin14.xyz"
+         var cert = "COEBEAUYASDjASiewpj-8TE.-1R9Mw9xzDNrSxoQ5owopxciklACjBUe43NANibVuy-XPlhqnhAOEaZpxjvTyJ6n79P5bUBCGxO7PcEFQ9p9Cg"
+         var merchantId = 225
+         var userId: Int32 = 777772
+ 
 
 //动态生成
 var CONSULT_ID: Int32 = 1

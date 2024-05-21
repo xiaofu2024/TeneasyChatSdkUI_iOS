@@ -15,6 +15,7 @@ class BWQuestionView: UIView {
     var cellClick: BWQuestionViewCellClickCallback?
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = UIColor.lightGray
         return label
     }()
@@ -48,7 +49,7 @@ class BWQuestionView: UIView {
 
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
             make.bottom.equalToSuperview().offset(8)
             make.left.equalToSuperview()
             make.width.equalTo(180)
