@@ -9,7 +9,12 @@
 import Kingfisher
 import UIKit
 
+typealias BWChatCellLongGestCallBack = (UILongPressGestureRecognizer) -> ()
+
 class BWChatCell: UITableViewCell {
+    var gesture: UILongPressGestureRecognizer?
+    var longGestCallBack: BWChatCellLongGestCallBack?
+    
     lazy var timeLab: UILabel = {
         let lab = UILabel()
         lab.font = UIFont.systemFont(ofSize: 13)
@@ -62,6 +67,11 @@ class BWChatCell: UITableViewCell {
             make.top.equalTo(self.timeLab.snp.bottom)
             make.height.equalTo(0)
         }
+        gesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureClick(tap:)))
+        self.contentView.addGestureRecognizer(gesture!)
+    }
+    @objc func longGestureClick(tap: UILongPressGestureRecognizer) {
+        longGestCallBack?(tap)
     }
     
     var model: ChatModel? {
