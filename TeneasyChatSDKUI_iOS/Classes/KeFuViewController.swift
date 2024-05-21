@@ -13,58 +13,7 @@ import TeneasyChatSDK_iOS
 // import TeneasyChatSDKUI_iOS
 import UIKit
 
-open class KeFuViewController: UIViewController, teneasySDKDelegate {
-    public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
-
-    }
-    
-    public func msgReceipt(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
-        print("msgReceipt" + WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date))
-        // 通过payloadId从DataSource里面找对应记录，并更新状态和时间
-        print("------\(payloadId)")
-        let index = datasouceArray.firstIndex { model in
-            model.payLoadId == payloadId
-        }
-        if (index ?? -1) > -1 {
-            if msg.msgID == 0 {
-                datasouceArray[index!].sendStatus = .发送失败
-                print("状态更新 -> 发送失败")
-            } else {
-                datasouceArray[index!].sendStatus = .发送成功
-                datasouceArray[index!].message = msg
-                print(msg.msgID)
-                print("状态更新 -> 发送成功")
-            }
-
-            tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
-        }
-
-        let arr = datasouceArray.filter { modal in modal.message.msgID == 0 && modal.isLeft == false }
-        for p in arr {
-            print(p.message.msgID)
-            p.sendStatus = .发送失败
-            tableView.reloadData()
-        }
-        scrollToBottom()
-    }
-
-    public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
-        print("systemMsg")
-        print(result.Message)
-        if result.Code == 1002 || result.Code == 1010{
-            WWProgressHUD.showInfoMsg(result.Message)
-            navigationController?.popToRootViewController(animated: true)
-        }
-    }
-
-    //open var token = "" // 起信Token
-    // open var token = "CCcQARgCIBwo6_7VjN8w.Pa47pIINpFETl5RxrpTPqLcn8RVBAWrGW_ogyzQipI475MLhNPFFPkuCNEtsYvabF9uXMKK2JhkbRdZArUK3DQ"
-    var retryTimes = 0
-    var consultId: Int64 = 0
-    public func workChanged(msg: Gateway_SCWorkerChanged) {
-        consultId = msg.consultID
-        print(msg.workerName)
-    }
+open class KeFuViewController: UIViewController{
 
     lazy var imagePickerController: UIImagePickerController = {
         let pick = UIImagePickerController()
@@ -148,7 +97,8 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
     var questionViewHeight: Double = 0
 
     var datasouceArray: [ChatModel] = []
-
+    var retryTimes = 0
+    var consultId: Int64 = 0
     var lib = ChatLib()
     var chooseImg: UIImage?
 
@@ -251,21 +201,6 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    func initSDK(baseUrl: String) {
-        let wssUrl = "wss://" + baseUrl + "/v1/gateway/h5?"
-        // 第一次cert必填，之后token必填
-        lib = ChatLib(userId: userId, cert: cert, token: xToken, baseUrl: wssUrl, sign: "9zgd9YUc")
-
-        lib.callWebsocket()
-        lib.delegate = self
-    }
-
-    public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
-        print("receivedMsg")
-        appendDataSource(msg: msg, isLeft: true)
-
-        scrollToBottom()
-    }
 
     func scrollToBottom() {
         if datasouceArray.count > 1 {
@@ -293,32 +228,33 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         systemMsgLabel.text = msg
     }
 
-    public func connected(c: Gateway_SCHi) {
-        xToken = c.token
-        UserDefaults.standard.set(c.token, forKey: PARAM_XTOKEN)
-        // loadWorker(workerId: c.workerID)
-         WWProgressHUD.showLoading("连接中...")
-         print("assign work")
-         NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
-             if success {
-                 print("assign work 成功")
-                 self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
-                 
-                 NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
-                     //print(data)
-                     //构建本地消息
-                 }
-             }
-             WWProgressHUD.dismiss()
-         }
-    }
     
-    private func buildHistory(){
+    func buildHistory(history: HistoryModel){
         
        // let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
 
+        guard let historyList = history.list?.reversed() else { return } //获取自动回复后return
         
-        
+
+            for item in historyList {
+                // Process each item here
+                // You can modify item if needed
+                var isLeft = true
+                if (item.sender == item.chatId){
+                    isLeft = false
+                }
+                
+                let chatModel = ChatModel()
+                chatModel.isLeft = isLeft
+                chatModel.sendStatus = .发送成功
+                if item.msgFmt == "MSG_TEXT"{
+                    chatModel.message = composeALocalTxtMessage(textMsg: item.content?.data ?? "no txt")
+                }else if item.msgFmt == "MSG_IMG"{
+                    chatModel.message = composeALocalImgMessage(url: item.image?.uri ?? "")
+                }
+                datasouceArray.append(chatModel)
+            }
+        tableView.reloadData()
         
        /* var qaList = ArrayList<MessageItem>()
                       for (item in this.reversed()) {
@@ -456,12 +392,7 @@ open class KeFuViewController: UIViewController, teneasySDKDelegate {
         })
         
     }
-}
 
-
-// MARK: - ----------------监听键盘高度变化
-
-extension KeFuViewController {
     @objc func keyboardWillChangeFrame(node: Notification) {
         // 1.获取动画执行的时间
         let duration = node.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval

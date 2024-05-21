@@ -36,8 +36,13 @@ struct Message: HandyJSON {
     var msgFmt: String?
     var consultId: String?
     var content: MessageContent?
+    var image: imgUri?
 }
 
 struct MessageContent: HandyJSON {
     var data: String?
+}
+
+struct imgUri: HandyJSON {
+    var uri: String?
 }
