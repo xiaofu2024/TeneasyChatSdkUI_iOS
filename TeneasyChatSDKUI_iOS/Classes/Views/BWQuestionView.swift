@@ -77,7 +77,8 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BWQuestionCell.cell(tableView: tableView)
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
-        cell.titleLab.textColor = UIColor.purple
+        cell.titleLab.textColor = UIColor.brown
+        cell.titleLab.font = UIFont.systemFont(ofSize: 14)
         cell.imgView.isHidden = true
         return cell
     }
@@ -94,6 +95,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         // 设置组头视图的内容
         headerView.titleLabel.text = sectionList[section].question?.content?.data ?? ""
         headerView.titleLabel.textColor = UIColor.purple
+        headerView.titleLabel.font = UIFont.systemFont(ofSize: 15)
         if sectionList[section].myExpanded == true {
             headerView.imgView.image = UIImage.svgInit("arrowup")
         } else {

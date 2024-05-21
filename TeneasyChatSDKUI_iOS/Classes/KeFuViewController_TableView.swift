@@ -8,7 +8,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.model = model
                 cell.consultId = Int32(self.consultId)
                 cell.heightBlock = { [weak self] (height: Double) in
-                    self?.questionViewHeight = height + 30
+                    self?.questionViewHeight = height + 130
                     self?.tableView.reloadData()
                 }
                 cell.clickBlock = { [weak self] (model: QA) in

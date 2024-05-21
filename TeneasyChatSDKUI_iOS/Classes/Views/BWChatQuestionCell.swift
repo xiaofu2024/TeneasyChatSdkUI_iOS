@@ -85,9 +85,9 @@ class BWChatQuestionCell: UITableViewCell {
         
         questionView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
-            make.width.equalTo(kScreenWidth - 24)
-            make.height.equalTo(30)
-            make.top.equalTo(timeLab.snp.bottom)
+            make.width.equalTo(210)
+            make.height.equalTo(180)
+            make.top.equalTo(timeLab.snp.bottom).offset(10)
         }
         
         questionView.heightCallback = { [weak self] (height: Double) in
