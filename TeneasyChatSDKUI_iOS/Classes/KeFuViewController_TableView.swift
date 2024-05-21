@@ -23,6 +23,11 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
             }
             let cell = BWChatLeftCell.cell(tableView: tableView)
             cell.model = model
+            cell.longGestCallBack = {[weak self] gesure in
+                if gesure.state == .began {
+                    self?.showMenu(gesure, model: model, indexPath: indexPath)
+                }
+            }
             return cell
         }
         let cell = BWChatRightCell.cell(tableView: tableView)
@@ -30,6 +35,11 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         cell.resendBlock = { [weak self] _ in
             self?.datasouceArray[indexPath.row].sendStatus = .发送中
             self?.lib.resendMsg(msg: model.message, payloadId: model.payLoadId)
+        }
+        cell.longGestCallBack = {[weak self] gesure in
+            if gesure.state == .began {
+                self?.showMenu(gesure, model: model, indexPath: indexPath)
+            }
         }
         return cell
     }
@@ -51,5 +61,79 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
             return 200.0
         }
         return 50.0
+    }
+}
+extension KeFuViewController {
+    func showMenu(_ guesture: UILongPressGestureRecognizer, model: ChatModel?, indexPath: IndexPath) {
+        toolBar.resetStatus()
+        if popMenu != nil {
+            popMenu?.dismiss()
+        }
+        let msgText = model?.message.content.data ?? ""
+
+        var dataSouce = [(icon: "chatHuifu", title: "回复"),
+                         (icon: "chatCopy", title: "复制")]
+
+        let popData = dataSouce
+        if popData.count == 0 {
+            return
+        }
+        // 设置参数
+        let parameters = SwiftPopMenu.defaultConfig()
+        var point = guesture.location(in: self.view)
+        let pointView = guesture.view
+        let space = 0.0
+        let point_superview = guesture.location(in: pointView)
+        var popMenuW = 120.0
+        var pointY: CGFloat = 0
+        let textWidth = msgText.textWidth(fontSize: 15, width: kScreenWidth - 100)
+        pointY = point.y + msgText.textHeight(fontSize: 15, width: kScreenWidth - 100) - point_superview.y + 30
+        point.y = pointY
+        var upDown = 1
+        if (model?.isLeft ?? true) {
+            point.x = 60 + 30
+        } else {
+            point.x = kScreenWidth - 100
+            if (textWidth < 100) {
+                upDown = 2 // 无箭头
+            }
+        }
+        
+        popMenu = SwiftPopMenu(menuWidth: popMenuW, arrow: point, datas: popData, configures: parameters, upDown: upDown)
+        popMenu?.didSelectMenuBlock = { [weak self] (_: Int, name) in
+            switch name {
+            case "回复":
+                self?.toolBar.textView.becomeFirstResponder()
+                self?.replyBar.updateUI(with: model!)
+                if self?.replyBar.superview == nil {
+                    self?.view.addSubview(self!.replyBar)
+                    self?.view.bringSubviewToFront(self!.toolBar)
+                    self?.replyBar.snp.makeConstraints { make in
+                        make.left.right.equalToSuperview()
+                        make.top.equalTo(self!.toolBar.snp.top)
+                    }
+                }
+                self?.toolBar.setTextInputModel()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    // 此处写要延迟的东西
+                    self?.replyBar.snp.updateConstraints { make in
+                        make.top.equalTo(self!.toolBar.snp.top).offset(-37)
+                    }
+//                    self?.floatButton.snp.updateConstraints { make in
+//                        make.bottom.equalTo(self!.toolBar.snp.top).offset(-37)
+//                    }
+                }
+
+            case "复制":
+                let pastboard = UIPasteboard.general
+                pastboard.string = msgText
+                WChatPasteToastView.show(inView: nil)
+            default:
+                break
+            }
+            self?.popMenu = nil
+        }
+        // show
+        popMenu?.show()
     }
 }

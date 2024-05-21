@@ -86,6 +86,27 @@ open class KeFuViewController: UIViewController{
         view.rowHeight = UITableView.automaticDimension
         return view
     }()
+    
+    var popMenu: SwiftPopMenu?
+    
+    /// 消息回复框，回复时显示出来
+    lazy var replyBar: WChatReplyBar = {
+        let bar = WChatReplyBar()
+        bar.closeButton.addActionBlock { [weak self] _ in
+            // 回复的Model置空
+//            self?.viewModel.replyOriginChatModel = nil
+            // 隐藏回复bar,改变floatButton位置
+            UIView.animate(withDuration: 0.3) {
+                bar.snp.updateConstraints { make in
+                    make.top.equalTo(self!.toolBar.snp.top)
+                }
+//                self?.floatButton.snp.updateConstraints { make in
+//                    make.bottom.equalTo(self!.toolBar.snp.top).offset(0)
+//                }
+            }
+        }
+        return bar
+    }()
 
 //    lazy var questionView: BWQuestionView = {
 //        let view = BWQuestionView()

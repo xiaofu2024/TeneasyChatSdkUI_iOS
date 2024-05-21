@@ -77,7 +77,6 @@ class BWSettingViewController: UIViewController {
         let a_cert = UserDefaults.standard.string(forKey: PARAM_CERT) ?? ""
         let a_merchantId = UserDefaults.standard.integer(forKey: PARAM_MERCHANT_ID)
         let a_userId = UserDefaults.standard.integer(forKey: PARAM_USER_ID)
-            
         linesTextField.text = a_lines.isEmpty ? lines:a_lines
         certTextField.text = a_cert.isEmpty ? cert:a_cert
         merchantIdTextField.text = "\(a_merchantId > 0 ? a_merchantId:merchantId)"

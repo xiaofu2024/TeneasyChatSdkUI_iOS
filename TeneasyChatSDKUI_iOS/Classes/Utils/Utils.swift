@@ -56,3 +56,29 @@ extension UIImage{
         return svgView
     }
 }
+extension String {
+    func textHeight(fontSize: CGFloat, width: CGFloat) -> CGFloat {
+        return self.boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: .usesLineFragmentOrigin, attributes: [.font: UIFont.systemFont(ofSize: fontSize)], context: nil).size.height + 5
+    }
+    func textWidth(fontSize: CGFloat, width: CGFloat) -> CGFloat {
+        return self.boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: .usesLineFragmentOrigin, attributes: [.font: UIFont.systemFont(ofSize: fontSize)], context: nil).size.width
+    }
+}
+
+extension UIButton {
+    enum UIButtonKey {
+        static var actionKey = "actionKey"
+    }
+
+    func addActionBlock(_ closure: @escaping (_ sender: UIButton) -> Void) {
+        objc_setAssociatedObject(self, &UIButtonKey.actionKey, closure, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
+        self.addTarget(self, action: #selector(self.actionBtn), for: .touchUpInside)
+    }
+
+    @objc func actionBtn(_ sender: UIButton) {
+        let obj = objc_getAssociatedObject(self, &UIButtonKey.actionKey)
+        if let action = obj as? ((_ sender: UIButton) -> Void) {
+            action(self)
+        }
+    }
+}
