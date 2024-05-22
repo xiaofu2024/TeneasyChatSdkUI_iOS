@@ -62,8 +62,6 @@ class BWQuestionView: UIView {
 
     func setup(model: QuestionModel) {
         sectionList = model.autoReplyItem?.qa ?? []
-        print(sectionList)
-        
         titleLabel.text = model.autoReplyItem?.title
         updateTableViewHeight()
     }
@@ -82,8 +80,6 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
         let cell = BWQuestionCell.cell(tableView: tableView)
         
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
-        
-        print(cell.titleLab.text)
         cell.titleLab.textColor = UIColor.brown
         cell.titleLab.font = UIFont.systemFont(ofSize: 14)
         cell.imgView.isHidden = true
@@ -157,7 +153,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
                     expandRowHeight = expandRowHeight + Double(qa.related?.count ?? 0) * 44.0
                 }
             }
-            
+
             print("QA Cell Height:\(60.0 + sectionHeight + expandRowHeight)")
             heightCallback!(60.0 + sectionHeight + expandRowHeight)
         }

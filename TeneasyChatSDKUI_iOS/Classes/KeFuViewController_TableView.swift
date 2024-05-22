@@ -10,7 +10,6 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         else if model.isLeft {
             if model.cellType == CellType.TYPE_QA {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
-                cell.model = model
                 cell.consultId = Int32(self.consultId)
                 cell.heightBlock = { [weak self] (height: Double) in
                     self?.questionViewHeight = height + 130
@@ -20,6 +19,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                         self?.scrollToBottom()
                     }
                 }
+                cell.model = model
                 cell.qaClickBlock = { [weak self] (model: QA) in
                     
                     let questionTxt = model.question?.content?.data ?? ""
@@ -87,6 +87,12 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return UITableView.automaticDimension
     }
+    
+    func scrollToBottom() {
+        if datasouceArray.count > 1 {
+            tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
+        }
+    }
 }
 extension KeFuViewController {
     func showMenu(_ guesture: UILongPressGestureRecognizer, model: ChatModel?, indexPath: IndexPath) {
@@ -96,7 +102,7 @@ extension KeFuViewController {
         }
         let msgText = model?.message?.content.data ?? ""
 
-        var dataSouce = [(icon: "chatHuifu", title: "回复"),
+        let dataSouce = [(icon: "chatHuifu", title: "回复"),
                          (icon: "chatCopy", title: "复制")]
 
         let popData = dataSouce

@@ -21,15 +21,13 @@ extension KeFuViewController: teneasySDKDelegate {
     }
     
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
-        print("receivedMsg")
+        print("receivedMsg\(msg)")
         appendDataSource(msg: msg, isLeft: true)
-        
-        scrollToBottom()
     }
     
     public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
 
-        datasouceArray = datasouceArray.filter { modal in modal.message?.msgID == msg.msgID}
+        datasouceArray = datasouceArray.filter { modal in modal.message?.msgID != msg.msgID}
         
         let msg = composeALocalTxtMessage(textMsg: "对方撤回了一条消息")
         appendDataSource(msg: msg, isLeft: false, cellType: .TYPE_Tip)
@@ -68,9 +66,17 @@ extension KeFuViewController: teneasySDKDelegate {
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
         print("systemMsg")
         print(result.Message)
-        if result.Code == 1002 || result.Code == 1010{
-            WWProgressHUD.showInfoMsg(result.Message)
-            navigationController?.popToRootViewController(animated: true)
+         if(result.Code >= 1000 && result.Code <= 1010){
+             if result.Code == 1002 || result.Code == 1010{
+                 //WWProgressHUD.showInfoMsg(result.Message)
+                 //由于后端运信和起聊有冲突，所以这里错误码不一定对，不做任何处理
+                 stopTimer()
+                 //isConnected = false
+                 //navigationController?.popToRootViewController(animated: true)
+             }else{
+                 
+                 isConnected = false
+             }
         }
     }
 
@@ -90,18 +96,20 @@ extension KeFuViewController: teneasySDKDelegate {
          NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
              if success {
                  print("assign work 成功：\(model?.workerId ?? 0)")
+                 if !self!.isFirstLoad{
+                     WWProgressHUD.dismiss()
+                     return
+                 }
+           
                  self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
                  workerId = model?.workerId ?? 2
-                  if let f = self?.firstLoad{
-                      if f == false{
-                          self?.firstLoad = true
-                          NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
-                              //print(data)
-                              //构建本地消息
-                              self?.buildHistory(history:  data ?? HistoryModel())
-                          }
-                      }
+               
+                 NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
+                     //print(data)
+                     //构建本地消息
+                     self?.buildHistory(history:  data ?? HistoryModel())
                  }
+                 self!.isFirstLoad = false
              }
              WWProgressHUD.dismiss()
          }

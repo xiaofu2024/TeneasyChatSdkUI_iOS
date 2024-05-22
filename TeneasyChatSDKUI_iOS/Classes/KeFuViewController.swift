@@ -123,8 +123,9 @@ open class KeFuViewController: UIViewController{
     var consultId: Int64 = 0
     var lib = ChatLib()
     var chooseImg: UIImage?
-    internal var firstLoad = false
-    private var connected = false
+    internal var isFirstLoad = true
+    internal var isConnected = false
+    private var myTimer: Timer?
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -177,7 +178,7 @@ open class KeFuViewController: UIViewController{
         tableView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalTo(self.headerView.snp.bottom)
-            make.bottom.equalTo(toolBar.snp.top).offset(-20)
+            make.bottom.equalTo(toolBar.snp.top).offset(-10)
         }
 
         headerView.addSubview(headerImg)
@@ -224,13 +225,6 @@ open class KeFuViewController: UIViewController{
         super.didReceiveMemoryWarning()
     }
 
-
-    func scrollToBottom() {
-        if datasouceArray.count > 1 {
-            tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
-        }
-    }
-
     func appendDataSource(msg: CommonMessage, isLeft: Bool, payLoadId: UInt64 = 0, status: MessageSendState = .发送中, cellType: CellType = .TYPE_Text) {
         let model = ChatModel()
         model.isLeft = isLeft
@@ -255,9 +249,7 @@ open class KeFuViewController: UIViewController{
 
     
     func buildHistory(history: HistoryModel){
-        
        // let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
-
         guard let historyList = history.list?.reversed() else { return } //获取自动回复后return
         
             for item in historyList {
@@ -290,19 +282,28 @@ open class KeFuViewController: UIViewController{
     }
 
     func updateWorker(workerName:String, avatar: String){
-        self.headerTitle.text = workerName
+        self.headerTitle.text = "客服\(workerName)"
         print("baseUrlImage:" + baseUrlImage)
         let url = baseUrlImage + avatar
         print("avatar:" + url)
         self.headerImg.kf.setImage(with: URL(string: url))
         
-        let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
-        appendDataSource(msg: greetingMsg, isLeft: true)
+        if isFirstLoad{
+            let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
+            appendDataSource(msg: greetingMsg, isLeft: true)
+        }
     }
     
     
     func sendMsg(textMsg: String) {
-        lib.sendMessage(msg: textMsg, type: .msgText, consultId: consultId)
+        if replyBar.superview != nil{
+            if let msg = replyBar.msg{
+                lib.sendMessage(msg: textMsg + "\n回复：" + msg.content.data, type: .msgText, consultId: consultId, replyMsgId: msg.msgID)
+            }
+            replyBar.removeFromSuperview()
+        }else{
+            lib.sendMessage(msg: textMsg, type: .msgText, consultId: consultId)
+        }
         if let cMsg = lib.sendingMsg {
             appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
         }
@@ -317,7 +318,33 @@ open class KeFuViewController: UIViewController{
             appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
         }
     }
+    
+   @objc func checkSDK(){
+       if !isConnected{
+           initSDK(baseUrl: domain)
+       }
+    }
 
+    
+    //定时检查SDK连接状态
+    @objc func startTimer() {
+       stopTimer()
+        myTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(checkSDK), userInfo: nil, repeats: true)
+        myTimer!.fire()
+    }
+
+    func stopTimer() {
+        if myTimer != nil {
+            myTimer!.invalidate() // 销毁timer
+            myTimer = nil
+        }
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        if isFirstLoad{
+            perform(#selector(startTimer), with: nil, afterDelay: 3)
+        }
+    }
     
     func upload(imgData: Data) {
         // Set Your URL

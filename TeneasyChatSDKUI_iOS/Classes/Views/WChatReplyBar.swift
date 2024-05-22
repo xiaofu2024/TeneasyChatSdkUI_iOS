@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import TeneasyChatSDK_iOS
 
 class WChatReplyBar: WBaseView {
 //    var replyType:MessageType = .text
@@ -15,6 +16,8 @@ class WChatReplyBar: WBaseView {
 //        icon.image = SVGKImage(named: "lt_xiaoxidingwei").uiImage
 //        return icon
 //    }()
+    
+    var msg: CommonMessage? = nil
     
     lazy var vline:UIView = {
         let line = UIView()
@@ -95,8 +98,10 @@ class WChatReplyBar: WBaseView {
     override func initBindModel() {}
     
     func updateUI(with chatModel:ChatModel) {
+        msg = chatModel.message
         titleLabel.text = "回复 "
-        contentLabel.text = chatModel.message?.content.data 
+        titleLabel.textColor = UIColor.purple
+        contentLabel.text = chatModel.message?.content.data
 //        NIMKitInfoFetchOption *option = [[NIMKitInfoFetchOption alloc] init];
 //        option.session = session;
 //        return [[NIMKit sharedKit] infoByUser:uid option:option].showName;

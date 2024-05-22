@@ -53,7 +53,7 @@ class BWTipCell: UITableViewCell {
             }
           
             let time = WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date)
-            titleLab.text = time + "\n\n" + msg.content.data
+            titleLab.text = time + "\n" + msg.content.data + "\n"
         }
     }
     

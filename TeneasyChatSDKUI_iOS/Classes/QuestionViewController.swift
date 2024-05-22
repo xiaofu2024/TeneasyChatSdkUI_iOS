@@ -83,12 +83,29 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
             make.right.equalToSuperview().offset(-20)
         }
         
-        let lineLB = LineDetectLib(lines, delegate: self, tenantId: merchantId)
-        lineLB.getLine()
     }
     @objc func settingClick() {
         let vc = BWSettingViewController()
         self.present(vc, animated: true)
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        lines = UserDefaults.standard.string(forKey: PARAM_LINES) ?? lines
+        cert = UserDefaults.standard.string(forKey: PARAM_CERT) ?? cert
+        let a_merchantId = UserDefaults.standard.integer(forKey: PARAM_MERCHANT_ID)
+        if a_merchantId > 0{
+            merchantId = a_merchantId
+        }
+        
+        let a_userId = UserDefaults.standard.integer(forKey: PARAM_USER_ID)
+        if a_userId > 0{
+            merchantId = a_userId
+        }
+        
+        xToken = UserDefaults.standard.string(forKey: PARAM_XTOKEN) ?? ""
+        
+        let lineLB = LineDetectLib(lines, delegate: self, tenantId: merchantId)
+        lineLB.getLine()
     }
     
     

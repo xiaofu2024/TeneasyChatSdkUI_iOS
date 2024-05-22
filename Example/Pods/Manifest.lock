@@ -63,7 +63,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TeneasyChatSDK_iOS:
-    :commit: ddf17d4cce4790ecf66c858ad85043fb22a9eba1
+    :commit: 308e133892daf9a081623f4620dc6c87a0f2ceca
     :git: https://github.com/QiSDK/QiChatSDK_iOS.git
 
 SPEC CHECKSUMS:

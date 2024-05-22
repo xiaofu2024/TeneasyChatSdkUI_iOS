@@ -35,7 +35,6 @@ class BWChatQuestionCell: UITableViewCell {
         if cell == nil {
             cell = Self(style: .default, reuseIdentifier: cellId)
         }
-        
         return cell as! Self
     }
     
@@ -55,9 +54,14 @@ class BWChatQuestionCell: UITableViewCell {
         NetworkUtil.getAutoReplay(consultId: consultId, wId: workId) { success, model in
             if success {
                 self.question = model
-                if let autoReplyItem = model?.autoReplyItem {
-                    print("--------" + (autoReplyItem.name ?? ""))
-                    self.questionView.setup(model: model!)
+                if model?.autoReplyItem == nil{
+                    self.isHidden = true
+                }else{
+                    if let autoReplyItem = model?.autoReplyItem {
+                        self.isHidden = false
+                        print("--------" + (autoReplyItem.name ?? ""))
+                        self.questionView.setup(model: model!)
+                    }
                 }
             }
         }
@@ -80,6 +84,7 @@ class BWChatQuestionCell: UITableViewCell {
         self.timeLab.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.top.equalToSuperview().offset(12)
+            make.height.equalTo(0)
             make.right.equalToSuperview().offset(-12)
         }
         contentView.addSubview(questionView)
@@ -87,13 +92,16 @@ class BWChatQuestionCell: UITableViewCell {
         questionView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.width.equalTo(210)
-            make.height.equalTo(180)
+            make.height.equalTo(0)
             make.top.equalTo(timeLab.snp.bottom).offset(10)
         }
         
         questionView.heightCallback = { [weak self] (height: Double) in
             self?.questionView.snp.updateConstraints { make in
                 make.height.equalTo(height)
+            }
+            self?.timeLab.snp.updateConstraints { make in
+                make.height.equalTo(20)
             }
             self?.heightBlock!(height)
         }
