@@ -62,9 +62,10 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
         curLineLB.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
-
+            
             make.top.equalTo(entranceView.snp.bottom).offset(10)
         }
+        curLineLB.textAlignment = .center
         
         entranceView.callBack = { (dataCount: Int) in
         }
