@@ -11,6 +11,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                     self?.questionViewHeight = height + 130
                     print("questionViewHeight:\(height + 130)")
                     self?.tableView.reloadData()
+                    self?.scrollToBottom()
                 }
                 cell.qaClickBlock = { [weak self] (model: QA) in
                     
