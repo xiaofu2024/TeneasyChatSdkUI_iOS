@@ -29,6 +29,10 @@ extension KeFuViewController: teneasySDKDelegate {
     
     public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
 
+        datasouceArray = datasouceArray.filter { modal in modal.message?.msgID == msg.msgID}
+        
+        let msg = composeALocalTxtMessage(textMsg: "对方撤回了一条消息")
+        appendDataSource(msg: msg, isLeft: false, cellType: .TYPE_Tip)
     }
     
     public func msgReceipt(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {

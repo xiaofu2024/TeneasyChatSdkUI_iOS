@@ -12,6 +12,7 @@ import TeneasyChatSDK_iOS
 open class QuestionViewController: UIViewController, LineDetectDelegate {
     public func useTheLine(line: String) {
         curLineLB.text = "当前线路：\(line)"
+        domain = line;
     }
     
     public func lineError(error: TeneasyChatSDK_iOS.Result) {

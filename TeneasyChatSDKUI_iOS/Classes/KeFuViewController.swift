@@ -124,6 +124,7 @@ open class KeFuViewController: UIViewController{
     var lib = ChatLib()
     var chooseImg: UIImage?
     internal var firstLoad = false
+    private var connected = false
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -141,8 +142,6 @@ open class KeFuViewController: UIViewController{
 //
         let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
         navigationItem.rightBarButtonItem = rightBarItem
-
-//        getAutoReplay(consultId: Int32(consultId))
     }
 
     @objc func closeClick() {
@@ -151,6 +150,7 @@ open class KeFuViewController: UIViewController{
 
     override open func viewDidDisappear(_ animated: Bool) {
 //        lib.disConnect()
+        
     }
 
     @objc func quit() {
@@ -289,21 +289,6 @@ open class KeFuViewController: UIViewController{
         scrollToBottom()
     }
 
-
-//    func getAutoReplay(consultId: Int32) {
-//        print(consultId)
-//        XToken = "COYBEAEYCyDwASjC-N6t9TE.W0AyuCoZQmqOBrxBvh88pcvgKzxebPqrubASBGzWDNPZu4EhSfyPDTH_Smym9PUYUWNh00NvMAEisZO-mAErCw"
-//        NetworkUtil.getAutoReplay(consultId: consultId) { success, model in
-//            if success {
-//                if let autoReplyItem = model?.autoReplyItem {
-//                    print("--------" + (autoReplyItem.name ?? ""))
-//                    self.questionView.setup(model: model!)
-//                }
-//            }
-//        }
-//    }
-
-    
     func updateWorker(workerName:String, avatar: String){
         self.headerTitle.text = workerName
         print("baseUrlImage:" + baseUrlImage)
@@ -319,8 +304,6 @@ open class KeFuViewController: UIViewController{
     func sendMsg(textMsg: String) {
         lib.sendMessage(msg: textMsg, type: .msgText, consultId: consultId)
         if let cMsg = lib.sendingMsg {
-//                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
-//                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
             appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
         }
     }

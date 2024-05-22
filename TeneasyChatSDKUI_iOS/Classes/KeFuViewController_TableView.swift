@@ -2,7 +2,12 @@
 extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = datasouceArray[indexPath.row]
-        if model.isLeft {
+        if model.cellType == .TYPE_Tip{
+            let cell = BWTipCell()
+            cell.model = model
+            return cell
+        }
+        else if model.isLeft {
             if model.cellType == CellType.TYPE_QA {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
                 cell.model = model
