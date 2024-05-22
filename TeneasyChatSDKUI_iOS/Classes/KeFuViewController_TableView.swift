@@ -80,7 +80,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         if model.message?.image.uri.isEmpty == false {
             return 200.0
         }
-        return 50.0
+        return UITableView.automaticDimension
     }
 }
 extension KeFuViewController {

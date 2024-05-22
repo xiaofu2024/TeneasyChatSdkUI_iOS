@@ -169,7 +169,6 @@ class BWChatRightCell: BWChatCell {
         self.titleLab.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 89/255, alpha: 1)
 
         self.timeLab.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-12)
             make.top.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
             make.height.equalTo(20)
@@ -177,7 +176,7 @@ class BWChatRightCell: BWChatCell {
         self.titleLab.snp.makeConstraints { make in
             make.top.equalTo(self.timeLab.snp.bottom)
             make.right.equalToSuperview().offset(-12)
-            //make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
         self.imgView.snp.updateConstraints { make in
