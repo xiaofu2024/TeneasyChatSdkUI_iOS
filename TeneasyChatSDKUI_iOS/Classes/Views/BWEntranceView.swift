@@ -27,7 +27,6 @@ class BWEntranceView: UIView {
         view.dataSource = self
         view.backgroundColor = .clear
         view.tableFooterView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 0.1))
-        view.isScrollEnabled = false
         return view
     }()
     
@@ -64,11 +63,12 @@ class BWEntranceView: UIView {
         self.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
-            //make.bottom.equalToSuperview()
-            make.height.equalTo(kScreenHeight - 150)
+            make.bottom.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
+
+
     }
 
     var entranceModel: EntranceModel?

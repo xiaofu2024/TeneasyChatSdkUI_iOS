@@ -24,7 +24,7 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
     
     lazy var entranceView: BWEntranceView = {
         let view = BWEntranceView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 8
         view.layer.masksToBounds = true
         return view
@@ -33,8 +33,9 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
     lazy var curLineLB: UILabel = {
         let lineLB = UILabel()
         lineLB.text = "正在检测线路。。。。"
-        lineLB.textColor = UIColor.white
+        lineLB.textColor = .systemPink
         lineLB.font = UIFont.systemFont(ofSize: 15)
+        lineLB.alpha = 0.5
         return lineLB
     }()
     
