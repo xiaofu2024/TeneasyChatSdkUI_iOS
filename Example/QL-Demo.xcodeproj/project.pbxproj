@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F7F4D8D731AFAC47242FF7E /* Pods_TeneasyChatSDKUI_iOS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A238F739E14F15ABA074D4C /* Pods_TeneasyChatSDKUI_iOS_Example.framework */; };
-		3F0A64A7FF686F01878771DE /* Pods_TeneasyChatSDKUI_iOS_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E11F599B1D88E45A8DB4F0D /* Pods_TeneasyChatSDKUI_iOS_Tests.framework */; };
+		0D98AC55F5247FE2CF6693A9 /* Pods_QL_Demo_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10A08C36CF57C0624EBD4267 /* Pods_QL_Demo_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		7B58720F403378CED5AAE7B0 /* Pods_QL_Demo_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 378A481A6DDA8D9F78CCAFEF /* Pods_QL_Demo_Example.framework */; };
 		C75EC1D82999485B00AB5A40 /* WKeFu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75EC1D72999485B00AB5A40 /* WKeFu.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,9 +29,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F0582917995D4BB70D72843 /* Pods-QL-Demo_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QL-Demo_Example.debug.xcconfig"; path = "Target Support Files/Pods-QL-Demo_Example/Pods-QL-Demo_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		10A08C36CF57C0624EBD4267 /* Pods_QL_Demo_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QL_Demo_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		10E331F6A7AB4F4FF5A3C49F /* Pods-QL-Demo_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QL-Demo_Tests.debug.xcconfig"; path = "Target Support Files/Pods-QL-Demo_Tests/Pods-QL-Demo_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		14E946F612D20825423A73EC /* Pods-QL-Demo_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QL-Demo_Example.release.xcconfig"; path = "Target Support Files/Pods-QL-Demo_Example/Pods-QL-Demo_Example.release.xcconfig"; sourceTree = "<group>"; };
 		1C51B42DDA894F128FB2FF5C /* Pods-TeneasyChatSDKUI_iOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeneasyChatSDKUI_iOS_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TeneasyChatSDKUI_iOS_Tests/Pods-TeneasyChatSDKUI_iOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1EBE6E19F0CC1705F5961114 /* Pods-TeneasyChatSDKUI_iOS_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeneasyChatSDKUI_iOS_Example.debug.xcconfig"; path = "Target Support Files/Pods-TeneasyChatSDKUI_iOS_Example/Pods-TeneasyChatSDKUI_iOS_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		3140FCEB50906BF227B146FD /* Pods-TeneasyChatSDKUI_iOS_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeneasyChatSDKUI_iOS_Example.release.xcconfig"; path = "Target Support Files/Pods-TeneasyChatSDKUI_iOS_Example/Pods-TeneasyChatSDKUI_iOS_Example.release.xcconfig"; sourceTree = "<group>"; };
+		378A481A6DDA8D9F78CCAFEF /* Pods_QL_Demo_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QL_Demo_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E36786ADFD9AE28152C8315 /* TeneasyChatSDKUI_iOS.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TeneasyChatSDKUI_iOS.podspec; path = ../TeneasyChatSDKUI_iOS.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		607FACD01AFB9204008FA782 /* QL-Demo_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QL-Demo_Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -43,12 +48,11 @@
 		607FACE51AFB9204008FA782 /* QL-Demo_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QL-Demo_Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		6A238F739E14F15ABA074D4C /* Pods_TeneasyChatSDKUI_iOS_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TeneasyChatSDKUI_iOS_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E11F599B1D88E45A8DB4F0D /* Pods_TeneasyChatSDKUI_iOS_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TeneasyChatSDKUI_iOS_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88B7A855298956BC004C9153 /* SVGKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SVGKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4738D87398DCC0B57F003F2 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C75EC1D72999485B00AB5A40 /* WKeFu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKeFu.swift; sourceTree = "<group>"; };
 		DC84161BEB3C207FBC7F93C5 /* Pods-TeneasyChatSDKUI_iOS_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeneasyChatSDKUI_iOS_Tests.release.xcconfig"; path = "Target Support Files/Pods-TeneasyChatSDKUI_iOS_Tests/Pods-TeneasyChatSDKUI_iOS_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		E1E55CC58C2281EE356F49A6 /* Pods-QL-Demo_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QL-Demo_Tests.release.xcconfig"; path = "Target Support Files/Pods-QL-Demo_Tests/Pods-QL-Demo_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FB494DFC836706F32AA07CA9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F7F4D8D731AFAC47242FF7E /* Pods_TeneasyChatSDKUI_iOS_Example.framework in Frameworks */,
+				7B58720F403378CED5AAE7B0 /* Pods_QL_Demo_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F0A64A7FF686F01878771DE /* Pods_TeneasyChatSDKUI_iOS_Tests.framework in Frameworks */,
+				0D98AC55F5247FE2CF6693A9 /* Pods_QL_Demo_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,8 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				88B7A855298956BC004C9153 /* SVGKit.framework */,
-				6A238F739E14F15ABA074D4C /* Pods_TeneasyChatSDKUI_iOS_Example.framework */,
-				6E11F599B1D88E45A8DB4F0D /* Pods_TeneasyChatSDKUI_iOS_Tests.framework */,
+				378A481A6DDA8D9F78CCAFEF /* Pods_QL_Demo_Example.framework */,
+				10A08C36CF57C0624EBD4267 /* Pods_QL_Demo_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -160,6 +164,10 @@
 				3140FCEB50906BF227B146FD /* Pods-TeneasyChatSDKUI_iOS_Example.release.xcconfig */,
 				1C51B42DDA894F128FB2FF5C /* Pods-TeneasyChatSDKUI_iOS_Tests.debug.xcconfig */,
 				DC84161BEB3C207FBC7F93C5 /* Pods-TeneasyChatSDKUI_iOS_Tests.release.xcconfig */,
+				0F0582917995D4BB70D72843 /* Pods-QL-Demo_Example.debug.xcconfig */,
+				14E946F612D20825423A73EC /* Pods-QL-Demo_Example.release.xcconfig */,
+				10E331F6A7AB4F4FF5A3C49F /* Pods-QL-Demo_Tests.debug.xcconfig */,
+				E1E55CC58C2281EE356F49A6 /* Pods-QL-Demo_Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -275,7 +283,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TeneasyChatSDKUI_iOS_Example/Pods-TeneasyChatSDKUI_iOS_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-QL-Demo_Example/Pods-QL-Demo_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/HandyJSON/HandyJSON.framework",
@@ -310,7 +318,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TeneasyChatSDKUI_iOS_Example/Pods-TeneasyChatSDKUI_iOS_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-QL-Demo_Example/Pods-QL-Demo_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		95B08210BEE3D26090C0FF88 /* [CP] Check Pods Manifest.lock */ = {
@@ -328,7 +336,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TeneasyChatSDKUI_iOS_Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-QL-Demo_Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -350,7 +358,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TeneasyChatSDKUI_iOS_Example-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-QL-Demo_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -509,7 +517,7 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EBE6E19F0CC1705F5961114 /* Pods-TeneasyChatSDKUI_iOS_Example.debug.xcconfig */;
+			baseConfigurationReference = 0F0582917995D4BB70D72843 /* Pods-QL-Demo_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = N32BWJ887Q;
@@ -526,7 +534,7 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3140FCEB50906BF227B146FD /* Pods-TeneasyChatSDKUI_iOS_Example.release.xcconfig */;
+			baseConfigurationReference = 14E946F612D20825423A73EC /* Pods-QL-Demo_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = N32BWJ887Q;
@@ -543,7 +551,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1C51B42DDA894F128FB2FF5C /* Pods-TeneasyChatSDKUI_iOS_Tests.debug.xcconfig */;
+			baseConfigurationReference = 10E331F6A7AB4F4FF5A3C49F /* Pods-QL-Demo_Tests.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				DEVELOPMENT_TEAM = 2384H4RDKS;
@@ -568,7 +576,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DC84161BEB3C207FBC7F93C5 /* Pods-TeneasyChatSDKUI_iOS_Tests.release.xcconfig */;
+			baseConfigurationReference = E1E55CC58C2281EE356F49A6 /* Pods-QL-Demo_Tests.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				DEVELOPMENT_TEAM = 2384H4RDKS;

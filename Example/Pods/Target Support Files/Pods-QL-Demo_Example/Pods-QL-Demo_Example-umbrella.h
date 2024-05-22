@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_TeneasyChatSDKUI_iOS_TestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_TeneasyChatSDKUI_iOS_TestsVersionString[];
+FOUNDATION_EXPORT double Pods_QL_Demo_ExampleVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_QL_Demo_ExampleVersionString[];
 
