@@ -136,12 +136,12 @@ class BWChatLeftCell: BWChatCell {
             make.left.equalToSuperview().offset(12)
             make.top.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
-            //make.height.equalTo(20)
+            make.height.equalTo(20)
         }
         self.titleLab.snp.makeConstraints { make in
             make.top.equalTo(self.timeLab.snp.bottom)
             make.left.equalToSuperview().offset(12)
-            //make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         self.imgView.snp.updateConstraints { make in
             make.left.equalToSuperview().offset(12)
