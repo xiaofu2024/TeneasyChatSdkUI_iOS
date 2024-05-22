@@ -176,7 +176,7 @@ open class KeFuViewController: UIViewController{
         tableView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalTo(self.headerView.snp.bottom)
-            make.bottom.equalTo(toolBar.snp.top)
+            make.bottom.equalTo(toolBar.snp.top).offset(-20)
         }
 
         headerView.addSubview(headerImg)
@@ -241,6 +241,7 @@ open class KeFuViewController: UIViewController{
         }
         datasouceArray.append(model)
         tableView.reloadData()
+        scrollToBottom()
     }
 
     public func showTipMsg(msg: String) {
