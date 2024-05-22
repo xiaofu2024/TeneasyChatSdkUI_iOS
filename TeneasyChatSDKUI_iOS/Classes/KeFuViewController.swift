@@ -84,6 +84,7 @@ open class KeFuViewController: UIViewController{
         view.separatorStyle = .none
         view.estimatedRowHeight = 50
         view.rowHeight = UITableView.automaticDimension
+        view.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 20, right: 0)
         return view
     }()
     
@@ -284,9 +285,8 @@ open class KeFuViewController: UIViewController{
         chatModel.sendStatus = .发送成功
         chatModel.cellType = .TYPE_QA
         datasouceArray.append(chatModel)
-        
-
         tableView.reloadData()
+        scrollToBottom()
     }
 
 
