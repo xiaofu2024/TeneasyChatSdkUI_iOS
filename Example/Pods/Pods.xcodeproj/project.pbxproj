@@ -807,7 +807,7 @@
 		DB3289095C460121E4A16F97D2A5A756 /* SVGKSourceLocalFile.h in Headers */ = {isa = PBXBuildFile; fileRef = F03A24B5245D26479F2E98ACC3CBCDA2 /* SVGKSourceLocalFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBC47B5C09C1B3718F0EF14108A564D6 /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBF73C15ADAD0C29A60478856906CB /* MathUtils.swift */; };
 		DBD8CAC6D6C91267F648D551A1895896 /* Google_Protobuf_Any+Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F50E83EDA847EC50B7FAD61315728DA /* Google_Protobuf_Any+Registry.swift */; };
-		DC77BB432BFF6A6500BA6FE4 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC77BB422BFF6A6400BA6FE4 /* Date+Extensions.swift */; };
+		DC77BB452BFF83F500BA6FE4 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC77BB442BFF83F500BA6FE4 /* Date+Extensions.swift */; };
 		DCD0C33A2B50811D53CF68F021284B47 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E31F44086845A3316CC13573664E7 /* DispatchQueue+Alamofire.swift */; };
 		DD58A00EACBEE274C381B491519C6B8C /* RedirectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A842EB94A1C0F987530747C0CC1E4D2 /* RedirectHandler.swift */; };
 		DD5A0862F01B8EE9589CC86C25CB9F85 /* SVGMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = DA640958EC0486B818A8C12A7A7F7B69 /* SVGMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2079,7 +2079,7 @@
 		DBD088F33D501802B25388E4ABF622E4 /* SVGDefsElement.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVGDefsElement.h; path = "Source/DOM classes/SVG-DOM/SVGDefsElement.h"; sourceTree = "<group>"; };
 		DC333E095E1F9684B5A26285F9C78F43 /* IQUIView+IQKeyboardToolbar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "IQUIView+IQKeyboardToolbar.swift"; path = "IQKeyboardManagerSwift/IQToolbar/IQUIView+IQKeyboardToolbar.swift"; sourceTree = "<group>"; };
 		DC632BDC6C2B9AD1FDC3E613DD74382D /* TeneasyChatSDKUI_iOS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TeneasyChatSDKUI_iOS; path = TeneasyChatSDKUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC77BB422BFF6A6400BA6FE4 /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Date+Extensions.swift"; path = "../../../../ios/qixin/Extension/Foundation/Date+Extensions.swift"; sourceTree = "<group>"; };
+		DC77BB442BFF83F500BA6FE4 /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		DCD8DB63F4EEB232524F6EE3DC5E9266 /* ConstraintDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDSL.swift; path = Source/ConstraintDSL.swift; sourceTree = "<group>"; };
 		DD7A93C30391CF409FCC2417BEAAA48A /* BWKeFuChatMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BWKeFuChatMenuView.swift; sourceTree = "<group>"; };
 		DD9D433F97722AFAF0261E2117EC4FA3 /* EntranceModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EntranceModel.swift; sourceTree = "<group>"; };
@@ -3491,7 +3491,7 @@
 		BB111637C4A0A78A7A025AFFF383CA6F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				DC77BB422BFF6A6400BA6FE4 /* Date+Extensions.swift */,
+				DC77BB442BFF83F500BA6FE4 /* Date+Extensions.swift */,
 				85413DE3182E191A7769D5D714424B0A /* BundleUtil.swift */,
 				CE18F85EC7915D7F2B9F6A5E07419909 /* BWLabel.swift */,
 				9DAB9C59E92FFA27676D58337F7C4DEC /* NetUtil.swift */,
@@ -5489,7 +5489,7 @@
 				B8E60EA45ECD5B354D852F21C75C6F4D /* NetUtil.swift in Sources */,
 				E6796E0B83A823EA3B55F332F5F9640F /* NetworkUtil.swift in Sources */,
 				22BA4C78E1268CEEF7E506D7A5086515 /* QuestionModel.swift in Sources */,
-				DC77BB432BFF6A6500BA6FE4 /* Date+Extensions.swift in Sources */,
+				DC77BB452BFF83F500BA6FE4 /* Date+Extensions.swift in Sources */,
 				7EE110BF7FCD908E95CF336EF1371918 /* QuestionViewController.swift in Sources */,
 				75C93406656EC05E616614316FEBCE85 /* SwiftPopMenu.swift in Sources */,
 				4C36173A2B53EEB7416E79749E141EF3 /* TeneasyChatSDKUI_iOS-dummy.m in Sources */,
