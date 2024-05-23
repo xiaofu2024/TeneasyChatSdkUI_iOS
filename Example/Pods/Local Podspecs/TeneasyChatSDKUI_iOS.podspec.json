@@ -58,6 +58,9 @@
     ],
     "SVProgressHUD": [
       "~> 2.2.5"
+    ],
+    "Toast-Swift": [
+      "~> 5.0.0"
     ]
   }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 import TeneasyChatSDK_iOS
-
+import Toast_Swift
 
 extension KeFuViewController: teneasySDKDelegate {
     
@@ -23,8 +23,9 @@ extension KeFuViewController: teneasySDKDelegate {
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg\(msg)")
         if msg.consultID != CONSULT_ID{
-            let msg = composeALocalTxtMessage(textMsg: "其他客服有新消息！")
-            appendDataSource(msg: msg, isLeft: false, cellType: .TYPE_Tip)
+           // let msg = composeALocalTxtMessage(textMsg: "其他客服有新消息！")
+           // appendDataSource(msg: msg, isLeft: false, cellType: .TYPE_Tip)
+            self.view.makeToast("其他客服有新消息！")
         }else{
             appendDataSource(msg: msg, isLeft: true)
         }

@@ -33,6 +33,8 @@ PODS:
     - SVProgressHUD (~> 2.2.5)
     - SwiftDate (~> 6.3.1)
     - TeneasyChatSDK_iOS
+    - Toast-Swift (~> 5.0.0)
+  - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
   - IQKeyboardManagerSwift (~> 6.5.9)
@@ -54,6 +56,7 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftDate
     - SwiftProtobuf
+    - Toast-Swift
 
 EXTERNAL SOURCES:
   TeneasyChatSDK_iOS:
@@ -80,7 +83,8 @@ SPEC CHECKSUMS:
   SwiftDate: 72d28954e8e1c6c1c0f917ccc8005e4f83c7d4b2
   SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
   TeneasyChatSDK_iOS: 218801d2dd85cc4f041cb998596f8c9a76efe868
-  TeneasyChatSDKUI_iOS: 2e83283b6f342fcf1da8f9bba1a9b678c996ad08
+  TeneasyChatSDKUI_iOS: 7fb30aa35c6794d733fc3b3c90027d29dce19c2c
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
 PODFILE CHECKSUM: 3d6b8b800b1f3f48df06a7874dbef3f504d05d10
 

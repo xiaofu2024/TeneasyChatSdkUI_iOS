@@ -71,6 +71,8 @@ func stringToDate(datStr: String, format: String) -> Date{
 }
 
 /*
+ 把注释那些加好，以后别人就照着demo对接
+ 
  bug list:
  3.demo ----浏览客服端发送的图片需要点击图片时 放大独立浏览图片
  */
