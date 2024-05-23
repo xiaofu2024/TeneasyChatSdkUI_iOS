@@ -40,7 +40,7 @@ class BWEntranceView: UIView {
         super.init(frame: frame)
 
         self.setupUI()
-        self.getEntrance()
+        //self.getEntrance()
     }
 
     @available(*, unavailable)

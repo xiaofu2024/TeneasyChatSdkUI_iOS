@@ -9,10 +9,14 @@ import Foundation
 import UIKit
 import TeneasyChatSDK_iOS
 
+
 open class QuestionViewController: UIViewController, LineDetectDelegate {
+
     public func useTheLine(line: String) {
         curLineLB.text = "当前线路：\(line)"
         domain = line;
+        
+        entranceView.getEntrance()
     }
     
     public func lineError(error: TeneasyChatSDK_iOS.Result) {
@@ -86,10 +90,14 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
     }
     @objc func settingClick() {
         let vc = BWSettingViewController()
+        vc.callBack = {
+            self.refresh()
+        }
         self.present(vc, animated: true)
     }
     
-    open override func viewWillAppear(_ animated: Bool) {
+    func refresh(){
+        curLineLB.text = "正在检测线路。。。。"
         lines = UserDefaults.standard.string(forKey: PARAM_LINES) ?? lines
         cert = UserDefaults.standard.string(forKey: PARAM_CERT) ?? cert
         let a_merchantId = UserDefaults.standard.integer(forKey: PARAM_MERCHANT_ID)
@@ -99,13 +107,17 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
         
         let a_userId = UserDefaults.standard.integer(forKey: PARAM_USER_ID)
         if a_userId > 0{
-            merchantId = a_userId
+            userId = Int32(a_userId)
         }
         
         xToken = UserDefaults.standard.string(forKey: PARAM_XTOKEN) ?? ""
         
         let lineLB = LineDetectLib(lines, delegate: self, tenantId: merchantId)
         lineLB.getLine()
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        refresh()
     }
     
     

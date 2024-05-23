@@ -7,6 +7,7 @@
 import SnapKit
 import UIKit
 
+typealias DissmissedCallback = () -> ()
 class BWSettingViewController: UIViewController {
     private let linesTextField = UITextView()
     private let certTextField = UITextView()
@@ -14,9 +15,18 @@ class BWSettingViewController: UIViewController {
     private let userIdTextField = UITextView()
     private let submitButton = UIButton(type: .system)
     
+    var callBack: DissmissedCallback?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if callBack != nil{
+            callBack!()
+        }
     }
     
     private func setupUI() {
@@ -93,6 +103,8 @@ class BWSettingViewController: UIViewController {
         UserDefaults.standard.set(cert, forKey: PARAM_CERT)
         UserDefaults.standard.set(merchantId, forKey: PARAM_MERCHANT_ID)
         UserDefaults.standard.set(userId, forKey: PARAM_USER_ID)
+        UserDefaults.standard.set("", forKey: PARAM_XTOKEN)
+        
         
         dismiss(animated: true)
 //        let alert = UIAlertController(title: "保存成功", message: "您的信息已保存。", preferredStyle: .alert)

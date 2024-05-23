@@ -108,7 +108,9 @@ extension KeFuViewController: teneasySDKDelegate {
          NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
              if success {
                  print("assign work 成功：\(model?.workerId ?? 0)")
-                 if !self!.isFirstLoad{
+                 
+                 let f = self?.isFirstLoad
+                 if f == false{
                      WWProgressHUD.dismiss()
                      return
                  }
