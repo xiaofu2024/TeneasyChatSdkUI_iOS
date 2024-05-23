@@ -27,7 +27,7 @@ class BWTipCell: UITableViewCell {
         if cell == nil {
             cell = Self(style: .default, reuseIdentifier: cellId)
         }
-        
+        cell?.backgroundColor = UIColor.red
         return cell as! Self
     }
     

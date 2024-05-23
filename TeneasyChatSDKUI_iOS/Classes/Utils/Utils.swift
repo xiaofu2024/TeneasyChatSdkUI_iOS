@@ -26,11 +26,10 @@ extension Date {
         }
         return formatter.string(from: self)
     }
-    
 
-        func currentTimeMillis() -> Int64 {
-            return Int64(self.timeIntervalSince1970 * 1000)
-        }
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
     
 }
 

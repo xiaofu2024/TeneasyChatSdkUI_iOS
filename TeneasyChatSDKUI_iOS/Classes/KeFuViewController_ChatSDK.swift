@@ -73,6 +73,14 @@ extension KeFuViewController: teneasySDKDelegate {
         //scrollToBottom()
     }
 
+
+    public func workChanged(msg: Gateway_SCWorkerChanged) {
+        consultId = msg.consultID
+        workerId = msg.workerID
+        print(msg.workerName)
+        updateWorker(workerName: msg.workerName, avatar: msg.workerAvatar)
+    }
+    
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
         print("systemMsg")
         print(result.Message)
@@ -89,15 +97,6 @@ extension KeFuViewController: teneasySDKDelegate {
              }
         }
     }
-
-
-    public func workChanged(msg: Gateway_SCWorkerChanged) {
-        consultId = msg.consultID
-        workerId = msg.workerID
-        print(msg.workerName)
-        updateWorker(workerName: msg.workerName, avatar: msg.workerAvatar)
-    }
-    
     
     public func connected(c: Gateway_SCHi) {
         xToken = c.token
@@ -114,23 +113,23 @@ extension KeFuViewController: teneasySDKDelegate {
                      WWProgressHUD.dismiss()
                      return
                  }
-           
                  self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
                  workerId = model?.workerId ?? 2
                
                  NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
                      //print(data)
-                     //构建本地消息
-                     self?.buildHistory(history:  data ?? HistoryModel())
+
+                         //构建历史消息
+                         self?.buildHistory(history:  data ?? HistoryModel())
+                     
                  }
-                 self!.isFirstLoad = false
              }
              WWProgressHUD.dismiss()
          }
     }
     
     //产生一个本地文本消息
-    func composeALocalTxtMessage(textMsg: String) -> CommonMessage {
+    func composeALocalTxtMessage(textMsg: String, timeInS: String? = nil) -> CommonMessage {
         // 第一层
         var content = CommonMessageContent()
         content.data = textMsg
@@ -142,13 +141,18 @@ extension KeFuViewController: teneasySDKDelegate {
         msg.chatID = 0
         msg.payload = .content(content)
         msg.worker = 0
-        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        if timeInS == nil{
+            msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        }else{
+           //2024-05-23T08:52:25.417927678Z
+            msg.msgTime.seconds = Int64(stringToDate(datStr: timeInS!, format: serverTimeFormat).timeIntervalSince1970)
+        }
         
         return msg
     }
     
     //产生一个本地图片消息
-    func composeALocalImgMessage(url: String) -> CommonMessage {
+    func composeALocalImgMessage(url: String, timeInS: String? = nil) -> CommonMessage {
         // 第一层
         var content = CommonMessageImage()
         content.uri = url
@@ -162,7 +166,12 @@ extension KeFuViewController: teneasySDKDelegate {
         msg.chatID = 0
         msg.payload = .image(content)
         msg.worker = 0
-        msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        if timeInS == nil{
+            msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        }else{
+           //2024-05-23T08:52:25.417927678Z
+            msg.msgTime.seconds = Int64(stringToDate(datStr: timeInS!, format: serverTimeFormat).timeIntervalSince1970)
+        }
         
         return msg
     }

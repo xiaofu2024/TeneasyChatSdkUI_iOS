@@ -241,12 +241,9 @@ open class KeFuViewController: UIViewController{
 */
     
     func buildHistory(history: HistoryModel){
-       // let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
         guard let historyList = history.list?.reversed() else { return } //获取自动回复后return
         print("获取历史记录")
             for item in historyList {
-                // Process each item here
-                // You can modify item if needed
                 var isLeft = true
                 if (item.sender == item.chatId){
                     isLeft = false
@@ -255,12 +252,18 @@ open class KeFuViewController: UIViewController{
                 let chatModel = ChatModel()
                 chatModel.isLeft = isLeft
                 chatModel.sendStatus = .发送成功
-                if item.msgFmt == "MSG_TEXT"{
-                    chatModel.message = composeALocalTxtMessage(textMsg: item.content?.data ?? "no txt")
-                }else if item.msgFmt == "MSG_IMG"{
-                    chatModel.message = composeALocalImgMessage(url: item.image?.uri ?? "")
+                if item.workerChanged != nil{
+                    chatModel.cellType = .TYPE_Tip
+                    chatModel.message = composeALocalTxtMessage(textMsg: item.workerChanged?.greeting ?? "no greeting", timeInS: item.msgTime)
+                    datasouceArray.append(chatModel)
                 }
-                datasouceArray.append(chatModel)
+                else if item.msgFmt == "MSG_TEXT"{
+                    chatModel.message = composeALocalTxtMessage(textMsg: item.content?.data ?? "no txt", timeInS: item.msgTime)
+                    datasouceArray.append(chatModel)
+                }else if item.msgFmt == "MSG_IMG"{
+                    chatModel.message = composeALocalImgMessage(url: item.image?.uri ?? "", timeInS: item.msgTime)
+                    datasouceArray.append(chatModel)
+                }
             }
         
         let chatModel = ChatModel()
@@ -279,10 +282,14 @@ open class KeFuViewController: UIViewController{
         let url = baseUrlImage + avatar
         print("avatar:" + url)
         self.headerImg.kf.setImage(with: URL(string: url))
-        
+
         if isFirstLoad{
-            let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
+            isFirstLoad = false
+            let greetingMsg = lib.composeALocalMessage(textMsg: "您好，\(workerName)为您服务！")
             appendDataSource(msg: greetingMsg, isLeft: true)
+        }else{
+            let greetingMsg = lib.composeALocalMessage(textMsg: "您好，\(workerName)为您服务！")
+            appendDataSource(msg: greetingMsg, isLeft: true, cellType: .TYPE_Tip)
         }
     }
     

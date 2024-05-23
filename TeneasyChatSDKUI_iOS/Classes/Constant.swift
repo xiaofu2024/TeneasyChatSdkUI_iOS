@@ -42,3 +42,35 @@ var baseUrlImage = "https://sssacc.wwc09.com" //用于拼接图片地址
 var workerId: Int32 = 2
 
 let PARAM_XTOKEN = "HTTPTOKEN"
+
+let serverTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"
+
+
+ func convertDateStringToString(datStr: String) -> String{
+    if let date = Date(fromString: datStr, format: "yyyy-MM-dd'T'HH:mm:ssZ") {
+        return date.toString(format: "yyyy-MM-dd HH:mm:ss")
+    }else{
+        return datStr
+    }
+}
+
+//yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'
+
+func stringToDate(datStr: String) -> Date{
+   if let date = Date(fromString: datStr, format: "yyyy-MM-dd'T'HH:mm:ssZ") {
+       return date
+   }
+    return Date()
+}
+
+func stringToDate(datStr: String, format: String) -> Date{
+   if let date = Date(fromString: datStr, format: format) {
+       return date
+   }
+    return Date()
+}
+
+/*
+ bug list:
+ 3.demo ----浏览客服端发送的图片需要点击图片时 放大独立浏览图片
+ */

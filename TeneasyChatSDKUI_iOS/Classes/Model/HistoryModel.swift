@@ -38,6 +38,7 @@ struct Message: HandyJSON {
     var content: MessageContent?
     var image: imgUri?
     var video: imgUri?
+    var workerChanged: AssignWorker?
 }
 
 struct MessageContent: HandyJSON {

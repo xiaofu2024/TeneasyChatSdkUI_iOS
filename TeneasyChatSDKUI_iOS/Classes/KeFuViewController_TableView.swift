@@ -82,7 +82,10 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         if model.cellType == CellType.TYPE_QA {
             return questionViewHeight
         }
-        if model.message?.image.uri.isEmpty == false {
+        else if model.cellType == .TYPE_Tip{
+            return 60.0
+        }
+        else if model.message?.image.uri.isEmpty == false {
             return 200.0
         }
         return UITableView.automaticDimension
