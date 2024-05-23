@@ -55,8 +55,12 @@ extension KeFuViewController: teneasySDKDelegate {
                 print(msg.msgID)
                 print("状态更新 -> 发送成功")
             }
-
-            tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: UITableView.RowAnimation.automatic)
+            
+            UIView.performWithoutAnimation {
+                let loc = tableView.contentOffset
+                tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: UITableView.RowAnimation.none)
+                tableView.contentOffset = loc
+            }
         }
 
         /*let arr = datasouceArray.filter { modal in modal.message.msgID == 0 && modal.isLeft == false }
@@ -65,7 +69,8 @@ extension KeFuViewController: teneasySDKDelegate {
             p.sendStatus = .发送失败
             tableView.reloadData()
         }*/
-        scrollToBottom()
+        //tableView.reloadData()
+        //scrollToBottom()
     }
 
     public func systemMsg(result: TeneasyChatSDK_iOS.Result) {
