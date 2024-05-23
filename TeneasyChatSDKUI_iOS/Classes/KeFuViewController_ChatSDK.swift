@@ -22,7 +22,12 @@ extension KeFuViewController: teneasySDKDelegate {
     
     public func receivedMsg(msg: TeneasyChatSDK_iOS.CommonMessage) {
         print("receivedMsg\(msg)")
-        appendDataSource(msg: msg, isLeft: true)
+        if msg.consultID != CONSULT_ID{
+            let msg = composeALocalTxtMessage(textMsg: "其他客服有新消息！")
+            appendDataSource(msg: msg, isLeft: false, cellType: .TYPE_Tip)
+        }else{
+            appendDataSource(msg: msg, isLeft: true)
+        }
     }
     
     public func msgDeleted(msg: TeneasyChatSDK_iOS.CommonMessage, payloadId: UInt64, errMsg: String?) {
@@ -83,7 +88,9 @@ extension KeFuViewController: teneasySDKDelegate {
 
     public func workChanged(msg: Gateway_SCWorkerChanged) {
         consultId = msg.consultID
+        workerId = msg.workerID
         print(msg.workerName)
+        updateWorker(workerName: msg.workerName, avatar: msg.workerAvatar)
     }
     
     
