@@ -45,17 +45,20 @@ class BWQuestionView: UIView {
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-5)
+            make.height.equalTo(25).priority(.low)
             make.top.equalToSuperview().offset(12)
         }
 
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom).offset(20)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(15)
             make.bottom.equalToSuperview().offset(8)
             make.left.equalToSuperview()
             make.width.equalTo(180)
         }
         tableView.reloadData()
+        
+        self.isHidden = true
     }
 
     var sectionList: [QA] = []
@@ -156,6 +159,7 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
 
             print("QA Cell Height:\(60.0 + sectionHeight + expandRowHeight)")
             heightCallback!(60.0 + sectionHeight + expandRowHeight)
+            self.isHidden = false
         }
         tableView.reloadData()
     }

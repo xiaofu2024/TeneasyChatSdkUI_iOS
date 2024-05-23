@@ -109,13 +109,6 @@ open class KeFuViewController: UIViewController{
         return bar
     }()
 
-//    lazy var questionView: BWQuestionView = {
-//        let view = BWQuestionView()
-//        view.backgroundColor = .white
-//        view.layer.cornerRadius = 8
-//        view.layer.masksToBounds = true
-//        return view
-//    }()
     var questionViewHeight: Double = 0
 
     var datasouceArray: [ChatModel] = []
@@ -239,19 +232,18 @@ open class KeFuViewController: UIViewController{
         scrollToBottom()
     }
 
-    public func showTipMsg(msg: String) {
+   /* public func showTipMsg(msg: String) {
         print("systemMsg")
         print(msg)
-        // self.timeLabel.text = Date().dataWithFormat(fmtString: "MM/dd/yyyy HH:mm:ss")
         timeLabel.text = WTimeConvertUtil.displayLocalTime(from: Date())
         systemMsgLabel.text = msg
     }
-
+*/
     
     func buildHistory(history: HistoryModel){
        // let greetingMsg = lib.composeALocalMessage(textMsg: "我是客服\(workerName)，请问需要什么帮助")
         guard let historyList = history.list?.reversed() else { return } //获取自动回复后return
-        
+        print("获取历史记录")
             for item in historyList {
                 // Process each item here
                 // You can modify item if needed

@@ -12,10 +12,10 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
                 cell.consultId = Int32(self.consultId)
                 cell.heightBlock = { [weak self] (height: Double) in
-                    self?.questionViewHeight = height + 130
-                    print("questionViewHeight:\(height + 130)")
+                    self?.questionViewHeight = height + 100
+                    print("questionViewHeight:\(height + 100)")
                     self?.tableView.reloadData()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         self?.scrollToBottom()
                     }
                 }
@@ -90,7 +90,9 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func scrollToBottom() {
         if datasouceArray.count > 1 {
-            tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
+            //tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
+            
+            tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
         }
     }
 }

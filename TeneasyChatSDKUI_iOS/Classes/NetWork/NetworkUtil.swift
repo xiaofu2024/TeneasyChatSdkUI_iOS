@@ -52,7 +52,7 @@ enum NetworkUtil {
                 case .success(let response):
                     print(response)
                     let dic = try? response.mapJSON() as? [String: Any]
-                    print(dic)
+                    //print(dic)
                     let result = BaseRequestResult<HistoryModel>.deserialize(from: dic)
 
                     if result?.code == 0 {
@@ -77,7 +77,7 @@ enum NetworkUtil {
                 case .success(let response):
                     print(response)
                     let dic = try? response.mapJSON() as? [String: Any]
-                    print(dic)
+                    //print(dic)
                     let result = BaseRequestResult<EntranceModel>.deserialize(from: dic)
 
                     if result?.code == 0 {
@@ -101,7 +101,7 @@ enum NetworkUtil {
                 case .success(let response):
                     print(response)
                     let dic = try? response.mapJSON() as? [String: Any]
-                    print(dic)
+                    //print(dic)
                     let result = BaseRequestResult<AssignWorker>.deserialize(from: dic)
                     if result?.code == 0 {
                         done(true, result?.data)
@@ -128,7 +128,7 @@ enum NetworkUtil {
                 case .success(let response):
                     print(response)
                     let dic = try? response.mapJSON() as? [String: Any]
-                    print(dic)
+                    //print(dic)
                     let result = BaseRequestResult<QuestionModel>.deserialize(from: dic)
 
                     if result?.code == 0 {
