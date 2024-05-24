@@ -25,6 +25,9 @@ class BWChatCell: UITableViewCell {
     
     lazy var imgView: UIImageView = {
         let v = UIImageView()
+        v.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapImg))
+        v.addGestureRecognizer(tapGesture)
         return v
     }()
 
@@ -36,6 +39,12 @@ class BWChatCell: UITableViewCell {
         lab.textInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         lab.preferredMaxLayoutWidth = kScreenWidth - 100
         return lab
+    }()
+    lazy var blackBackgroundView: UIView = {
+        let blackBackgroundView = UIView()
+        blackBackgroundView.backgroundColor = .black
+        blackBackgroundView.alpha = 0
+        return blackBackgroundView
     }()
     
     lazy var failedDotView: UIImageView = {
@@ -67,41 +76,41 @@ class BWChatCell: UITableViewCell {
             make.top.equalTo(self.timeLab.snp.bottom)
             make.height.equalTo(0)
         }
-        gesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureClick(tap:)))
-        self.contentView.addGestureRecognizer(gesture!)
+        self.gesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longGestureClick(tap:)))
+        self.contentView.addGestureRecognizer(self.gesture!)
     }
+
     @objc func longGestureClick(tap: UILongPressGestureRecognizer) {
-        longGestCallBack?(tap)
+        self.longGestCallBack?(tap)
     }
     
     var model: ChatModel? {
         didSet {
-            
-           guard let msg = model?.message else {
-                return;
+            guard let msg = model?.message else {
+                return
             }
             // 现在SDK并没有把时间传回来，所以暂时不用这样转换
          
             self.timeLab.text = WTimeConvertUtil.displayLocalTime(from: msg.msgTime.date)
        
-           if msg.image.uri.isEmpty == false {
-               let imgUrl = URL(string: "\(baseUrlImage)\(msg.image.uri)")
-               print(imgUrl?.absoluteString ?? "")
-               if imgUrl != nil {
-                   self.initImg(imgUrl: imgUrl!)
-               } else {
-                   self.initTitle()
-               }
-           } else {
-               self.initTitle()
-           }
-           if msg.content.data.contains("[emoticon_") == true {
-               let atttext = BEmotionHelper.shared.attributedStringByText(text: msg.content.data, font: self.titleLab.font)
-               self.titleLab.attributedText = atttext
-           } else {
-               self.titleLab.text = msg.content.data
-               print("message text:" + (msg.content.data))
-           }
+            if msg.image.uri.isEmpty == false {
+                let imgUrl = URL(string: "\(baseUrlImage)\(msg.image.uri)")
+                print(imgUrl?.absoluteString ?? "")
+                if imgUrl != nil {
+                    self.initImg(imgUrl: imgUrl!)
+                } else {
+                    self.initTitle()
+                }
+            } else {
+                self.initTitle()
+            }
+            if msg.content.data.contains("[emoticon_") == true {
+                let atttext = BEmotionHelper.shared.attributedStringByText(text: msg.content.data, font: self.titleLab.font)
+                self.titleLab.attributedText = atttext
+            } else {
+                self.titleLab.text = msg.content.data
+                print("message text:" + (msg.content.data))
+            }
         }
     }
     
@@ -124,6 +133,41 @@ class BWChatCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+
+    @objc func handleTapImg() {
+        if let window = UIApplication.shared.keyWindow {
+            window.addSubview(blackBackgroundView)
+            blackBackgroundView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+                
+            let imageView = UIImageView(image: self.imgView.image)
+            imageView.contentMode = .scaleAspectFit
+            imageView.isUserInteractionEnabled = true
+            window.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+                
+            UIView.animate(withDuration: 0.75, animations: {
+                self.blackBackgroundView.alpha = 1
+                
+            })
+                
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissFullscreenImage))
+            imageView.addGestureRecognizer(tapGesture)
+        }
+    }
+        
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.35, animations: {
+            self.blackBackgroundView.alpha = 0
+            sender.view?.alpha = 0
+        }, completion: { _ in
+            sender.view?.removeFromSuperview()
+            self.blackBackgroundView.removeFromSuperview()
+        })
     }
 }
 
@@ -190,9 +234,9 @@ class BWChatRightCell: BWChatCell {
         }
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.clickErrorIcon))
-        //tapGesture.cancelsTouchesInView = false
+        // tapGesture.cancelsTouchesInView = false
         self.loadingView.addGestureRecognizer(tapGesture)
-        self.loadingView.isUserInteractionEnabled =  true
+        self.loadingView.isUserInteractionEnabled = true
     }
 
     @objc func clickErrorIcon() {
