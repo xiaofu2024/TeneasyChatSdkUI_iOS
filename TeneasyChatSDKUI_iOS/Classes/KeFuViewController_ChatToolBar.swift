@@ -14,7 +14,7 @@ extension KeFuViewController: BWKeFuChatToolBarDelegate {
     func toolBar(toolBar: BWKeFuChatToolBar, didSelectedPhoto btn: UIButton) {
         if btn.titleLabel?.text == "发送" {
             sendMsg(textMsg: toolBar.textView.normalText())
-            
+            //sendMsg(textMsg: toolBar.textView.text)
         } else {
             // 选图片
             chooseImgFunc()

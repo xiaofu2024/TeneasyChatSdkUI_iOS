@@ -288,8 +288,8 @@ open class KeFuViewController: UIViewController{
         }
     }
     
-    
     func sendMsg(textMsg: String) {
+        print("sendMsg:\(textMsg)")
         if replyBar.superview != nil{
             if let msg = replyBar.msg{
                 lib.sendMessage(msg: textMsg + "\n回复：" + msg.content.data, type: .msgText, consultId: consultId, replyMsgId: msg.msgID)

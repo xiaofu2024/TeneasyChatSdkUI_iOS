@@ -50,7 +50,7 @@ extension ChatApi: TargetType {
              }
              */
         case .queryHistory(let consultId, let chatId, let count):
-            return .requestParameters(parameters: ["consultId": consultId, "chatId":chatId, "count": count], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["consultId": consultId, "chatId":chatId, "count": count, "userId": userId], encoding: JSONEncoding.default)
         case .queryAutoReplay(let consultId, let workerId):
             return .requestParameters(parameters: ["consultId": consultId, "workerId":workerId], encoding: JSONEncoding.default)
         case.assignWorker(let id):
