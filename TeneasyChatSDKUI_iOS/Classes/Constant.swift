@@ -70,6 +70,13 @@ func stringToDate(datStr: String, format: String) -> Date{
     return Date()
 }
 
+// Function to delay execution
+ func delayExecution(seconds: Double, completion: @escaping () -> Void) {
+     DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+         completion()
+     }
+ }
+
 /*
  把注释那些加好，以后别人就照着demo对接
  

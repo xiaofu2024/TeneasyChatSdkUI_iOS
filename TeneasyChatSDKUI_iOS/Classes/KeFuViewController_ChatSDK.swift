@@ -86,30 +86,30 @@ extension KeFuViewController: teneasySDKDelegate {
         print("systemMsg")
         print(result.Message)
          if(result.Code >= 1000 && result.Code <= 1010){
+             isConnected = false
              if result.Code == 1002 || result.Code == 1010{
                  //WWProgressHUD.showInfoMsg(result.Message)
                  //由于后端运信和起聊有冲突，所以这里错误码不一定对，不做任何处理
-                 stopTimer()
+                 //stopTimer()
                  //isConnected = false
                  //navigationController?.popToRootViewController(animated: true)
-             }else{
-                 
-                 isConnected = false
              }
         }
     }
     
     public func connected(c: Gateway_SCHi) {
         xToken = c.token
+        isConnected = true
         UserDefaults.standard.set(c.token, forKey: PARAM_XTOKEN)
-        // loadWorker(workerId: c.workerID)
-         WWProgressHUD.showLoading("连接中...")
-         print("token:\(xToken)assign work")
+        let f = self.isFirstLoad
+        if f == false{
+            WWProgressHUD.showLoading("连接中...")
+        }
+        
+         print("连接成功：token:\(xToken)assign work")
          NetworkUtil.assignWorker(consultId: CONSULT_ID) { [weak self]success, model in
              if success {
-                 print("assign work 成功：\(model?.workerId ?? 0)")
-                 
-                 let f = self?.isFirstLoad
+                 print("assign work 成功, Worker Id：\(model?.workerId ?? 0)")
                  if f == false{
                      WWProgressHUD.dismiss()
                      return
@@ -117,12 +117,9 @@ extension KeFuViewController: teneasySDKDelegate {
                  self?.updateWorker(workerName: model?.nick ?? "", avatar: model?.avatar ?? "")
                  workerId = model?.workerId ?? 2
                
-                 NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
-                     //print(data)
-
-                         //构建历史消息
-                         self?.buildHistory(history:  data ?? HistoryModel())
-                     
+               NetworkUtil.getHistory(consultId: CONSULT_ID) { success, data in
+                   //构建历史消息
+                   self?.buildHistory(history:  data ?? HistoryModel())
                  }
              }
              WWProgressHUD.dismiss()

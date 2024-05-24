@@ -117,7 +117,8 @@ open class KeFuViewController: UIViewController{
     var lib = ChatLib()
     var chooseImg: UIImage?
     internal var isFirstLoad = true
-    internal var isConnected = false
+    var isConnected: Bool = false
+    //static var sharedData: String = "Initial Value"
     private var myTimer: Timer?
 
     override open func viewDidLoad() {
@@ -134,7 +135,7 @@ open class KeFuViewController: UIViewController{
         navigationItem.leftBarButtonItem = leftBarItem
         // self.navigationItem.setHidesBackButton(true, animated: false)
 //
-        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(quit))
+        let rightBarItem = UIBarButtonItem(title: "退出", style: .done, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem = rightBarItem
     }
 
@@ -142,14 +143,8 @@ open class KeFuViewController: UIViewController{
         dismiss(animated: true)
     }
 
-    override open func viewDidDisappear(_ animated: Bool) {
-//        lib.disConnect()
-        
-    }
-
-    @objc func quit() {
-        lib.disConnect()
-        lib.delegate = nil
+    @objc func goBack() {
+        quitChat()
         navigationController?.popToRootViewController(animated: true)
     }
 
@@ -319,12 +314,12 @@ open class KeFuViewController: UIViewController{
     }
     
    @objc func checkSDK(){
+       print("sdk status:\(isConnected)")
        if !isConnected{
            initSDK(baseUrl: domain)
        }
     }
 
-    
     //定时检查SDK连接状态
     @objc func startTimer() {
        stopTimer()
@@ -341,8 +336,23 @@ open class KeFuViewController: UIViewController{
     
     open override func viewWillAppear(_ animated: Bool) {
         if isFirstLoad{
-            perform(#selector(startTimer), with: nil, afterDelay: 3)
+            print("开始定时检查")
+            delayExecution(seconds: 5) {
+                self.checkSDK()
+            }
         }
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        quitChat()
+    }
+    
+    func quitChat(){
+        stopTimer()
+        workerId = 0
+        isConnected = false
+        lib.disConnect()
+        lib.delegate = nil
     }
     
     func upload(imgData: Data) {
