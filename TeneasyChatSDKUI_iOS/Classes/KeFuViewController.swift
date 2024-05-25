@@ -343,10 +343,6 @@ open class KeFuViewController: UIViewController{
         }
     }
     
-    open override func viewWillDisappear(_ animated: Bool) {
-        quitChat()
-    }
-    
     func quitChat(){
         stopTimer()
         workerId = 0
