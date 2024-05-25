@@ -18,6 +18,8 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
         controller.sourceType = source
         controller.allowsEditing = false
         controller.modalPresentationStyle = .fullScreen
+        //controller.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
+        //controller.mediaTypes = ["public.movie"]
         present(controller, animated: true)
     }
 
