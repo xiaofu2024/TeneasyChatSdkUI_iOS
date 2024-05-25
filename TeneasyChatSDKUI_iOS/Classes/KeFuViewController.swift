@@ -336,8 +336,8 @@ open class KeFuViewController: UIViewController{
     
     open override func viewWillAppear(_ animated: Bool) {
         if isFirstLoad{
-            print("开始定时检查")
             delayExecution(seconds: 5) {
+                print("开始定时检查")
                 self.checkSDK()
             }
         }
@@ -354,6 +354,23 @@ open class KeFuViewController: UIViewController{
         lib.disConnect()
         lib.delegate = nil
     }
+    
+    /**
+     * 上传图片。上传成功后，会直接调用socket进行消息发送。
+     *  @param filePath
+     *  // 文件类型类型 0 ～ 4
+     * enum AssetKind {
+     *   ASSET_KIND_NONE = 0;
+     *   // 商户公共文件
+     *   ASSET_KIND_PUBLIC = 1;
+     *   // 商户私有文件
+     *   ASSET_KIND_PRIVATE = 2;
+     *   // 头像
+     *   ASSET_KIND_AVATAR = 3;
+     *   // 会话私有文件
+     *   ASSET_KIND_SESSION = 4;
+     * }
+     */
     
     func upload(imgData: Data) {
         // Set Your URL
@@ -376,7 +393,7 @@ open class KeFuViewController: UIViewController{
         
         // Set Your Parameter
         let parameterDict = NSMutableDictionary()
-        parameterDict.setValue(1, forKey: "type")
+        parameterDict.setValue(4, forKey: "type")
         // parameterDict.setValue("phot.png", forKey: "myFile")
         
         // Now Execute

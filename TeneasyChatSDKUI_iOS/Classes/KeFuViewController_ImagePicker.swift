@@ -29,9 +29,9 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
         guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
         let tt = imgData.count
         print("图片大小：\(tt)")
-        if tt > 2048000 {
-            print("图片不能超过2M")
-            let alertVC = UIAlertController(title: "提示", message: "图片不能超过2M", preferredStyle: .alert)
+        if tt > 8048000 {
+            print("图片不能超过8M")
+            let alertVC = UIAlertController(title: "提示", message: "图片不能超过8M", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "取消", style: .default, handler: { _ in
                 picker.dismiss(animated: true)
             })
