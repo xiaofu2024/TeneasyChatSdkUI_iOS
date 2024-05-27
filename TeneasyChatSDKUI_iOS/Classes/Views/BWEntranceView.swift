@@ -115,5 +115,10 @@ extension BWEntranceView: UITableViewDelegate, UITableViewDataSource {
         let id = list[indexPath.row].consultId ?? 0
         CONSULT_ID = id
         self.cellClick!(id)
+        if ((list[indexPath.row].unread ?? 0) > 0) {
+            NetworkUtil.markRead(consultId: id) { success, data in
+                
+            }
+        }
     }
 }

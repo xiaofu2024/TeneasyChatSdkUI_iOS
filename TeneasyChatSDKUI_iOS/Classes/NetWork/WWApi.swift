@@ -7,6 +7,7 @@ enum ChatApi {
     case queryAutoReplay(consultId: Int32 = 0, workerId: Int32 = 0)
     case queryEntrance
     case assignWorker(consultId: Int32 = 0)
+    case markRead(consultId: Int32 = 0)
 }
 
 /// 实现TargetType协议
@@ -27,6 +28,8 @@ extension ChatApi: TargetType {
             return "/v1/api/query-entrance"
         case .assignWorker:
             return "/v1/api/assign-worker"
+        case .markRead:
+            return "/v1/api/chat/mark-read"
         }
     }
     
@@ -42,18 +45,20 @@ extension ChatApi: TargetType {
     
     var task: Task {
         switch self {
-            /*
-             {
-                 "chatId":"0",
-               "count": 50,
-               "consultId": 1
-             }
-             */
+        /*
+         {
+             "chatId":"0",
+           "count": 50,
+           "consultId": 1
+         }
+         */
         case .queryHistory(let consultId, let chatId, let count):
-            return .requestParameters(parameters: ["consultId": consultId, "chatId":chatId, "count": count, "userId": userId], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["consultId": consultId, "chatId": chatId, "count": count, "userId": userId], encoding: JSONEncoding.default)
         case .queryAutoReplay(let consultId, let workerId):
-            return .requestParameters(parameters: ["consultId": consultId, "workerId":workerId], encoding: JSONEncoding.default)
-        case.assignWorker(let id):
+            return .requestParameters(parameters: ["consultId": consultId, "workerId": workerId], encoding: JSONEncoding.default)
+        case .assignWorker(let id):
+            return .requestParameters(parameters: ["consultId": id], encoding: JSONEncoding.default)
+        case .markRead(let id):
             return .requestParameters(parameters: ["consultId": id], encoding: JSONEncoding.default)
         case .queryEntrance:
             return .requestParameters(parameters: [:], encoding: JSONEncoding.default)

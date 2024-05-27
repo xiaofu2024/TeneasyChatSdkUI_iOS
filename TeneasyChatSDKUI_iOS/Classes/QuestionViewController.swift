@@ -75,6 +75,7 @@ open class QuestionViewController: UIViewController, LineDetectDelegate {
         entranceView.callBack = { (dataCount: Int) in
         }
         entranceView.cellClick = {[weak self] (consultID: Int32) in
+            
             let vc = KeFuViewController()
             vc.consultId = Int64(consultID)
             vc.modalPresentationStyle = .fullScreen
