@@ -140,6 +140,7 @@ open class KeFuViewController: UIViewController{
     }
 
     @objc func closeClick() {
+        quitChat()
         dismiss(animated: true)
     }
 

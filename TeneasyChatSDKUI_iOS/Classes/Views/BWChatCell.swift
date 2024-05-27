@@ -97,7 +97,7 @@ class BWChatCell: UITableViewCell {
         self.contentView.addGestureRecognizer(self.gesture!)
         
         self.contentView.addSubview(self.playBtn)
-        self.playBtn.isHidden = true
+        //self.playBtn.isHidden = true
         self.playBtn.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
@@ -188,6 +188,7 @@ class BWChatCell: UITableViewCell {
         self.player = AVPlayer(url: videoUrl)
         self.playerLayer?.player = self.player
         self.playBtn.isHidden = false
+        self.bringSubviewToFront(self.playBtn)
     }
 
     func initTitle() {
