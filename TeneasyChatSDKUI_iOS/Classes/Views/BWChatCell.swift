@@ -6,6 +6,7 @@
 //  Copyright © 2023 CocoaPods. All rights reserved.
 //
 
+import AVFoundation
 import Kingfisher
 import UIKit
 
@@ -40,6 +41,7 @@ class BWChatCell: UITableViewCell {
         lab.preferredMaxLayoutWidth = kScreenWidth - 100
         return lab
     }()
+
     lazy var blackBackgroundView: UIView = {
         let blackBackgroundView = UIView()
         blackBackgroundView.backgroundColor = .black
@@ -51,6 +53,16 @@ class BWChatCell: UITableViewCell {
         let v = UIImageView()
         return v
     }()
+
+    lazy var playBtn: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("play", for: UIControl.State.normal)
+        btn.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        return btn
+    }()
+    
+    private var player: AVPlayer?
+    private var playerLayer: AVPlayerLayer?
     
     static func cell(tableView: UITableView) -> Self {
         let cellId = "\(Self.self)"
@@ -60,6 +72,11 @@ class BWChatCell: UITableViewCell {
         }
         
         return cell as! Self
+    }
+    
+    @objc private func playButtonTapped() {
+        self.playBtn.isHidden = true
+        self.player?.play()
     }
     
     override required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -78,6 +95,13 @@ class BWChatCell: UITableViewCell {
         }
         self.gesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longGestureClick(tap:)))
         self.contentView.addGestureRecognizer(self.gesture!)
+        
+        self.contentView.addSubview(self.playBtn)
+        self.playBtn.isHidden = true
+        self.playBtn.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        self.setupPlayerLayer()
     }
 
     @objc func longGestureClick(tap: UILongPressGestureRecognizer) {
@@ -101,6 +125,14 @@ class BWChatCell: UITableViewCell {
                 } else {
                     self.initTitle()
                 }
+            } else if msg.video.uri.isEmpty == false {
+                let videoUrl = URL(string: "\(baseUrlImage)\(msg.video.uri)")
+                print(videoUrl?.absoluteString ?? "")
+                if videoUrl != nil {
+                    self.initVideo(videoUrl: videoUrl!)
+                } else {
+                    self.initTitle()
+                }
             } else {
                 self.initTitle()
             }
@@ -109,9 +141,28 @@ class BWChatCell: UITableViewCell {
                 self.titleLab.attributedText = atttext
             } else {
                 self.titleLab.text = msg.content.data
-                //print("message text:" + (msg.content.data))
+                // print("message text:" + (msg.content.data))
             }
         }
+    }
+    
+    private func setupPlayerLayer() {
+        playerLayer = AVPlayerLayer()
+        playerLayer?.videoGravity = .resizeAspect
+        if let playerLayer = playerLayer {
+            contentView.layer.addSublayer(playerLayer)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.playerLayer?.frame = contentView.bounds
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.player?.pause()
+        self.playerLayer?.player = nil
     }
     
     func initImg(imgUrl: URL) {
@@ -121,6 +172,22 @@ class BWChatCell: UITableViewCell {
         self.imgView.kf.setImage(with: imgUrl)
         self.titleLab.isHidden = true
         self.imgView.isHidden = false
+        self.playerLayer?.isHidden = true
+        self.player?.pause()
+        self.playerLayer?.player = nil
+        self.playBtn.isHidden = true
+    }
+
+    func initVideo(videoUrl: URL) {
+        self.imgView.snp.updateConstraints { make in
+            make.height.equalTo(0)
+        }
+        self.titleLab.isHidden = true
+        self.imgView.isHidden = true
+        self.playerLayer?.isHidden = false
+        self.player = AVPlayer(url: videoUrl)
+        self.playerLayer?.player = self.player
+        self.playBtn.isHidden = false
     }
 
     func initTitle() {
@@ -129,6 +196,10 @@ class BWChatCell: UITableViewCell {
         }
         self.titleLab.isHidden = false
         self.imgView.isHidden = true
+        self.playerLayer?.isHidden = true
+        self.player?.pause()
+        self.playerLayer?.player = nil
+        self.playBtn.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -137,8 +208,8 @@ class BWChatCell: UITableViewCell {
 
     @objc func handleTapImg() {
         if let window = UIApplication.shared.keyWindow {
-            window.addSubview(blackBackgroundView)
-            blackBackgroundView.snp.makeConstraints { make in
+            window.addSubview(self.blackBackgroundView)
+            self.blackBackgroundView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
                 
