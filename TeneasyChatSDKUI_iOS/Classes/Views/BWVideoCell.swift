@@ -80,13 +80,13 @@ class BWVideoCell: UITableViewCell {
         playerLayer = AVPlayerLayer()
         playerLayer?.videoGravity = .resizeAspect
         if let playerLayer = playerLayer {
-            contentView.layer.addSublayer(playerLayer)
+            self.videoBackgroundView.layer.addSublayer(playerLayer)
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.playerLayer?.frame = contentView.bounds
+        self.playerLayer?.frame = self.videoBackgroundView.bounds
     }
 
     override func prepareForReuse() {
