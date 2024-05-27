@@ -81,7 +81,6 @@ extension BWQuestionView: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = BWQuestionCell.cell(tableView: tableView)
-        
         cell.titleLab.text = sectionList[indexPath.section].related?[indexPath.row].question?.content?.data
         cell.titleLab.textColor = UIColor.brown
         cell.titleLab.font = UIFont.systemFont(ofSize: 14)

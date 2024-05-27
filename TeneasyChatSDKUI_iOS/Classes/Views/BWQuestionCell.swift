@@ -23,6 +23,13 @@ class BWQuestionCell: UITableViewCell {
         return v
     }()
     
+    lazy var dotView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 6
+        view.backgroundColor = .red
+        return view
+    }()
+    
     static func cell(tableView: UITableView) -> Self {
         let cellId = "\(Self.self)"
         var cell = tableView.dequeueReusableCell(withIdentifier: cellId)
@@ -40,6 +47,7 @@ class BWQuestionCell: UITableViewCell {
                 
         self.contentView.addSubview(self.titleLab)
         self.contentView.addSubview(self.imgView)
+        self.contentView.addSubview(self.dotView)
         self.titleLab.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(30)
@@ -49,6 +57,12 @@ class BWQuestionCell: UITableViewCell {
             make.width.height.equalTo(20)
             make.centerY.equalToSuperview()
         }
+        self.dotView.snp.makeConstraints { make in
+            make.left.equalTo(self.titleLab.snp.right)
+            make.top.equalToSuperview().offset(7)
+            make.width.height.equalTo(12)
+        }
+        self.dotView.isHidden = true
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)

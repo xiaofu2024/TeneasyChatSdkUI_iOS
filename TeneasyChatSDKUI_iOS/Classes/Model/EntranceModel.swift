@@ -16,6 +16,7 @@ class EntranceModel: HandyJSON {
     var defaultConsultId: Int?
     var changeDefaultTime: String?
     var consults: [Consult]?
+    var unread: Int?
 
     required init(){}
 }
