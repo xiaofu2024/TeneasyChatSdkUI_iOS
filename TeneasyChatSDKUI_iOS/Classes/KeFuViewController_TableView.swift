@@ -2,12 +2,21 @@
 extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = datasouceArray[indexPath.row]
-        if model.cellType == .TYPE_Tip{
+        if model.cellType == .TYPE_Tip {
             let cell = BWTipCell()
             cell.model = model
             return cell
-        }
-        else if model.isLeft {
+        } else if model.cellType == .TYPE_VIDEO {
+            if model.isLeft {
+                let cell = BWVideoLeftCell.cell(tableView: tableView)
+                cell.model = model
+                return cell
+            } else {
+                let cell = BWVideoRightCell.cell(tableView: tableView)
+                cell.model = model
+                return cell
+            }
+        } else if model.isLeft {
             if model.cellType == CellType.TYPE_QA {
                 let cell = BWChatQuestionCell.cell(tableView: tableView)
                 cell.consultId = Int32(self.consultId)
@@ -21,23 +30,23 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 cell.model = model
                 cell.qaClickBlock = { [weak self] (model: QA) in
-                    
+
                     let questionTxt = model.question?.content?.data ?? ""
-                    let txtAnswer =  model.content ?? ""
+                    let txtAnswer = model.content ?? ""
                     let multipAnswer = model.answer ?? []
-                    let q =  self?.composeALocalTxtMessage(textMsg: questionTxt)
+                    let q = self?.composeALocalTxtMessage(textMsg: questionTxt)
                     self?.appendDataSource(msg: q!, isLeft: false, status: .发送成功)
-                    
-                    if (!txtAnswer.isEmpty){
+
+                    if !txtAnswer.isEmpty {
                         let a = self?.composeALocalTxtMessage(textMsg: txtAnswer)
                         self?.appendDataSource(msg: a!, isLeft: true, status: .发送成功)
                     }
-                    
-                    for answer in multipAnswer{
-                        if answer.image != nil{
+
+                    for answer in multipAnswer {
+                        if answer.image != nil {
                             let a = self?.composeALocalImgMessage(url: answer.image?.uri ?? "")
                             self?.appendDataSource(msg: a!, isLeft: true, status: .发送成功, cellType: .TYPE_Image)
-                        }else if answer.content != nil{
+                        } else if answer.content != nil {
                             let a = self?.composeALocalTxtMessage(textMsg: answer.content?.data ?? "empty")
                             self?.appendDataSource(msg: a!, isLeft: true, status: .发送成功)
                         }
@@ -48,7 +57,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
             }
             let cell = BWChatLeftCell.cell(tableView: tableView)
             cell.model = model
-            cell.longGestCallBack = {[weak self] gesure in
+            cell.longGestCallBack = { [weak self] gesure in
                 if gesure.state == .began {
                     self?.showMenu(gesure, model: model, indexPath: indexPath)
                 }
@@ -61,7 +70,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
             self?.datasouceArray[indexPath.row].sendStatus = .发送中
             self?.lib.resendMsg(msg: model.message!, payloadId: model.payLoadId)
         }
-        cell.longGestCallBack = {[weak self] gesure in
+        cell.longGestCallBack = { [weak self] gesure in
             if gesure.state == .began {
                 self?.showMenu(gesure, model: model, indexPath: indexPath)
             }
@@ -81,31 +90,29 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         let model = datasouceArray[indexPath.row]
         if model.cellType == CellType.TYPE_QA {
             return questionViewHeight
-        }
-        else if model.cellType == .TYPE_Tip{
+        } else if model.cellType == .TYPE_Tip {
             return 60.0
-        }
-        else if model.message?.image.uri.isEmpty == false {
+        } else if model.message?.image.uri.isEmpty == false {
             return 200.0
-        }
-        else if model.message?.video.uri.isEmpty == false {
+        } else if model.cellType == .TYPE_VIDEO {
             return 180.0
         }
         return UITableView.automaticDimension
     }
-    
+
     func scrollToBottom() {
         if datasouceArray.count > 1 {
-            //tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
-            
-            tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+            // tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.none, animated: true)
+
+            self.tableView.scrollToRow(at: IndexPath(row: datasouceArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
         }
     }
 }
+
 extension KeFuViewController {
     func showMenu(_ guesture: UILongPressGestureRecognizer, model: ChatModel?, indexPath: IndexPath) {
         toolBar.resetStatus()
-        if popMenu != nil || model?.message == nil{
+        if popMenu != nil || model?.message == nil {
             popMenu?.dismiss()
         }
         let msgText = model?.message?.content.data ?? ""
@@ -129,15 +136,15 @@ extension KeFuViewController {
         pointY = point.y + msgText.textHeight(fontSize: 15, width: kScreenWidth - 100) - point_superview.y + 30
         point.y = pointY
         var upDown = 1
-        if (model?.isLeft ?? true) {
+        if model?.isLeft ?? true {
             point.x = 60 + 30
         } else {
             point.x = kScreenWidth - 100
-            if (textWidth < 100) {
+            if textWidth < 100 {
                 upDown = 2 // 无箭头
             }
         }
-        
+
         popMenu = SwiftPopMenu(menuWidth: popMenuW, arrow: point, datas: popData, configures: parameters, upDown: upDown)
         popMenu?.didSelectMenuBlock = { [weak self] (_: Int, name) in
             switch name {
