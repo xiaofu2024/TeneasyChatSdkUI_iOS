@@ -95,7 +95,7 @@ extension KeFuViewController: UITableViewDelegate, UITableViewDataSource {
         } else if model.message?.image.uri.isEmpty == false {
             return 200.0
         } else if model.cellType == .TYPE_VIDEO {
-            return 180.0
+            return 230
         }
         return UITableView.automaticDimension
     }

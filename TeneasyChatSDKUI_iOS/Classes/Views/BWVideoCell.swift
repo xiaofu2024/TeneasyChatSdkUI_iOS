@@ -25,7 +25,9 @@ class BWVideoCell: UITableViewCell {
 
     lazy var playBtn: UIButton = {
         let btn = UIButton()
-        btn.setTitle("play", for: UIControl.State.normal)
+        //btn.setImage(UIImage(named: "playvideo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
+        btn.setBackgroundImage(UIImage(named: "playvideo", in: BundleUtil.getCurrentBundle(), compatibleWith: nil), for: .normal)
+        //btn.setTitle("play", for: UIControl.State.normal)
         btn.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         return btn
     }()
@@ -58,6 +60,8 @@ class BWVideoCell: UITableViewCell {
         self.videoBackgroundView.addSubview(self.playBtn)
         self.playBtn.snp.makeConstraints { make in
             make.center.equalToSuperview()
+            make.width.equalTo(60)
+            make.height.equalTo(60)
         }
         self.setupPlayerLayer()
     }
@@ -82,6 +86,8 @@ class BWVideoCell: UITableViewCell {
         if let playerLayer = playerLayer {
             self.videoBackgroundView.layer.addSublayer(playerLayer)
         }
+     
+        self.videoBackgroundView.bringSubviewToFront(self.playBtn)
     }
     
     override func layoutSubviews() {
@@ -118,9 +124,9 @@ class BWVideoLeftCell: BWVideoCell {
             make.height.equalTo(20)
         }
         self.videoBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(self.timeLab.snp.bottom)
+            make.top.equalTo(self.timeLab.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(12)
-            make.width.equalTo(140)
+            make.width.equalTo(220)
             make.height.equalTo(160)
         }
     }
@@ -142,7 +148,7 @@ class BWVideoRightCell: BWVideoCell {
         self.videoBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(self.timeLab.snp.bottom)
             make.right.equalToSuperview().offset(-12)
-            make.width.equalTo(140)
+            make.width.equalTo(220)
             make.height.equalTo(160)
         }
     }
