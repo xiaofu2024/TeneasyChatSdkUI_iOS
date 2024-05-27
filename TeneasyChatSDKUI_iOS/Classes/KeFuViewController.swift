@@ -321,7 +321,7 @@ open class KeFuViewController: UIViewController{
     func sendVideo(url: String) {
         lib.sendMessage(msg: url, type: .msgVideo, consultId: consultId)
         if let cMsg = lib.sendingMsg {
-            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId, cellType: .TYPE_VIDEO)
         }
     }
     

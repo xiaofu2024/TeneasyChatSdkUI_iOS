@@ -27,7 +27,11 @@ extension KeFuViewController: teneasySDKDelegate {
            // appendDataSource(msg: msg, isLeft: false, cellType: .TYPE_Tip)
             self.view.makeToast("其他客服有新消息！")
         }else{
-            appendDataSource(msg: msg, isLeft: true)
+            if !msg.video.uri.isEmpty {
+                appendDataSource(msg: msg, isLeft: true, cellType: .TYPE_VIDEO)
+            }else{
+                appendDataSource(msg: msg, isLeft: true)
+            }
         }
     }
     
