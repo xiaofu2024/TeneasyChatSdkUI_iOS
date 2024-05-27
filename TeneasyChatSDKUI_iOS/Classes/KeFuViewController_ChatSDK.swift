@@ -173,4 +173,29 @@ extension KeFuViewController: teneasySDKDelegate {
         
         return msg
     }
+    
+    //产生一个本地图片消息
+    func composeALocalVideoMessage(url: String, timeInS: String? = nil) -> CommonMessage {
+        // 第一层
+        var content = CommonMessageVideo()
+        content.uri = url
+        
+        // 第二层, 消息主题
+        var msg = CommonMessage()
+        msg.consultID = self.consultId
+        msg.video = content
+        msg.sender = 0
+
+        msg.chatID = 0
+        msg.payload = .video(content)
+        msg.worker = 0
+        if timeInS == nil{
+            msg.msgTime.seconds = Int64(Date().timeIntervalSince1970)
+        }else{
+           //2024-05-23T08:52:25.417927678Z
+            msg.msgTime.seconds = Int64(stringToDate(datStr: timeInS!, format: serverTimeFormat).timeIntervalSince1970)
+        }
+        
+        return msg
+    }
 }

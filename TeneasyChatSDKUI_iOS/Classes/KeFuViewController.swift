@@ -140,6 +140,7 @@ open class KeFuViewController: UIViewController{
     }
 
     @objc func closeClick() {
+        quitChat()
         dismiss(animated: true)
     }
 
@@ -258,6 +259,10 @@ open class KeFuViewController: UIViewController{
                 }else if item.msgFmt == "MSG_IMG"{
                     chatModel.message = composeALocalImgMessage(url: item.image?.uri ?? "", timeInS: item.msgTime)
                     datasouceArray.append(chatModel)
+                }else if item.msgFmt == "MSG_VIDEO"{
+                    chatModel.cellType = .TYPE_VIDEO
+                    chatModel.message = composeALocalVideoMessage(url: item.video?.uri ?? "", timeInS: item.msgTime)
+                    datasouceArray.append(chatModel)
                 }
             }
         
@@ -309,6 +314,13 @@ open class KeFuViewController: UIViewController{
         if let cMsg = lib.sendingMsg {
 //                print(WTimeConvertUtil.displayLocalTime(from: Double(cMsg.msgTime.seconds)))
 //                print(WTimeConvertUtil.displayLocalTime(from: cMsg.msgTime.date))
+            appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
+        }
+    }
+    
+    func sendVideo(url: String) {
+        lib.sendMessage(msg: url, type: .msgVideo, consultId: consultId)
+        if let cMsg = lib.sendingMsg {
             appendDataSource(msg: cMsg, isLeft: false, payLoadId: lib.payloadId)
         }
     }
@@ -419,9 +431,15 @@ open class KeFuViewController: UIViewController{
                 if let filePath = data.data {
                     let path = String(data: filePath, encoding: String.Encoding.utf8)
                     //let imgUrl = baseUrlImage + (path ?? "")
-                    let imgUrl = (path ?? "")
-                    print(imgUrl)
-                    self.sendImage(url: imgUrl)
+                    let filePath = (path ?? "")
+                    if filePath.contains(".png") || filePath.contains(".jpg"){
+                        self.sendImage(url: path ?? "")
+                    }else{
+                        self.sendVideo(url: path ?? "")
+                    }
+                   
+                    print(filePath)
+                   
                 } else {
                     print("图片上传失败：")
                 }

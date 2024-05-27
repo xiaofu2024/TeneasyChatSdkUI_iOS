@@ -16,7 +16,7 @@ let PARAM_LINES = "LINES"
 var lines = "https://csapi.xdev.stream,https://wcsapi.qixin14.xyz,https://wcsapi.qixin14.xyz"
 var cert = "COYBEAUYASDyASiG2piD9zE.te46qua5ha2r-Caz03Vx2JXH5OLSRRV2GqdYcn9UslwibsxBSP98GhUKSGEI0Z84FRMkp16ZK8eS-y72QVE2AQ"
 var merchantId: Int = 230
-var userId: Int32 = 1125324
+var userId: Int32 = 666663//1125324
  
 
 
