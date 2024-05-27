@@ -34,6 +34,7 @@ class BWVideoCell: UITableViewCell {
     
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
+    var playerItem: AVPlayerItem?
     
     static func cell(tableView: UITableView) -> Self {
         let cellId = "\(Self.self)"
@@ -103,10 +104,26 @@ class BWVideoCell: UITableViewCell {
     
     func initVideo(videoUrl: URL) {
         self.playerLayer?.isHidden = false
-        self.player = AVPlayer(url: videoUrl)
-        self.playerLayer?.player = self.player
         self.playBtn.isHidden = false
+        playerItem = AVPlayerItem(url: videoUrl)
+        self.player = AVPlayer(playerItem: playerItem)
+        self.playerLayer?.player = self.player
+        // Observe for the AVPlayerItemDidPlayToEndTime notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(playerItemDidReachEnd(notification:)),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: playerItem)
     }
+    
+    @objc private func playerItemDidReachEnd(notification: Notification) {
+         print("Playback finished")
+         // Add your code to handle the end of playback here
+        self.playBtn.isHidden = false
+     }
+    
+    deinit {
+         NotificationCenter.default.removeObserver(self)
+     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
