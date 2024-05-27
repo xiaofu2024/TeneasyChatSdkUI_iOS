@@ -1,4 +1,5 @@
 import Alamofire
+import MobileCoreServices
 import Network
 import PhotosUI
 import TeneasyChatSDK_iOS
@@ -16,18 +17,43 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
     func presentImagePicker(controller: UIImagePickerController, source: UIImagePickerController.SourceType) {
         controller.delegate = self
         controller.sourceType = source
+        if #available(iOS 14.0, *) {
+            controller.mediaTypes = [UTType.image.identifier, UTType.movie.identifier]
+        } else {
+            controller.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+        }
         controller.allowsEditing = false
         controller.modalPresentationStyle = .fullScreen
-        //controller.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
-        //controller.mediaTypes = ["public.movie"]
+        // controller.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
+        // controller.mediaTypes = ["public.movie"]
         present(controller, animated: true)
     }
 
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            return imagePickerControllerDidCancel(picker)
+        if let mediaType = info[.mediaType] as? String {
+            if mediaType == kUTTypeImage as String {
+                if let image = info[.originalImage] as? UIImage {
+                    // 处理选中的图片
+                    print("Selected image: \(image)")
+                    chooseImg = image
+                    self.dealPickImage(picker: picker)
+                }
+            } else if mediaType == kUTTypeMovie as String {
+                if let videoURL = info[.mediaURL] as? URL {
+                    // 处理选中的视频
+                    print("Selected video URL: \(videoURL)")
+                    guard let videoData = try? Data(contentsOf: videoURL) else {
+                        print("Unable to get video data")
+                        return
+                    }
+                    upload(imgData: videoData, isVideo: true)
+                    picker.dismiss(animated: true)
+                }
+            }
         }
-        chooseImg = image
+    }
+
+    func dealPickImage(picker: UIImagePickerController) {
         guard let imgData = chooseImg?.jpegData(compressionQuality: 0.5) else { return }
         let tt = imgData.count
         print("图片大小：\(tt)")
@@ -41,8 +67,8 @@ extension KeFuViewController: UIImagePickerControllerDelegate, UINavigationContr
             picker.present(alertVC, animated: true, completion: nil)
             return
         }
-        upload(imgData: imgData)
-        picker.dismiss(animated: false) {}
+        upload(imgData: imgData, isVideo: false)
+        picker.dismiss(animated: true)
     }
 
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

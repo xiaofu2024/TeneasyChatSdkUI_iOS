@@ -368,7 +368,7 @@ open class KeFuViewController: UIViewController{
      * }
      */
     
-    func upload(imgData: Data) {
+    func upload(imgData: Data, isVideo: Bool) {
         // Set Your URL
         let api_url = baseUrlApi + "/v1/assets/upload/"
         guard let url = URL(string: api_url) else {
@@ -402,7 +402,11 @@ open class KeFuViewController: UIViewController{
                     multiPart.append("\(temp)".data(using: .utf8)!, withName: key as! String)
                 }
             }
-            multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
+            if (isVideo) {
+                multiPart.append(imgData, withName: "myFile", fileName: "file.mp4", mimeType: "video/mp4")
+            } else {
+                multiPart.append(imgData, withName: "myFile", fileName: "file.png", mimeType: "image/png")
+            }
         }, with: urlRequest)
         .uploadProgress(queue: .main, closure: { progress in
             // Current upload progress of file
